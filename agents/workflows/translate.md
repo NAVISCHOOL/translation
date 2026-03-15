@@ -10,7 +10,8 @@ description: 사용자가 "번역해줘"라고 요청하면 번역 모드를 선
 >
 > 1. **LLM 모드**
 >    - a) **PyMuPDF OCR** → Qwen2.5-14B 로컬 번역 (완전 무료, 오프라인)
->    - b) **Gemini Vision OCR** → Qwen2.5-14B 로컬 번역 또는 Gemini 직접 번역 (무료 API, 고품질 OCR)
+>    - b) **Gemini Vision OCR** → Gemini 직접 번역 (무료 API, 고품질 OCR)
+>    - c) **로컬 Vision** → Qwen2.5-VL 오프라인 번역 (실험적, 품질 낮음)
 > 2. **안티그래비티 모드** — PDF 이미지를 직접 보고 번역 (최고 품질, 대화형)
 >
 > 페이지 범위도 알려주세요! (예: 1-63 전체, 8 단일 페이지)
@@ -53,6 +54,28 @@ source .venv/bin/activate && python src/generate_comparison_pdf.py \
   --translation translated/llm/gemini_{PAGE_RANGE}.json \
   --pages {PAGE_RANGE} \
   -o translated/llm/대조본_gemini.pdf
+```
+
+---
+
+## 모드 1c: LLM 모드 — 로컬 Vision (오프라인, 실험적)
+
+// turbo-all
+
+> ⚠️ 실험적 모드: Qwen2.5-VL 7B의 세로쓰기 일본어 인식률이 낮아 품질이 떨어질 수 있음
+
+1. 로컬 Vision으로 번역 실행:
+```bash
+source .venv/bin/activate && python src/translate_local_vision.py -i data/pdf/후아후아_20251210-part-1-ocr.pdf --pages {PAGE_RANGE}
+```
+
+2. 대조 PDF 생성:
+```bash
+source .venv/bin/activate && python src/generate_comparison_pdf.py \
+  --original data/pdf/후아후아_20251210-part-1-ocr.pdf \
+  --translation translated/llm/local_vision_{PAGE_RANGE}.json \
+  --pages {PAGE_RANGE} \
+  -o translated/llm/대조본_local_vision.pdf
 ```
 
 ---
