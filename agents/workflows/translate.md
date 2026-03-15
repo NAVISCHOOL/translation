@@ -17,7 +17,7 @@ description: 사용자가 "번역해줘"라고 요청하면 번역 모드를 선
 
 ---
 
-## 모드 1: LLM 모드 (OCR 텍스트 기반)
+## 모드 1a: LLM 모드 — PyMuPDF OCR (오프라인)
 
 // turbo-all
 
@@ -33,6 +33,26 @@ source .venv/bin/activate && python src/generate_comparison_pdf.py \
   --translation translated/llm/output.json \
   --pages {PAGE_RANGE} \
   -o translated/llm/대조본.pdf
+```
+
+---
+
+## 모드 1b: LLM 모드 — Gemini Vision (고품질 OCR)
+
+// turbo-all
+
+1. Gemini Vision으로 번역 실행:
+```bash
+source .venv/bin/activate && python src/translate_gemini.py -i data/pdf/후아후아_20251210-part-1-ocr.pdf --pages {PAGE_RANGE}
+```
+
+2. 대조 PDF 생성:
+```bash
+source .venv/bin/activate && python src/generate_comparison_pdf.py \
+  --original data/pdf/후아후아_20251210-part-1-ocr.pdf \
+  --translation translated/llm/gemini_{PAGE_RANGE}.json \
+  --pages {PAGE_RANGE} \
+  -o translated/llm/대조본_gemini.pdf
 ```
 
 ---

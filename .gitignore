@@ -8,11 +8,11 @@ __pycache__/
 
 # 대용량 파일
 data/pdf/*.pdf
-translated/*.pdf
+translated/**/*.pdf
+translated/**/*.json
+translated/**/*.txt
 extracted/*.json
 extracted/*.txt
-translated/*.json
-translated/*.txt
 
 # OS
 .DS_Store
