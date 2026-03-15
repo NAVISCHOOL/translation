@@ -1,0 +1,84 @@
+{
+  "sessions": [
+    {
+      "id": "pages_1-63",
+      "timestamp": "2026-03-15T22:30:36.694986",
+      "pdf": "후아후아_20251210-part-1-ocr.pdf",
+      "pages": "1-63",
+      "mode": "antigravity",
+      "page_count": 63,
+      "total_time_sec": 11.1,
+      "validation": {
+        "japanese_remnants": 0,
+        "missing_pages": 0
+      },
+      "output": "translated/antigravity/pages_1-63.json",
+      "output_name": "대조본_p1-63.pdf",
+      "output_rel": "대조본_p1-63.pdf"
+    },
+    {
+      "id": "pages_1-63",
+      "timestamp": "2026-03-15T23:10:11.376335",
+      "pdf": "후아후아_20251210-part-1-ocr.pdf",
+      "pages": "1-63",
+      "mode": "antigravity",
+      "page_count": 63,
+      "total_time_sec": 11.2,
+      "validation": {
+        "japanese_remnants": 0,
+        "missing_pages": 0
+      },
+      "output": "translated/antigravity/pages_1-63.json",
+      "output_name": "대조본_p1-63.pdf",
+      "output_rel": "대조본_p1-63.pdf"
+    },
+    {
+      "id": "pages_1-63",
+      "timestamp": "2026-03-15T23:35:06.871516",
+      "pdf": "후아후아_20251210-part-1-ocr.pdf",
+      "pages": "1-63",
+      "mode": "antigravity",
+      "page_count": 63,
+      "total_time_sec": 11.1,
+      "validation": {
+        "japanese_remnants": 0,
+        "missing_pages": 0
+      },
+      "output": "translated/antigravity/pages_1-63.json",
+      "output_name": "대조본_p1-63.pdf",
+      "output_rel": "대조본_p1-63.pdf"
+    },
+    {
+      "id": "pages_1-63",
+      "timestamp": "2026-03-15T23:45:33.971316",
+      "pdf": "후아후아_20251210-part-1-ocr.pdf",
+      "pages": "1-63",
+      "mode": "antigravity",
+      "page_count": 63,
+      "total_time_sec": 10.7,
+      "validation": {
+        "japanese_remnants": 0,
+        "missing_pages": 0
+      },
+      "output": "translated/antigravity/pages_1-63.json",
+      "output_name": "대조본_p1-63.pdf",
+      "output_rel": "대조본_p1-63.pdf"
+    },
+    {
+      "id": "pages_1-63",
+      "timestamp": "2026-03-15T23:45:59.493391",
+      "pdf": "후아후아_20251210-part-1-ocr.pdf",
+      "pages": "1-63",
+      "mode": "antigravity",
+      "page_count": 63,
+      "total_time_sec": 10.7,
+      "validation": {
+        "japanese_remnants": 0,
+        "missing_pages": 0
+      },
+      "output": "translated/antigravity/pages_1-63.json",
+      "output_name": "대조본_p1-63.pdf",
+      "output_rel": "대조본_p1-63.pdf"
+    }
+  ]
+}
