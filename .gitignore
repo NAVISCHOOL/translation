@@ -3,6 +3,9 @@
 __pycache__/
 *.pyc
 
+# 환경변수 (API 키)
+.env
+
 # 대용량 파일
 data/pdf/*.pdf
 translated/*.pdf
