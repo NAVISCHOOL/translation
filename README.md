@@ -92,10 +92,27 @@ NAVI-Translate/
 
 ---
 
+## 🧪 왜 OCR을 안 쓰나요?
+
+기존 OCR 방식을 모두 테스트했지만, **안티그래비티가 직접 보는 게 가장 정확**했습니다.
+
+### 실험 결과 요약
+
+| 시도 | 방식 | 결과 |
+|------|------|------|
+| ① PyMuPDF OCR → Qwen | PDF 내장 텍스트 추출 → 로컬 LLM 번역 | ❌ 세로쓰기 OCR 깨짐. `景色`→`屎色` 등 오인식 다수. 60개+ 교정 테이블로도 한계 |
+| ② Gemini Vision API | PDF 이미지 → Gemini가 직접 보고 번역 | ✅ 품질 최고 (4.4초/p). 하지만 안티그래비티와 본질적으로 동일 |
+| ③ 로컬 Vision (Qwen2.5-VL 7B) | PDF 이미지 → 로컬 모델이 보고 번역 | ❌ 세로쓰기 인식률 낮음. 반복 출력 심각 (78초/p) |
+
+> **결론**: OCR 단계를 없애고, AI가 이미지를 직접 보는 것이 정답.
+> Gemini Vision도 좋지만 안티그래비티와 같은 방식이라 통합 → **안티그래비티 하나로 심플하게.**
+
+---
+
 ## 🔮 예정 기능
 
 | 기능 | 상태 | 비고 |
 |------|:---:|------|
 | Gemini Vision 자동 번역 | 🔧 구현 완료 | `translate_gemini.py` — API 키로 일괄 자동 번역. 63p/5분 |
-| 로컬 Vision 오프라인 번역 | 🔧 실험적 | `translate_local_vision.py` — Qwen2.5-VL 7B. 품질 개선 필요 |
+| 로컬 Vision 오프라인 번역 | 🔧 실험적 | `translate_local_vision.py` — Qwen2.5-VL 7B. 더 큰 모델 출시 시 개선 예정 |
 | PyMuPDF+Qwen 번역 | ⏸️ 레거시 | `translate.py` — OCR 오인식률 높아 비추천 |
