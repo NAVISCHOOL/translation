@@ -1,0 +1,248 @@
+#!/usr/bin/env python3
+"""
+NAVI-Translate: 원본 대조 PDF 생성기
+원본 일본어 PDF 페이지 이미지와 한국어 번역을 나란히 배치합니다.
+
+사용법:
+  python src/generate_comparison_pdf.py \
+    --original data/pdf/후아후아_20251210-part-1-ocr.pdf \
+    --translation translated/test_v2_p10-11.json \
+    --pages 10-11 \
+    -o translated/대조본.pdf
+"""
+import json
+import argparse
+import os
+import tempfile
+from pathlib import Path
+
+import fitz  # PyMuPDF - PDF 페이지를 이미지로 변환
+from fpdf import FPDF
+
+
+# ============================================================
+# 한국어 폰트 탐색
+# ============================================================
+
+FONT_SEARCH_PATHS = [
+    os.path.expanduser("~/Library/Fonts"),
+    "/Library/Fonts",
+    "/System/Library/Fonts",
+    "/System/Library/Fonts/Supplemental",
+]
+
+FONT_CANDIDATES = {
+    "regular": ["NanumSquare_acR.ttf", "NanumSquareR.ttf", "NanumGothic.ttf"],
+    "bold": ["NanumSquareEB.ttf", "NanumSquare_acB.ttf", "NanumGothicBold.ttf"],
+}
+
+
+def find_font(style: str = "regular") -> str:
+    for candidate in FONT_CANDIDATES.get(style, FONT_CANDIDATES["regular"]):
+        for search_dir in FONT_SEARCH_PATHS:
+            path = os.path.join(search_dir, candidate)
+            if os.path.exists(path):
+                return path
+    raise FileNotFoundError("한국어 폰트를 찾을 수 없습니다.")
+
+
+# ============================================================
+# PDF 페이지 → 이미지 추출
+# ============================================================
+
+def extract_page_images(pdf_path: str, pages: list[int], dpi: int = 150) -> dict[int, str]:
+    """PDF 페이지를 임시 PNG 이미지로 추출합니다."""
+    doc = fitz.open(pdf_path)
+    temp_dir = tempfile.mkdtemp(prefix="navi_pdf_")
+    images = {}
+    
+    for page_num in pages:
+        idx = page_num - 1  # 0-indexed
+        if 0 <= idx < len(doc):
+            page = doc[idx]
+            mat = fitz.Matrix(dpi / 72, dpi / 72)
+            pix = page.get_pixmap(matrix=mat)
+            img_path = os.path.join(temp_dir, f"page_{page_num}.png")
+            pix.save(img_path)
+            images[page_num] = img_path
+    
+    doc.close()
+    return images
+
+
+# ============================================================
+# 대조 PDF 생성
+# ============================================================
+
+class ComparisonPDF(FPDF):
+    """원본/번역 대조 PDF"""
+    
+    def __init__(self):
+        super().__init__(orientation="L", format="A4")  # 가로 방향
+        self.title_text = "후아후아의 법칙 — 원문/번역 대조"
+        self._setup_fonts()
+    
+    def _setup_fonts(self):
+        regular_path = find_font("regular")
+        self.add_font("Korean", "", regular_path)
+        try:
+            bold_path = find_font("bold")
+            self.add_font("Korean", "B", bold_path)
+            self.has_bold = True
+        except FileNotFoundError:
+            self.has_bold = False
+    
+    def header(self):
+        self.set_font("Korean", "", 7)
+        self.set_text_color(150, 150, 150)
+        self.cell(0, 6, self.title_text, align="C")
+        self.ln(8)
+    
+    def footer(self):
+        self.set_y(-12)
+        self.set_font("Korean", "", 7)
+        self.set_text_color(150, 150, 150)
+        self.cell(0, 8, f"- {self.page_no()} -", align="C")
+    
+    def add_comparison_page(self, page_num: int, image_path: str, translated_text: str):
+        """왼쪽: 원본 이미지, 오른쪽: 한국어 번역"""
+        self.add_page()
+        
+        page_width = self.w - self.l_margin - self.r_margin
+        half_width = page_width / 2 - 5
+        content_top = self.get_y()
+        content_height = self.h - content_top - 15
+        
+        # --- 왼쪽: 원본 PDF 이미지 ---
+        left_x = self.l_margin
+        
+        # 라벨
+        self.set_xy(left_x, content_top)
+        style = "B" if self.has_bold else ""
+        self.set_font("Korean", style, 9)
+        self.set_text_color(100, 100, 100)
+        self.cell(half_width, 6, f"[원문] p.{page_num}", align="C")
+        self.ln(8)
+        
+        # 이미지 배치
+        img_y = self.get_y()
+        if os.path.exists(image_path):
+            # 이미지 비율 유지하며 영역에 맞추기
+            self.image(image_path, x=left_x, y=img_y, w=half_width)
+        
+        # --- 오른쪽: 한국어 번역 ---
+        right_x = self.l_margin + half_width + 10
+        
+        # 구분선
+        line_x = self.l_margin + half_width + 5
+        self.set_draw_color(200, 200, 200)
+        self.line(line_x, content_top, line_x, self.h - 15)
+        
+        # 라벨
+        self.set_xy(right_x, content_top)
+        self.set_font("Korean", style, 9)
+        self.set_text_color(100, 100, 100)
+        self.cell(half_width, 6, f"[번역] p.{page_num}", align="C")
+        
+        # 번역 텍스트
+        self.set_xy(right_x, content_top + 10)
+        self.set_font("Korean", "", 10)
+        self.set_text_color(40, 40, 40)
+        
+        for para in translated_text.split('\n'):
+            para = para.strip()
+            if not para:
+                self.ln(3)
+                continue
+            
+            # 인용구 스타일
+            if para.startswith('"') or para.startswith('"') or para.startswith('「'):
+                self.set_text_color(80, 60, 120)
+                self.set_xy(right_x, self.get_y())
+                self.multi_cell(half_width, 6, f"  {para}", align="L")
+                self.set_text_color(40, 40, 40)
+            else:
+                self.set_xy(right_x, self.get_y())
+                self.multi_cell(half_width, 6, para, align="L")
+            
+            self.ln(1)
+
+
+def generate_comparison_pdf(
+    original_pdf: str,
+    translations: list[dict],
+    output_path: str,
+    page_range: tuple[int, int] = None
+):
+    """원본/번역 대조 PDF를 생성합니다."""
+    
+    # 페이지 범위 결정
+    if page_range:
+        pages = list(range(page_range[0], page_range[1] + 1))
+    else:
+        pages = list(range(1, 100))  # 기본 범위
+    
+    # 원본 PDF 페이지 이미지 추출
+    print(f"🖼️ 원본 PDF 페이지 이미지 추출 중...")
+    images = extract_page_images(original_pdf, pages)
+    print(f"   {len(images)}페이지 이미지 추출 완료")
+    
+    # 번역 텍스트를 페이지별로 분할
+    # (현재는 청크 단위이므로, 페이지 수에 맞춰 분배)
+    all_translated = "\n\n".join(t["translated"] for t in translations)
+    
+    # 페이지별로 텍스트 분할 (균등 분배)
+    paragraphs = [p for p in all_translated.split('\n\n') if p.strip()]
+    pages_with_images = sorted(images.keys())
+    
+    if len(pages_with_images) > 0:
+        chunk_size = max(1, len(paragraphs) // len(pages_with_images))
+    else:
+        chunk_size = len(paragraphs)
+    
+    # PDF 생성
+    pdf = ComparisonPDF()
+    pdf.set_auto_page_break(auto=False)
+    
+    for i, page_num in enumerate(pages_with_images):
+        start_idx = i * chunk_size
+        end_idx = start_idx + chunk_size if i < len(pages_with_images) - 1 else len(paragraphs)
+        page_text = '\n\n'.join(paragraphs[start_idx:end_idx]) if start_idx < len(paragraphs) else ""
+        
+        pdf.add_comparison_page(page_num, images[page_num], page_text)
+    
+    # 저장
+    out = Path(output_path)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    pdf.output(str(out))
+    
+    # 임시 이미지 정리
+    for img_path in images.values():
+        try:
+            os.remove(img_path)
+        except:
+            pass
+    
+    print(f"\n✅ 대조 PDF 생성 완료: {out}")
+    print(f"   📄 {pdf.page_no()}페이지 (가로 A4, 원본/번역 나란히)")
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="원본/번역 대조 PDF 생성")
+    parser.add_argument("--original", "-O", required=True, help="원본 일본어 PDF")
+    parser.add_argument("--translation", "-T", required=True, help="번역 결과 JSON")
+    parser.add_argument("--output", "-o", default="./translated/대조본.pdf", help="출력 PDF")
+    parser.add_argument("--pages", "-p", help="페이지 범위 (예: 10-11)")
+    parser.add_argument("--dpi", type=int, default=150, help="이미지 해상도 (기본: 150)")
+    
+    args = parser.parse_args()
+    
+    with open(args.translation, "r", encoding="utf-8") as f:
+        translations = json.load(f)
+    
+    page_range = None
+    if args.pages:
+        parts = args.pages.split("-")
+        page_range = (int(parts[0]), int(parts[1]) if len(parts) > 1 else int(parts[0]))
+    
+    generate_comparison_pdf(args.original, translations, args.output, page_range)

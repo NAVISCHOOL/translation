@@ -1,0 +1,15 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# 대용량 파일
+data/pdf/*.pdf
+translated/*.pdf
+extracted/*.json
+extracted/*.txt
+translated/*.json
+translated/*.txt
+
+# OS
+.DS_Store
