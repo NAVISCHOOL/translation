@@ -15,14 +15,12 @@
 
 🤖 안티그래비티: 어떤 모드로 번역할까요?
 
-    1. LLM 모드
-       a) PyMuPDF OCR → Qwen2.5-14B 로컬 번역 (완전 무료, 오프라인)
-       b) Gemini Vision → 직접 번역 (무료 API, 고품질 OCR)
-    2. 안티그래비티 모드 — PDF 이미지를 직접 보고 번역 (최고 품질)
+    1. Gemini Vision — 자동 번역 (무료 API, 최고 품질)
+    2. 안티그래비티 모드 — PDF 이미지를 직접 보고 번역 (최고 품질, 대화형)
 
     페이지 범위도 알려주세요! (예: 1-63 전체, 10 단일)
 
-👤 사용자: 1b로 1-10페이지
+👤 사용자: 1번으로 1-10페이지
 
 🤖 안티그래비티: (Gemini Vision으로 p.1~10 자동 번역 시작...)
 ```
@@ -31,21 +29,9 @@
 
 ## ❓ 모드가 뭐가 다른 건가요?
 
-### Q. "1a) PyMuPDF OCR" 이 뭐예요?
-> PDF에 내장된 텍스트를 추출해서 로컬 LLM(Qwen2.5-14B)이 번역합니다.
-> **인터넷 없이** 돌아갑니다. 대신 OCR 텍스트가 깨질 수 있어서 전처리가 필요해요.
-
-```bash
-# 예시: 전체 63페이지 자동 번역 (~11분)
-python src/translate.py -i extracted/extracted_pages.json --pages 1-63
-```
-
-### Q. "1b) Gemini Vision" 은요?
+### Q. "Gemini Vision" 이 뭐예요?
 > PDF 페이지를 **이미지로** Gemini API에 보냅니다. OCR 단계가 아예 없어서 **세로쓰기도 완벽**!
->
-> 두 가지 방식으로 쓸 수 있어요:
-> - **Gemini OCR + Gemini 번역** (현재 기본) — Gemini가 읽기와 번역을 한번에
-> - **Gemini OCR → 로컬 Qwen 번역** (하이브리드) — Gemini는 텍스트만 추출, 번역은 로컬에서
+> Gemini가 이미지를 보고 읽기와 번역을 한번에 처리합니다.
 
 ```bash
 # 예시: p.1~10 Gemini 번역 (~1분)
@@ -79,36 +65,20 @@ python src/translate_gemini.py -i data/pdf/후아후아.pdf --pages 1-10
 
 ## 📊 모드 비교
 
-| | 1a) PyMuPDF+Qwen | 1b) Gemini Vision | 1c) 로컬 Vision | 2) 안티그래비티 |
-|---|:---:|:---:|:---:|:---:|
-| **속도** | 63p / 11분 | 63p / ~5분 | 63p / ~80분 | 대화형 |
-| **품질** | ★★★ | ★★★★★ | ★★ (실험적) | ★★★★★ |
-| **비용** | ₩0 | ₩0 (무료 API) | ₩0 | ₩0 |
-| **인터넷** | ❌ 불필요 | ✅ 필요 | ❌ 불필요 | ✅ 필요 |
-| **자동화** | ✅ | ✅ | ✅ | ❌ 수동 |
-| **세로쓰기** | △ OCR 깨짐 | ✅ 완벽 | △ 부분 인식 | ✅ 완벽 |
-| 일일 한도 | 무제한 | ~23권/일 | 무제한 | 무제한 |
+| | 1) Gemini Vision | 2) 안티그래비티 |
+|---|:---:|:---:|
+| **속도** | 63p / ~5분 | 대화형 |
+| **품질** | ★★★★★ | ★★★★★ |
+| **비용** | ₩0 (무료 API) | ₩0 |
+| **인터넷** | ✅ 필요 | ✅ 필요 |
+| **자동화** | ✅ 완전 자동 | ❌ 수동 |
+| **세로쓰기** | ✅ 완벽 | ✅ 완벽 |
+| 일일 한도 | ~23권/일 | 무제한 |
 
-### Q. 품질이 왜 다른가요?
+### Q. 어떤 걸 써야 하나요?
 
-> **1a) PyMuPDF+Qwen = ★★★**
-> - PDF에 이미 내장된 OCR 텍스트를 추출하는데, 이 텍스트 자체가 세로쓰기를 잘 못 잡아서 깨져있음
-> - 예: `屎色`(오인식) → 원래 `景色`, 한 글자씩 분리되는 문제
-> - 전처리(60개+ 교정 테이블)로 보완하지만 한계가 있음
->
-> **1b) Gemini Vision = ★★★★★**
-> - OCR 단계 자체가 없음. Gemini가 이미지를 직접 읽어서 바로 번역
-> - 세로쓰기, 표지, 디자인 페이지도 완벽하게 인식
-> - p.10 실제 테스트: 4.4초만에 완벽한 번역 출력
->
-> **1c) 로컬 Vision (Qwen2.5-VL) = ★★ (실험적)**
-> - 완전 오프라인으로 이미지 기반 번역 가능
-> - 단, 7B 모델 한계로 세로쓰기 일본어 인식률이 낮고 반복 출력 경향이 있음
-> - 더 큰 모델(32B+)이나 일본어 특화 파인튜닝으로 개선 가능성 있음
->
-> **2) 안티그래비티 = ★★★★★**
-> - Gemini Vision과 동일 품질이지만, 문맥과 전후 관계를 고려한 미세 조정 가능
-> - 용어 통일, 문체 일관성에서 약간 더 나음
+> **대량 자동 번역** → 1) Gemini Vision (추천!)
+> **표지·특수 페이지·문맥 조정** → 2) 안티그래비티 모드
 
 ---
 
@@ -120,25 +90,12 @@ python3 -m venv .venv && source .venv/bin/activate
 pip install pymupdf requests fpdf2 google-genai python-dotenv
 ```
 
-### Q. 로컬 LLM (모드 1a용)
-```bash
-brew install ollama && brew services start ollama
-ollama pull qwen2.5:14b    # ~9GB 다운로드
-```
-
-### Q. Gemini API 키 (모드 1b용)
+### Q. Gemini API 키 설정
 1. [Google AI Studio](https://aistudio.google.com/apikey)에서 무료 API 키 발급
 2. `.env` 파일에 입력:
 ```
 GEMINI_API_KEY=여기에_키_입력
 ```
-
-### Q. 로컬 Vision 모델 (모드 1c용, 실험적)
-```bash
-brew install ollama && brew services start ollama
-ollama pull qwen2.5vl:7b    # ~4.7GB 다운로드
-```
-> ⚠️ 현재 7B 모델로는 세로쓰기 일본어 품질이 낮습니다. 오프라인 필요시에만 사용하세요.
 
 ---
 
@@ -146,11 +103,11 @@ ollama pull qwen2.5vl:7b    # ~4.7GB 다운로드
 
 ```
 NAVI-Translate/
-├── src/                          ← 핵심 스크립트 9개
+├── src/                          ← 핵심 스크립트
+│   ├── translate_gemini.py          Gemini Vision 번역 (추천)
+│   ├── translate_local_vision.py    로컬 Vision 번역 (예정)
+│   ├── translate.py                 PyMuPDF+Qwen 로컬 번역 (레거시)
 │   ├── extract_pdf.py               PDF → 텍스트 추출
-│   ├── translate.py                 Qwen2.5-14B 로컬 번역
-│   ├── translate_gemini.py          Gemini Vision 번역
-│   ├── translate_local_vision.py    로컬 Vision 번역 (오프라인)
 │   ├── prepare_pages.py             안티그래비티 이미지 준비
 │   ├── save_translation.py          번역 결과 저장
 │   ├── compare.py                   원문/번역 대조 (CLI)
@@ -164,7 +121,7 @@ NAVI-Translate/
 ├── data/pdf/                      ← 원본 PDF
 ├── extracted/                     ← 추출 결과
 └── translated/
-    ├── llm/                         자동화 결과 (1a/1b)
+    ├── llm/                         자동화 결과
     └── antigravity/                 안티그래비티 결과
 ```
 
@@ -174,8 +131,17 @@ NAVI-Translate/
 
 | 기능 | 설명 |
 |------|------|
-| OCR 전처리 v2.0 | 60개+ 한자 오인식 교정, 세로쓰기 복원 |
-| Gemini Vision | OCR 없이 이미지에서 직접 번역 |
+| Gemini Vision | OCR 없이 이미지에서 직접 번역 (추천) |
+| 안티그래비티 모드 | PDF를 직접 보고 대화형 번역 |
 | 용어집 자동 로딩 | `config/glossary.json` → 프롬프트 주입 |
 | 일본어 잔류 방지 | 프롬프트 + 후처리 이중 안전장치 |
 | 대조 PDF | 원본(왼) + 한국어(오) 나란히 배치 |
+
+---
+
+## 🔮 예정 기능
+
+| 기능 | 상태 | 비고 |
+|------|:---:|------|
+| 로컬 Vision 번역 (오프라인) | 🔧 실험적 | `translate_local_vision.py` 구현 완료, Qwen2.5-VL 7B 기반. 현재 세로쓰기 인식률 낮음 → 더 큰 모델(32B+) 또는 일본어 특화 모델 출시 시 개선 예정 |
+| PyMuPDF+Qwen 모드 | ⏸️ 레거시 | OCR 오인식률 높아 사용 비추천. 코드는 유지 |
