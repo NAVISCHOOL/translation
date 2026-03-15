@@ -1,0 +1,29 @@
+[project]
+name = "navi-translate"
+version = "0.1.0"
+description = "AI 기반 PDF 번역 플랫폼 — 이미지 직독 → 검증 → 대조 PDF 생성"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pymupdf>=1.24",
+    "fpdf2>=2.7",
+    "pillow>=10.0",
+]
+
+[project.scripts]
+navi-translate = "translate_pipeline:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+]

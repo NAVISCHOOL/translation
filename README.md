@@ -13,9 +13,10 @@
 ```
 👤 사용자: 번역해줘
 
-🤖 안티그래비티: 페이지 범위를 알려주세요! (예: 1-63 전체, 10 단일)
+🤖 안티그래비티: 어떤걸 번역 해드릴까요? 그리고 페이지 범위를 알려주세요!
+    (예: 00pdf, 1-63 전체, 10 단일)
 
-👤 사용자: 1-10페이지
+👤 사용자: 00Pdf, 1-10페이지
 
 🤖 안티그래비티: (p.1 이미지를 보고 번역 시작...)
 ```
@@ -51,6 +52,13 @@ python3 -m venv .venv && source .venv/bin/activate
 pip install pymupdf requests fpdf2 python-dotenv
 ```
 
+번역할 PDF 파일을 `data/pdf/` 폴더에 넣어주세요.
+
+```
+data/pdf/
+└── 내_번역할_파일.pdf   ← 여기에 넣으면 자동 인식됩니다
+```
+
 ---
 
 ## 🏗️ 프로젝트 구조
@@ -63,8 +71,9 @@ NAVI-Translate/
 │   ├── generate_pdf.py              번역본 PDF
 │   ├── generate_comparison_pdf.py   대조 PDF
 │   ├── compare.py                   원문/번역 대조 (CLI)
-│   ├── translate_gemini.py          Gemini Vision 자동 번역 (예정)
-│   ├── translate_local_vision.py    로컬 Vision 오프라인 번역 (예정)
+│   ├── translate_gemini.py          Gemini Vision 자동 번역
+│   ├── translate_pipeline.py        번역 파이프라인 (MD→JSON→검증→PDF)
+│   ├── translate_local_vision.py    로컬 Vision 오프라인 번역 (실험적)
 │   ├── translate.py                 PyMuPDF+Qwen 번역 (레거시)
 │   └── extract_pdf.py               PDF 텍스트 추출 (레거시)
 │
@@ -75,8 +84,9 @@ NAVI-Translate/
 ├── data/pdf/                      ← 원본 PDF
 ├── extracted/                     ← 추출 결과
 └── translated/
-    ├── llm/                         자동화 결과
-    └── antigravity/                 안티그래비티 결과
+    ├── index.md                     번역 이력 테이블
+    ├── translate-log.json           세션 로그
+    └── antigravity/                 번역 결과
 ```
 
 ---

@@ -12,3 +12,4 @@
 | 8 | 2026-03-15 | 후아후아_20251210-part-1-ocr.pdf | 1-63 | antigravity | [대조본_p1-63.pdf](대조본_p1-63.pdf) |
 | 9 | 2026-03-15 | 후아후아_20251210-part-1-ocr.pdf | 1-63 | antigravity | [대조본_p1-63.pdf](대조본_p1-63.pdf) |
 | 10 | 2026-03-15 | 후아후아_20251210-part-1-ocr.pdf | 1-63 | antigravity | [대조본_p1-63.pdf](대조본_p1-63.pdf) |
+| 11 | 2026-03-15 | 후아후아_20251210-part-1-ocr.pdf | 1-10 | antigravity | [대조본_p1-10.pdf](대조본_p1-10.pdf) |

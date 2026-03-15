@@ -79,7 +79,7 @@ class ComparisonPDF(FPDF):
     
     def __init__(self):
         super().__init__(orientation="L", format="A4")  # 가로 방향
-        self.title_text = "후아후아의 법칙 — 원문/번역 대조"
+        self.title_text = "원문/번역 대조"
         self._setup_fonts()
     
     def _setup_fonts(self):
@@ -187,28 +187,16 @@ def generate_comparison_pdf(
     images = extract_page_images(original_pdf, pages)
     print(f"   {len(images)}페이지 이미지 추출 완료")
     
-    # 번역 텍스트를 페이지별로 분할
-    # (현재는 청크 단위이므로, 페이지 수에 맞춰 분배)
-    all_translated = "\n\n".join(t["translated"] for t in translations)
-    
-    # 페이지별로 텍스트 분할 (균등 분배)
-    paragraphs = [p for p in all_translated.split('\n\n') if p.strip()]
+    # 번역 텍스트를 페이지별로 직접 매핑 (균등 분배 ❌ → 직접 매핑 ✅)
+    trans_by_page = {t["page"]: t["translated"] for t in translations}
     pages_with_images = sorted(images.keys())
-    
-    if len(pages_with_images) > 0:
-        chunk_size = max(1, len(paragraphs) // len(pages_with_images))
-    else:
-        chunk_size = len(paragraphs)
     
     # PDF 생성
     pdf = ComparisonPDF()
     pdf.set_auto_page_break(auto=False)
     
-    for i, page_num in enumerate(pages_with_images):
-        start_idx = i * chunk_size
-        end_idx = start_idx + chunk_size if i < len(pages_with_images) - 1 else len(paragraphs)
-        page_text = '\n\n'.join(paragraphs[start_idx:end_idx]) if start_idx < len(paragraphs) else ""
-        
+    for page_num in pages_with_images:
+        page_text = trans_by_page.get(page_num, "(번역 없음)")
         pdf.add_comparison_page(page_num, images[page_num], page_text)
     
     # 저장
