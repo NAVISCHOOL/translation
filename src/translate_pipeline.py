@@ -24,8 +24,49 @@ import sys
 import subprocess
 from datetime import datetime
 from pathlib import Path
+from statistics import median
 
 PROJECT_ROOT = Path(__file__).parent.parent
+
+
+# ============================================================
+# 0. Style Extraction Helpers
+# ============================================================
+
+def sample_block_color(
+    page_img,
+    bbox: tuple[float, float, float, float],
+    bg_threshold: int = 240,
+    default_rgb: tuple[int, int, int] = (40, 40, 40),
+) -> tuple[int, int, int]:
+    """Sample text color from a bbox region using 3x3 grid.
+
+    Filters out background pixels (brightness > bg_threshold).
+    Returns median RGB of text-colored pixels, or default if all background.
+    """
+    x0, y0, x1, y1 = [int(v) for v in bbox]
+    w, h = x1 - x0, y1 - y0
+    if w <= 0 or h <= 0:
+        return default_rgb
+
+    samples_r, samples_g, samples_b = [], [], []
+    for row in range(3):
+        for col in range(3):
+            px = x0 + int(w * (col + 1) / 4)
+            py = y0 + int(h * (row + 1) / 4)
+            px = min(max(px, 0), page_img.width - 1)
+            py = min(max(py, 0), page_img.height - 1)
+            r, g, b = page_img.getpixel((px, py))[:3]
+            brightness = (r + g + b) / 3
+            if brightness <= bg_threshold:
+                samples_r.append(r)
+                samples_g.append(g)
+                samples_b.append(b)
+
+    if not samples_r:
+        return default_rgb
+
+    return (int(median(samples_r)), int(median(samples_g)), int(median(samples_b)))
 
 
 # ============================================================
@@ -43,8 +84,12 @@ def parse_translation_md(md_path: str) -> list[dict]:
         translated: 한국어 번역
         (여러 줄 가능)
     """
-    with open(md_path, "r", encoding="utf-8") as f:
-        content = f.read()
+    try:
+        with open(md_path, "r", encoding="utf-8") as f:
+            content = f.read()
+    except FileNotFoundError:
+        print(f"❌ 마크다운 파일을 찾을 수 없습니다: {md_path}")
+        sys.exit(1)
 
     pages = []
     # ## page N 으로 분할
@@ -105,11 +150,11 @@ def load_glossary_exceptions() -> set[str]:
     if glossary_path.exists():
         with open(glossary_path, "r", encoding="utf-8") as f:
             glossary = json.load(f)
-        return set(glossary.values())  # 한국어 번역어는 허용
+        return set(glossary.keys())  # 일본어 원어가 번역문에 의도적으로 사용된 경우 허용
     return set()
 
 
-def validate_translations(pages: list[dict], expected_range: tuple[int, int] = None, pdf_path: str = None) -> dict:
+def validate_translations(pages: list[dict], expected_range: tuple[int, int] = None, pdf_path: str = None, text_meta_path: str = None) -> dict:
     """
     번역 결과를 다중 검증합니다.
     (NAVI-Research 7중 QA 패턴에서 영감)
@@ -121,6 +166,7 @@ def validate_translations(pages: list[dict], expected_range: tuple[int, int] = N
     4. 용어집 일관성 (glossary.json 반영 확인)
     5. 페이지 누락 체크
     6. 페이지 정합성 (1:1 매칭) — PDF 텍스트 레이어 대조
+    7. 소형·가로 텍스트 커버리지 — 작은 글씨/가로 텍스트 누락 감지
 
     Returns:
         {"ok": bool, "errors": [...], "warnings": [...], "qa_summary": {...}}
@@ -299,6 +345,81 @@ def validate_translations(pages: list[dict], expected_range: tuple[int, int] = N
         if alignment_issues else "✅ 전체 통과"
     )
 
+    # ── 7. 소형·가로 텍스트 커버리지 검증 ──
+    small_text_missing = 0
+    small_text_total = 0
+    horiz_text_missing = 0
+    horiz_text_total = 0
+
+    # page_texts.json 로드 (text_meta_path 또는 기본 경로)
+    meta_path = text_meta_path or "/tmp/antigravity_pages/page_texts.json"
+    text_meta = None
+    if os.path.exists(meta_path):
+        try:
+            with open(meta_path, "r", encoding="utf-8") as f:
+                text_meta = json.load(f)
+        except (json.JSONDecodeError, OSError) as e:
+            warnings.append(f"page_texts.json 로드 오류: {e}")
+
+    if text_meta is None:
+        warnings.append("page_texts.json 없음 — 소형·가로 텍스트 검증 건너뜀")
+    else:
+        # 용어집 로드 (한국어 번역어 매핑)
+        glossary_kr = {}
+        gp = PROJECT_ROOT / "config" / "glossary.json"
+        if gp.exists():
+            with open(gp, "r", encoding="utf-8") as f:
+                glossary_kr = json.load(f)
+
+        for entry in pages:
+            pn = str(entry["page"])
+            page_meta = text_meta.get(pn)
+            if not page_meta or not isinstance(page_meta, dict):
+                continue
+
+            orig_clean = re.sub(r'\s+', '', entry.get("original", ""))
+            trans_clean = re.sub(r'\s+', '', entry.get("translated", ""))
+
+            # 소형 텍스트 검증
+            for st in page_meta.get("small_texts", []):
+                small_text_total += 1
+                if st in orig_clean:
+                    continue
+                # 용어집에 등록된 용어 → 번역문에서 한국어로 확인
+                glossary_hit = False
+                for jp_term, kr_term in glossary_kr.items():
+                    if jp_term in st and kr_term in trans_clean:
+                        glossary_hit = True
+                        break
+                if glossary_hit:
+                    continue
+                small_text_missing += 1
+                warnings.append(f"p.{pn}: 소형 텍스트 누락 의심 — '{st}'")
+
+            # 가로 텍스트 검증
+            for ht in page_meta.get("horizontal_texts", []):
+                horiz_text_total += 1
+                if ht in orig_clean:
+                    continue
+                glossary_hit = False
+                for jp_term, kr_term in glossary_kr.items():
+                    if jp_term in ht and kr_term in trans_clean:
+                        glossary_hit = True
+                        break
+                if glossary_hit:
+                    continue
+                horiz_text_missing += 1
+                warnings.append(f"p.{pn}: 가로 텍스트 누락 의심 — '{ht}'")
+
+    qa_scores["소형_텍스트_커버리지"] = (
+        f"{small_text_missing}건 누락 의심 (총 {small_text_total}건 중)"
+        if small_text_total > 0 else "해당 없음"
+    )
+    qa_scores["가로_텍스트_커버리지"] = (
+        f"{horiz_text_missing}건 누락 의심 (총 {horiz_text_total}건 중)"
+        if horiz_text_total > 0 else "해당 없음"
+    )
+
     # ── QA 요약 ──
     return {
         "ok": len(errors) == 0,
@@ -365,7 +486,7 @@ def update_index_md(session_data: dict):
 
     content = index_path.read_text(encoding="utf-8")
     # 기존 행 개수로 번호 매기기
-    row_count = content.count("| ") // 6  # 헤더 행(2) 제외
+    row_count = content.count("\n| ")  # 테이블 행 개수
 
     new_row = (
         f"| {row_count} "
@@ -395,9 +516,8 @@ def auto_git_push(session_data: dict, output_path: str, pdf_output: str):
         files_to_add.append(pdf_output)
 
     try:
-        # 안전하게 따옴표로 묶고 강제 추가 (ignored 파일도 포함)
-        add_command = "git add -f " + " ".join(f'"{f}"' for f in files_to_add)
-        subprocess.run(add_command, shell=True, check=True, cwd=str(PROJECT_ROOT))
+        # ⚠️ git add -f는 .gitignore를 우회합니다 — translated/**/*.json 등이 ignore되어 있으므로 -f 필수
+        subprocess.run(["git", "add", "-f"] + files_to_add, check=True, cwd=str(PROJECT_ROOT))
         
         pdf_name = session_data.get("pdf", "문서")
         pages = session_data.get("pages", "all")
@@ -461,7 +581,7 @@ def cmd_build(args):
 
     # 2. ANTI-JAPANESE 검증
     print(f"\n🔍 ANTI-JAPANESE 검증 중...")
-    result = validate_translations(pages, page_range, pdf_path=args.pdf)
+    result = validate_translations(pages, page_range, pdf_path=args.pdf, text_meta_path=getattr(args, 'text_meta', None))
 
     if result["warnings"]:
         for w in result["warnings"]:
@@ -521,7 +641,8 @@ def cmd_build(args):
 
     update_translate_log(session)
     update_index_md(session)
-    auto_git_push(session, output_path, pdf_output)
+    if args.auto_push:
+        auto_git_push(session, output_path, pdf_output)
 
     # 최종 보고
     print(f"\n{'='*50}")
@@ -544,7 +665,7 @@ def cmd_validate(args):
         page_range = (int(parts[0]), int(parts[1]) if len(parts) > 1 else int(parts[0]))
 
     print(f"🔍 검증 중: {args.json}")
-    result = validate_translations(pages, page_range, pdf_path=getattr(args, 'pdf', None))
+    result = validate_translations(pages, page_range, pdf_path=getattr(args, 'pdf', None), text_meta_path=getattr(args, 'text_meta', None))
 
     if result["warnings"]:
         for w in result["warnings"]:
@@ -593,12 +714,15 @@ def main():
     p_build.add_argument("--pdf", "-p", help="원본 PDF 파일 경로")
     p_build.add_argument("--pages", help="페이지 범위 (예: 1-10)")
     p_build.add_argument("--output", "-o", help="출력 JSON 경로")
+    p_build.add_argument("--text-meta", help="page_texts.json 경로 (소형·가로 텍스트 검증용)")
+    p_build.add_argument("--auto-push", action="store_true", default=False, help="빌드 후 자동 git commit & push")
 
     # validate
     p_val = sub.add_parser("validate", help="JSON 검증")
     p_val.add_argument("--json", "-j", required=True, help="JSON 파일 경로")
     p_val.add_argument("--pages", help="예상 페이지 범위 (예: 1-10)")
     p_val.add_argument("--pdf", "-p", help="원본 PDF (정합성 검증용)")
+    p_val.add_argument("--text-meta", help="page_texts.json 경로 (소형·가로 텍스트 검증용)")
 
     args = parser.parse_args()
 
