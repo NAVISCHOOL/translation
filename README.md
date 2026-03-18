@@ -41,7 +41,7 @@ OCR 단계가 없어서 세로쓰기도 완벽하게 인식합니다.
 - **사이토 히토리 문체**: 따뜻하고 대화체, 해요체 혼용
 - **번역투 제거**: '~의' 남용 금지, 자연스러운 한국어
 - **극한의 단문**: 복문을 2~3개 짧은 단문으로 분리
-- **용어집 자동 적용**: `config/glossary.json` (21항목)
+- **용어집 자동 적용**: `config/glossary.json` (34항목)
 
 ---
 
@@ -49,7 +49,13 @@ OCR 단계가 없어서 세로쓰기도 완벽하게 인식합니다.
 
 ```bash
 python3 -m venv .venv && source .venv/bin/activate
-pip install pymupdf requests fpdf2 python-dotenv
+pip install pymupdf fpdf2 pillow python-dotenv requests
+```
+
+API 키 설정:
+```bash
+cp .env.example .env
+# .env 파일에 GEMINI_API_KEY 입력
 ```
 
 번역할 PDF 파일을 `data/pdf/` 폴더에 넣어주세요.
@@ -65,28 +71,29 @@ data/pdf/
 
 ```
 NAVI-Translate/
-├── src/
-│   ├── prepare_pages.py             페이지 이미지 추출
-│   ├── save_translation.py          번역 결과 저장
-│   ├── generate_pdf.py              번역본 PDF
-│   ├── generate_comparison_pdf.py   대조 PDF
-│   ├── compare.py                   원문/번역 대조 (CLI)
-│   ├── translate_gemini.py          Gemini Vision 자동 번역
-│   ├── translate_pipeline.py        번역 파이프라인 (MD→JSON→검증→PDF)
-│   ├── translate_local_vision.py    로컬 Vision 오프라인 번역 (실험적)
-│   ├── translate.py                 PyMuPDF+Qwen 번역 (레거시)
-│   └── extract_pdf.py               PDF 텍스트 추출 (레거시)
+├── src/                              ← 활성 코드
+│   ├── translate_pipeline.py            파이프라인 (MD→JSON→검증→대조PDF→로그)
+│   ├── prepare_pages.py                 페이지 이미지 추출
+│   ├── generate_comparison_pdf.py       대조 PDF 생성
+│   └── _legacy/                         레거시 코드 (참조용)
+│       ├── translate.py                    PyMuPQ+Qwen 번역 (구)
+│       ├── translate_gemini.py             Gemini Vision 자동 번역
+│       ├── translate_local_vision.py       로컬 Vision 오프라인 번역
+│       ├── extract_pdf.py                  PDF 텍스트 추출
+│       ├── save_translation.py             번역 결과 저장
+│       ├── generate_pdf.py                 번역본 PDF
+│       └── compare.py                      원문/번역 대조 (CLI)
 │
-├── config/glossary.json           ← 용어집 (21항목)
-├── .env                           ← API 키 (git 제외)
-├── agents/workflows/translate.md  ← 번역 워크플로우
+├── config/glossary.json              ← 용어집 (34항목)
+├── .env                              ← API 키 (git 제외)
+├── .env.example                      ← API 키 템플릿
+├── agents/workflows/translate.md     ← 번역 워크플로우
 │
-├── data/pdf/                      ← 원본 PDF
-├── extracted/                     ← 추출 결과
+├── data/pdf/                         ← 원본 PDF
 └── translated/
-    ├── index.md                     번역 이력 테이블
-    ├── translate-log.json           세션 로그
-    └── antigravity/                 번역 결과
+    ├── index.md                         번역 이력 테이블
+    ├── translate-log.json               세션 로그
+    └── antigravity/                     번역 결과
 ```
 
 ---
@@ -136,6 +143,6 @@ NAVI-Translate/
 
 | 기능 | 상태 | 비고 |
 |------|:---:|------|
-| Gemini Vision 자동 번역 | 🔧 구현 완료 | `translate_gemini.py` — API 키로 일괄 자동 번역. 63p/5분 |
-| 로컬 Vision 오프라인 번역 | 🔧 실험적 | `translate_local_vision.py` — Qwen2.5-VL 7B. 더 큰 모델 출시 시 개선 예정 |
-| PyMuPDF+Qwen 번역 | ⏸️ 레거시 | `translate.py` — OCR 오인식률 높아 비추천 |
+| Gemini Vision 자동 번역 | ✅ 구현 완료 | `src/_legacy/translate_gemini.py` — API 키로 일괄 자동 번역. 63p/5분 |
+| 로컬 Vision 오프라인 번역 | 🔧 실험적 | `src/_legacy/translate_local_vision.py` — Qwen2.5-VL 7B. 더 큰 모델 출시 시 개선 예정 |
+| PyMuPDF+Qwen 번역 | ⏸️ 레거시 | `src/_legacy/translate.py` — OCR 오인식률 높아 비추천 |

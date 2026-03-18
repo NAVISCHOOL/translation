@@ -70,3 +70,44 @@ def test_detect_bold_from_flags():
     assert detect_bold(20) is True   # 16 + 4
     assert detect_bold(0) is False
     assert detect_bold(16) is True
+
+
+# --- Integration tests ---
+
+PDF_PATH = "data/pdf/후아후아_20251210-part-1-ocr.pdf"
+
+@pytest.mark.skipif(not os.path.exists(PDF_PATH), reason="Test PDF not available")
+def test_extract_page_styles_page8():
+    """Integration: extract styles from real page 8."""
+    from src.translate_pipeline import extract_page_styles
+
+    translations = [
+        {"page": 8, "original": "はじめに　みなさん", "translated": "머리말\n여러분"}
+    ]
+    result = extract_page_styles(PDF_PATH, (8, 8), translations)
+
+    assert len(result) == 1
+    entry = result[0]
+    assert "page_style" in entry
+
+    ps = entry["page_style"]
+    assert "dominant" in ps
+    assert "special_blocks" in ps
+
+    r, g, b = ps["dominant"]["color_rgb"]
+    assert r < 150 and g < 150 and b < 150
+    assert ps["dominant"]["size_class"] in ("small", "medium")
+
+
+@pytest.mark.skipif(not os.path.exists(PDF_PATH), reason="Test PDF not available")
+def test_extract_page_styles_backward_compatible():
+    """Translations without page_style should still work."""
+    from src.translate_pipeline import extract_page_styles
+
+    translations = [
+        {"page": 8, "original": "test", "translated": "테스트"}
+    ]
+    result = extract_page_styles(PDF_PATH, (8, 8), translations)
+    assert isinstance(result, list)
+    assert result[0]["page"] == 8
+    assert result[0]["translated"] == "테스트"

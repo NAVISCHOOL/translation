@@ -21,15 +21,15 @@ description: 사용자가 "번역해줘"라고 요청하면 PDF와 페이지 범
 
 ## 번역 진행
 
-// turbo-all
-
 ### Step 1. PDF 페이지를 이미지+텍스트로 추출
 ```bash
-source .venv/bin/activate && python src/prepare_pages.py -i data/pdf/{PDF_FILE} --pages {PAGE_RANGE} --dpi 150
+source .venv/bin/activate && python src/prepare_pages.py -i data/pdf/{PDF_FILE} --pages {PAGE_RANGE}
 ```
+작은 글씨가 많은 PDF라면 `--dpi 200` 옵션을 추가하세요.
+
 출력:
 - 이미지: `/tmp/antigravity_pages/page_01.png`, `page_02.png`, ...
-- 텍스트: `/tmp/antigravity_pages/page_texts.json` (정합성 검증용 ground truth)
+- 텍스트: `/tmp/antigravity_pages/page_texts.json` (정합성 검증용 ground truth + 소형/가로 텍스트 메타데이터)
 
 ### Step 2. 이미지 직접 보고 번역
 
@@ -39,11 +39,16 @@ source .venv/bin/activate && python src/prepare_pages.py -i data/pdf/{PDF_FILE} 
 2. **이미지에 보이는 텍스트만 기록할 것** — 문장이 다음 페이지로 이어져도, 현재 이미지에 보이는 부분까지만 original에 기록. 나머지는 다음 페이지 original에 기록
 3. **`page_texts.json` 참조할 것** — Step 1에서 추출된 텍스트를 참고하여 페이지 경계 확인. 드래프트 원문 글자수가 PDF 글자수의 1.5배를 초과하면 경계 오류 의심
 
+🔴 **번역 품질 규칙**
+
+- **Zero Omission (무결점 번역)**: 이미지에 보이는 모든 텍스트를 번역. 본문, 헤더, 푸터, 각주, 로고 텍스트 포함. 작은 글씨도 빠짐없이.
+- **Self-Correction**: 초안 작성 후, 생각(thought) 과정에서 "작은 텍스트, 로고, 헤더, 푸터를 빠뜨리지 않았는가?" 반드시 자문하고 검증.
+
 ⚠️ **10페이지 청크 규칙** — 컨텍스트 오버플로 방지
 
 전체 페이지를 **10페이지 단위**로 나눠서 번역합니다:
 - 각 청크 시작 시 `config/glossary.json` 용어집을 **다시 읽고** 프롬프트에 포함
-- 추출된 PNG 이미지를 `view_file`로 **5장씩 병렬** 확인
+- 추출된 PNG 이미지를 `Read` 도구로 **5장씩 병렬** 확인
 - OCR 없이 원본 이미지에서 일본어를 읽고 번역
 - 한 청크(10p) 번역 완료 → **즉시 Step 3으로 가서 MD 저장** → 다음 청크 진행
 
@@ -72,23 +77,16 @@ source .venv/bin/activate && python src/prepare_pages.py -i data/pdf/{PDF_FILE} 
 - **번역투 제거**: '~의' 남용 금지, 자연스러운 능동형
 - **극한의 단문**: 복문을 2~3개 짧은 단문으로 분리
 
-### Step 3. 번역 결과를 마크다운으로 저장
+### Step 3: 초안 저장
 
-⚠️ **JSON을 직접 작성하지 말 것!** 아래 형식의 마크다운 파일을 `write_to_file`로 작성합니다:
-
+번역 MD 파일 포맷:
 ```markdown
-## page 1
-original: (일본어 원문)
-translated: (한국어 번역)
-
-## page 2
-original: (일본어 원문)
+## page N
+original: (일본어 원문 — 해당 이미지에 보이는 텍스트만)
 translated: (한국어 번역)
 ```
 
-저장 경로: **반드시** `translated/antigravity/` 아래에 저장 (`/tmp/` 사용 금지)
-
-예시: `translated/antigravity/translation_draft_fuwafuwa_p1-63.md`
+저장 경로: `translated/antigravity/translation_draft_[pdf-name]_p[start]-[end].md`
 
 ### Step 4. 파이프라인 빌드 (검증 + JSON + 대조 PDF + 로그)
 
@@ -104,9 +102,10 @@ source .venv/bin/activate && python src/translate_pipeline.py build \
 1. ✅ MD → 안전한 JSON 변환 (이스케이프 오류 0)
 2. ✅ ANTI-JAPANESE 검증 (일본어 잔존 감지)
 3. ✅ **페이지 정합성 검증** (1:1 매칭 — 글자수 비율 비교)
-4. ✅ 대조 PDF 생성
-5. ✅ translate-log.json 세션 기록
-6. ✅ translated/index.md 이력 업데이트
+4. ✅ **소형·가로 텍스트 커버리지 검증** (작은 글씨/가로 텍스트 누락 감지)
+5. ✅ 대조 PDF 생성
+6. ✅ translate-log.json 세션 기록
+7. ✅ translated/index.md 이력 업데이트
 
 ### Step 5. 검증 실패 시 수정
 
@@ -114,6 +113,7 @@ source .venv/bin/activate && python src/translate_pipeline.py build \
 1. 에러 메시지에서 해당 페이지와 잔존 일본어 확인
 2. `translated/antigravity/translation_draft_*.md`에서 해당 페이지만 수정
 3. Step 4 다시 실행
+4. **최대 3회 재시도** — 3회 실패 시 사용자에게 수동 확인 요청
 
 ---
 

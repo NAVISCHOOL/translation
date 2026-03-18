@@ -180,7 +180,9 @@ def generate_comparison_pdf(
     if page_range:
         pages = list(range(page_range[0], page_range[1] + 1))
     else:
-        pages = list(range(1, 100))  # 기본 범위
+        doc = fitz.open(original_pdf)
+        pages = list(range(1, len(doc) + 1))
+        doc.close()
     
     # 원본 PDF 페이지 이미지 추출
     print(f"🖼️ 원본 PDF 페이지 이미지 추출 중...")
@@ -208,7 +210,7 @@ def generate_comparison_pdf(
     for img_path in images.values():
         try:
             os.remove(img_path)
-        except:
+        except OSError:
             pass
     
     print(f"\n✅ 대조 PDF 생성 완료: {out}")

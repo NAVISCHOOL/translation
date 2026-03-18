@@ -14,5 +14,8 @@ translated/**/*.txt
 extracted/*.json
 extracted/*.txt
 
+# 저작권 원서 데이터 — git 추적 금지
+src/_legacy/extracted/
+
 # OS
 .DS_Store

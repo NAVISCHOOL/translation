@@ -15,6 +15,118 @@
       "output": "translated/antigravity/pages_1-20.json",
       "output_name": "대조본_p1-20.pdf",
       "output_rel": "대조본_p1-20.pdf"
+    },
+    {
+      "id": "pages_21-30",
+      "timestamp": "2026-03-17T19:07:28.629300",
+      "pdf": "후아후아_20251210-part-1-ocr.pdf",
+      "pages": "21-30",
+      "mode": "antigravity",
+      "page_count": 10,
+      "total_time_sec": 2.2,
+      "validation": {
+        "japanese_remnants": 0,
+        "missing_pages": 0
+      },
+      "output": "translated/antigravity/pages_21-30.json",
+      "output_name": "대조본_p21-30.pdf",
+      "output_rel": "대조본_p21-30.pdf"
+    },
+    {
+      "id": "pages_31-40",
+      "timestamp": "2026-03-18T15:12:47.939975",
+      "pdf": "후아후아_20251210-part-1-ocr.pdf",
+      "pages": "31-40",
+      "mode": "antigravity",
+      "page_count": 10,
+      "total_time_sec": 2.3,
+      "validation": {
+        "japanese_remnants": 0,
+        "missing_pages": 0
+      },
+      "output": "translated/antigravity/pages_31-40.json",
+      "output_name": "대조본_p31-40.pdf",
+      "output_rel": "대조본_p31-40.pdf"
+    },
+    {
+      "id": "pages_41-50",
+      "timestamp": "2026-03-18T15:18:34.234447",
+      "pdf": "후아후아_20251210-part-1-ocr.pdf",
+      "pages": "41-50",
+      "mode": "antigravity",
+      "page_count": 10,
+      "total_time_sec": 2.2,
+      "validation": {
+        "japanese_remnants": 0,
+        "missing_pages": 0
+      },
+      "output": "translated/antigravity/pages_41-50.json",
+      "output_name": "대조본_p41-50.pdf",
+      "output_rel": "대조본_p41-50.pdf"
+    },
+    {
+      "id": "pages_51-60",
+      "timestamp": "2026-03-18T15:23:31.018373",
+      "pdf": "후아후아_20251210-part-1-ocr.pdf",
+      "pages": "51-60",
+      "mode": "antigravity",
+      "page_count": 10,
+      "total_time_sec": 2.2,
+      "validation": {
+        "japanese_remnants": 0,
+        "missing_pages": 0
+      },
+      "output": "translated/antigravity/pages_51-60.json",
+      "output_name": "대조본_p51-60.pdf",
+      "output_rel": "대조본_p51-60.pdf"
+    },
+    {
+      "id": "pages_61-63",
+      "timestamp": "2026-03-18T15:28:08.845277",
+      "pdf": "후아후아_20251210-part-1-ocr.pdf",
+      "pages": "61-63",
+      "mode": "antigravity",
+      "page_count": 3,
+      "total_time_sec": 1.0,
+      "validation": {
+        "japanese_remnants": 0,
+        "missing_pages": 0
+      },
+      "output": "translated/antigravity/pages_61-63.json",
+      "output_name": "대조본_p61-63.pdf",
+      "output_rel": "대조본_p61-63.pdf"
+    },
+    {
+      "id": "pages_1-20",
+      "timestamp": "2026-03-18T16:56:05.156330",
+      "pdf": "후아후아_20251210-part-1-ocr.pdf",
+      "pages": "1-20",
+      "mode": "antigravity",
+      "page_count": 20,
+      "total_time_sec": 3.7,
+      "validation": {
+        "japanese_remnants": 0,
+        "missing_pages": 0
+      },
+      "output": "translated/antigravity/pages_1-20.json",
+      "output_name": "대조본_p1-20.pdf",
+      "output_rel": "대조본_p1-20.pdf"
+    },
+    {
+      "id": "pages_21-30",
+      "timestamp": "2026-03-18T16:57:05.737454",
+      "pdf": "후아후아_20251210-part-1-ocr.pdf",
+      "pages": "21-30",
+      "mode": "antigravity",
+      "page_count": 10,
+      "total_time_sec": 1.9,
+      "validation": {
+        "japanese_remnants": 0,
+        "missing_pages": 0
+      },
+      "output": "translated/antigravity/pages_21-30.json",
+      "output_name": "대조본_p21-30.pdf",
+      "output_rel": "대조본_p21-30.pdf"
     }
   ]
 }
