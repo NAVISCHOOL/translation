@@ -844,6 +844,16 @@ def cmd_build(args):
         for key, val in result["qa_summary"].items():
             print(f"   {key}: {val}")
 
+    # 2.5. Style extraction
+    if args.pdf and page_range:
+        try:
+            pages = extract_page_styles(args.pdf, page_range, pages)
+            # Re-save JSON with styles included
+            with open(output_path, "w", encoding="utf-8") as f:
+                json.dump(pages, f, ensure_ascii=False, indent=2)
+        except Exception as e:
+            print(f"\n⚠️ Style extraction failed ({e}), proceeding without styles")
+
     # 3. 대조 PDF 생성
     pdf_output = None
     if args.pdf and page_range:
