@@ -101,7 +101,7 @@ def test_extract_page_styles_page8():
 
 def test_existing_json_without_styles_works():
     """Existing pages_1-20.json (no page_style) loads and works."""
-    json_path = "translated/antigravity/pages_1-20.json"
+    json_path = "translated/antigravity/후아후아_v1/pages_1-20.json"
     if not os.path.exists(json_path):
         pytest.skip("Test data not available")
 

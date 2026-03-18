@@ -100,7 +100,6 @@ def detect_bold(flags: int) -> bool:
 
 
 FUZZY_MATCH_THRESHOLD = 0.5
-SIZE_CLASS_TO_PT = {"small": 8, "medium": 10, "large": 13, "xlarge": 16}
 
 
 def _analyze_page_blocks(page, page_img):
@@ -153,7 +152,7 @@ def _analyze_page_blocks(page, page_img):
 
         # Color: prefer span color (from text layer), fallback to pixel sampling
         if span_color is not None:
-            # PyMuPDF color is an int: 0x000000 = black, 0xFF0000 = blue (BGR)
+            # PyMuPDF color is an int in RGB: 0x000000 = black, 0xFF0000 = red
             color_int = int(span_color)
             color_rgb = [
                 (color_int >> 16) & 0xFF,  # R
@@ -186,8 +185,6 @@ def _compute_page_style(blocks_info):
 
     Returns: {"dominant": {...}, "special_blocks": [...]}
     """
-    from collections import Counter
-
     body_blocks = [b for b in blocks_info if b["position"] == "body"]
 
     if not body_blocks:

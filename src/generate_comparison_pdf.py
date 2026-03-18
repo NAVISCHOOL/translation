@@ -17,12 +17,16 @@ import tempfile
 from pathlib import Path
 
 import fitz  # PyMuPDF - PDF 페이지를 이미지로 변환
+from difflib import SequenceMatcher
 from fpdf import FPDF
 
 
 # ============================================================
 # 한국어 폰트 탐색
 # ============================================================
+
+FUZZY_MATCH_THRESHOLD = 0.5
+SIZE_CLASS_TO_PT = {"small": 8, "medium": 10, "large": 13, "xlarge": 16}
 
 FONT_SEARCH_PATHS = [
     os.path.expanduser("~/Library/Fonts"),
@@ -155,7 +159,7 @@ class ComparisonPDF(FPDF):
         if page_style and "dominant" in page_style:
             dom = page_style["dominant"]
             default_color = tuple(dom.get("color_rgb", [40, 40, 40]))
-            default_size = {"small": 8, "medium": 10, "large": 13, "xlarge": 16}.get(
+            default_size = SIZE_CLASS_TO_PT.get(
                 dom.get("size_class", "medium"), 10
             )
             is_bold = dom.get("bold", False)
@@ -180,17 +184,16 @@ class ComparisonPDF(FPDF):
             # Check if paragraph matches a special block
             matched_style = None
             if special_styles:
-                from difflib import SequenceMatcher
                 best_score = 0
                 for hint, sb_style in special_styles.items():
                     score = SequenceMatcher(None, para[:30], hint).ratio()
-                    if score > 0.5 and score > best_score:
+                    if score > FUZZY_MATCH_THRESHOLD and score > best_score:
                         best_score = score
                         matched_style = sb_style
 
             if matched_style:
                 ms_color = tuple(matched_style.get("color_rgb", default_color))
-                ms_size = {"small": 8, "medium": 10, "large": 13, "xlarge": 16}.get(
+                ms_size = SIZE_CLASS_TO_PT.get(
                     matched_style.get("size_class", "medium"), default_size
                 )
                 ms_bold = matched_style.get("bold", False)
