@@ -99,6 +99,22 @@ def test_extract_page_styles_page8():
     assert ps["dominant"]["size_class"] in ("small", "medium", "large")
 
 
+def test_existing_json_without_styles_works():
+    """Existing pages_1-20.json (no page_style) loads and works."""
+    json_path = "translated/antigravity/pages_1-20.json"
+    if not os.path.exists(json_path):
+        pytest.skip("Test data not available")
+
+    with open(json_path) as f:
+        data = json.load(f)
+
+    # No page_style in existing data
+    for entry in data:
+        assert "page" in entry
+        assert "translated" in entry
+        assert "page_style" not in entry  # existing data has no styles
+
+
 @pytest.mark.skipif(not os.path.exists(PDF_PATH), reason="Test PDF not available")
 def test_extract_page_styles_backward_compatible():
     """Translations without page_style should still work."""
