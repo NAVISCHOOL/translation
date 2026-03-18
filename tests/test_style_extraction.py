@@ -27,3 +27,46 @@ def test_sample_block_color_all_background_returns_default():
     bbox = (0, 0, 100, 50)
     r, g, b = sample_block_color(img, bbox)
     assert (r, g, b) == (40, 40, 40)
+
+
+# --- Classification tests ---
+
+def test_classify_size_small():
+    from src.translate_pipeline import classify_block_size
+    assert classify_block_size(7.5) == "small"
+
+def test_classify_size_medium():
+    from src.translate_pipeline import classify_block_size
+    assert classify_block_size(11.0) == "medium"
+
+def test_classify_size_large():
+    from src.translate_pipeline import classify_block_size
+    assert classify_block_size(16.0) == "large"
+
+def test_classify_size_xlarge():
+    from src.translate_pipeline import classify_block_size
+    assert classify_block_size(24.0) == "xlarge"
+
+
+def test_classify_position_header():
+    from src.translate_pipeline import classify_block_position
+    assert classify_block_position(cy=50, cx=300, page_h=1000, page_w=600) == "header"
+
+def test_classify_position_footer():
+    from src.translate_pipeline import classify_block_position
+    assert classify_block_position(cy=920, cx=300, page_h=1000, page_w=600) == "footer"
+
+def test_classify_position_right():
+    from src.translate_pipeline import classify_block_position
+    assert classify_block_position(cy=500, cx=500, page_h=1000, page_w=600) == "right"
+
+def test_classify_position_body():
+    from src.translate_pipeline import classify_block_position
+    assert classify_block_position(cy=500, cx=300, page_h=1000, page_w=600) == "body"
+
+
+def test_detect_bold_from_flags():
+    from src.translate_pipeline import detect_bold
+    assert detect_bold(20) is True   # 16 + 4
+    assert detect_bold(0) is False
+    assert detect_bold(16) is True

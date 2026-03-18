@@ -69,6 +69,36 @@ def sample_block_color(
     return (int(median(samples_r)), int(median(samples_g)), int(median(samples_b)))
 
 
+def classify_block_size(estimated_pt: float) -> str:
+    """Classify font size into size_class."""
+    if estimated_pt < 9:
+        return "small"
+    elif estimated_pt <= 13:
+        return "medium"
+    elif estimated_pt <= 20:
+        return "large"
+    else:
+        return "xlarge"
+
+
+def classify_block_position(
+    cy: float, cx: float, page_h: float, page_w: float
+) -> str:
+    """Classify block position based on center coordinates."""
+    if cy < page_h * 0.12:
+        return "header"
+    if cy > page_h * 0.88:
+        return "footer"
+    if cx > page_w * 0.70:
+        return "right"
+    return "body"
+
+
+def detect_bold(flags: int) -> bool:
+    """Detect bold from PyMuPDF span flags. Bit 4 (value 16) = bold."""
+    return bool(flags & 16)
+
+
 # ============================================================
 # 1. MD 파서 — 에이전트가 작성한 마크다운을 구조화 데이터로 변환
 # ============================================================
