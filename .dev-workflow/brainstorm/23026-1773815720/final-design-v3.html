@@ -1,0 +1,125 @@
+<h2>최종 설계안 v3: 서식 자동 추출 + 대조 PDF 반영</h2>
+<p class="subtitle">AI style 기록 불필요 — 프로그래밍으로 100% 자동 추출</p>
+
+<div class="section">
+  <h3>핵심 변경: AI 기록 → 자동 추출</h3>
+  <div class="mockup">
+    <div class="mockup-body" style="background:#1e1e2e; padding:16px; color:#cdd6f4; font-size:13px; line-height:2.0;">
+      <p><span style="color:#f38ba8; text-decoration:line-through;">이전: AI가 번역할 때 style: 줄을 함께 기록</span></p>
+      <p><span style="color:#a6e3a1; font-weight:bold;">변경: 파이프라인이 원본 PDF에서 서식 자동 추출</span></p>
+      <p style="color:#6c7086;">→ 번역 MD 형식 변경 없음, AI는 번역에만 집중</p>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>자동 추출 방식 (검증 완료)</h3>
+  <div class="mockup">
+    <div class="mockup-body" style="background:#fff; padding:14px;">
+      <table style="width:100%; font-size:12px; border-collapse:collapse;">
+        <tr style="border-bottom:2px solid #ddd; font-weight:bold;">
+          <td style="padding:8px;">속성</td><td style="padding:8px;">추출 방식</td><td style="padding:8px;">검증 결과</td>
+        </tr>
+        <tr style="border-bottom:1px solid #eee;">
+          <td style="padding:8px; font-weight:bold;">color</td>
+          <td style="padding:8px;">PyMuPDF 이미지 렌더링 → Pillow 픽셀 RGB 샘플링</td>
+          <td style="padding:8px; color:#2e7d32;">✅ p.8 전체 블록 정확히 판별</td>
+        </tr>
+        <tr style="border-bottom:1px solid #eee;">
+          <td style="padding:8px; font-weight:bold;">size</td>
+          <td style="padding:8px;">OCR 블록 bbox 면적 / 글자 수 비율</td>
+          <td style="padding:8px; color:#2e7d32;">✅ small/medium/large/xlarge 자동 분류</td>
+        </tr>
+        <tr style="border-bottom:1px solid #eee;">
+          <td style="padding:8px; font-weight:bold;">position</td>
+          <td style="padding:8px;">bbox 좌표로 영역 판별 (header/body/right/footer)</td>
+          <td style="padding:8px; color:#2e7d32;">✅ 헤더, 본문, 제목, 페이지번호 구분</td>
+        </tr>
+        <tr style="border-bottom:1px solid #eee;">
+          <td style="padding:8px; font-weight:bold;">spacing</td>
+          <td style="padding:8px;">인접 블록 간 y좌표 거리 계산</td>
+          <td style="padding:8px; color:#888;">🔧 구현 시 검증 필요</td>
+        </tr>
+        <tr>
+          <td style="padding:8px; font-weight:bold;">bold</td>
+          <td style="padding:8px;">텍스트 영역 픽셀 평균 농도 (진하면 bold)</td>
+          <td style="padding:8px; color:#888;">🔧 구현 시 검증 필요</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>파이프라인 흐름 (변경 후)</h3>
+  <div class="mockup">
+    <div class="mockup-body" style="background:#1e1e2e; padding:20px; color:#cdd6f4; font-size:13px; line-height:2.2;">
+      <p><span style="color:#6c7086;">기존</span> AI가 이미지 보고 번역 → MD 저장 <span style="color:#6c7086;">(변경 없음)</span></p>
+      <p><span style="color:#6c7086;">기존</span> translate_pipeline.py build</p>
+      <p style="padding-left:24px;"><span style="color:#6c7086;">기존</span> MD 파싱 → JSON</p>
+      <p style="padding-left:24px;"><span style="color:#6c7086;">기존</span> ANTI-JAPANESE 검증</p>
+      <p style="padding-left:24px;"><span style="color:#a6e3a1;">신규</span> <strong>ANTI-STYLE: 원본 PDF에서 서식 자동 추출</strong></p>
+      <p style="padding-left:40px; color:#89b4fa;">OCR 블록 → 텍스트 매칭 → 픽셀 색상 → bbox 크기 → 좌표 위치</p>
+      <p style="padding-left:24px;"><span style="color:#a6e3a1;">변경</span> <strong>대조 PDF 생성: 추출된 서식으로 렌더링</strong></p>
+      <p><span style="color:#6c7086;">기존</span> 세션 로그 업데이트</p>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>텍스트 매칭: OCR 블록 ↔ 번역 블록</h3>
+  <div class="mockup">
+    <div class="mockup-body" style="background:#1e1e2e; padding:16px; color:#cdd6f4; font-size:12px; line-height:1.8;">
+      <p style="color:#f9e2af;">과제: AI 번역 블록과 OCR 블록을 어떻게 매칭?</p>
+      <p>&nbsp;</p>
+      <p>MD의 <code>original:</code> 텍스트 → OCR 블록 텍스트와 <strong>퍼지 매칭</strong></p>
+      <p style="color:#6c7086;">예: MD "日本一の幸せ大富豪" ↔ OCR "H本一の幸せ大窃楽" (OCR 오류 허용)</p>
+      <p>&nbsp;</p>
+      <p>매칭 성공 → 해당 OCR 블록의 bbox 위치에서 픽셀 분석</p>
+      <p>매칭 실패 → 서식 없이 기본값으로 렌더링 (fallback)</p>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>수정 파일</h3>
+  <div class="mockup">
+    <div class="mockup-body" style="background:#fff; padding:14px; font-size:13px; line-height:2.0;">
+      <p><strong>src/translate_pipeline.py</strong> — ANTI-STYLE 검증 함수 추가 (픽셀 분석 + OCR 매칭)</p>
+      <p><strong>src/generate_comparison_pdf.py</strong> — style 정보 받아서 렌더링 적용</p>
+      <p><span style="color:#888; text-decoration:line-through;">agents/workflows/translate.md — style 기록 규칙</span> <span style="color:#2e7d32;">변경 불필요</span></p>
+      <p><span style="color:#888; text-decoration:line-through;">.agent/skills/translate-chunk/SKILL.md — style 지침</span> <span style="color:#2e7d32;">변경 불필요</span></p>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>장점</h3>
+  <div class="mockup">
+    <div class="mockup-body" style="background:#fff; padding:14px; font-size:13px; line-height:2.0;">
+      <p>✅ 번역 MD 형식 변경 없음 — 기존 워크플로우 그대로</p>
+      <p>✅ AI 판단 의존 제거 — 색상 오판 문제 원천 해결</p>
+      <p>✅ 수정 파일 2개로 축소 (pipeline + comparison_pdf)</p>
+      <p>✅ 기존 의존성만 사용 (PyMuPDF + Pillow)</p>
+      <p>✅ 기존 63페이지에도 소급 적용 가능 (원본 PDF만 있으면)</p>
+    </div>
+  </div>
+</div>
+
+<h3 style="margin-top:24px;">이 설계로 확정?</h3>
+<div class="options">
+  <div class="option" data-choice="approve" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>확정</h3>
+      <p>스펙 문서 작성 → 구현 계획으로 진행</p>
+    </div>
+  </div>
+  <div class="option" data-choice="revise" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>수정 필요</h3>
+      <p>변경할 부분 있음</p>
+    </div>
+  </div>
+</div>

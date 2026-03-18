@@ -1,0 +1,62 @@
+<h2>현재 vs 목표: 대조 PDF 번역 텍스트 서식</h2>
+<p class="subtitle">현재 상태와 개선 방향을 확인해 주세요</p>
+
+<div class="split">
+  <div class="mockup">
+    <div class="mockup-header">현재 (Before)</div>
+    <div class="mockup-body" style="background:#fff; padding:20px; font-family:sans-serif;">
+      <div style="text-align:center; color:#999; font-size:11px; margin-bottom:12px;">[번역] p.5</div>
+
+      <p style="font-size:13px; color:#282828; line-height:1.7; margin:0 0 6px 0;">제1장</p>
+      <p style="font-size:13px; color:#282828; line-height:1.7; margin:0 0 6px 0;">후아후아의 법칙</p>
+      <p style="font-size:13px; color:#282828; line-height:1.7; margin:0 0 6px 0;">&nbsp;</p>
+      <p style="font-size:13px; color:#282828; line-height:1.7; margin:0 0 6px 0;">사이토 히토리 선생님은 말합니다.</p>
+      <p style="font-size:13px; color:#282828; line-height:1.7; margin:0 0 6px 0;">"기분이 좋으면 좋은 일이 일어나요."</p>
+      <p style="font-size:13px; color:#282828; line-height:1.7; margin:0 0 6px 0;">그것이 바로 후아후아의 법칙입니다.</p>
+      <p style="font-size:13px; color:#282828; line-height:1.7; margin:0 0 4px 0;">마음이 가벼워지면 모든 것이 변합니다.</p>
+      <p style="font-size:10px; color:#282828; line-height:1.7; margin:20px 0 0 0;">시바무라 에미코</p>
+    </div>
+  </div>
+
+  <div class="mockup">
+    <div class="mockup-header">목표 (After) — 어떤 수준?</div>
+    <div class="mockup-body" style="background:#fff; padding:20px; font-family:sans-serif;">
+      <div style="text-align:center; color:#999; font-size:11px; margin-bottom:12px;">[번역] p.5</div>
+
+      <p style="font-size:11px; color:#888; line-height:1.7; margin:0 0 4px 0; letter-spacing:2px;">제1장</p>
+      <p style="font-size:20px; color:#222; line-height:1.4; margin:0 0 16px 0; font-weight:bold;">후아후아의 법칙</p>
+
+      <p style="font-size:13px; color:#333; line-height:1.8; margin:0 0 6px 0;">사이토 히토리 선생님은 말합니다.</p>
+      <p style="font-size:13px; color:#504080; line-height:1.8; margin:0 0 6px 0; padding-left:12px; border-left:2px solid #a088cc;">"기분이 좋으면 좋은 일이 일어나요."</p>
+      <p style="font-size:13px; color:#333; line-height:1.8; margin:0 0 6px 0;">그것이 바로 후아후아의 법칙입니다.</p>
+      <p style="font-size:13px; color:#333; line-height:1.8; margin:0 0 4px 0;">마음이 가벼워지면 모든 것이 변합니다.</p>
+      <p style="font-size:10px; color:#888; line-height:1.7; margin:24px 0 0 0;">시바무라 에미코</p>
+    </div>
+  </div>
+</div>
+
+<h3 style="margin-top:32px;">어떤 수준의 서식 재현을 원하시나요?</h3>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>역할 기반 서식</h3>
+      <p>제목/본문/인용/캡션 등 <strong>텍스트 역할</strong>을 구분해서 크기·색상을 다르게 적용. 번역 MD에 마크다운 문법(##, >, 등)으로 역할 표시.</p>
+    </div>
+  </div>
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>원본 서식 추출 + 복제</h3>
+      <p>원본 PDF에서 실제 폰트 크기·색상·위치를 추출(PyMuPDF)하여, 번역 텍스트에 <strong>동일한 서식</strong>을 자동 적용. 가장 정확하지만 구현 복잡.</p>
+    </div>
+  </div>
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>수동 마크업 + 스타일 시트</h3>
+      <p>번역자가 MD에서 <code>[title]</code>, <code>[caption]</code> 같은 태그로 역할을 지정하면, 미리 정의된 스타일 시트로 렌더링. 정확도 높지만 수동 작업 필요.</p>
+    </div>
+  </div>
+</div>

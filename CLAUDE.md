@@ -24,6 +24,11 @@ PDF 페이지를 이미지로 추출 → AI가 직접 보고 번역 → 검증 �
 - 자동화 스킬: `.agent/skills/translate-chunk/SKILL.md`
 - **10페이지 청크 단위**로 번역, 50페이지 초과 시 대화 분할
 
+## 결과물 저장 경로
+- Claude Code로 생성한 번역 결과물은 **`translated/antigravity/claude-code/`** 폴더에 저장
+- 하위 폴더 구조: `claude-code/후아후아_v2/`, `claude-code/후아후아_v3/` 등 버전별 관리
+- `translated/antigravity/후아후아_v1/`은 기존(레거시) 결과물 — 수정하지 말 것
+
 ## 파이프라인 사용법
 ```bash
 # 올인원 빌드

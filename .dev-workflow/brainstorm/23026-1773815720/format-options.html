@@ -1,0 +1,80 @@
+<h2>번역 MD에 서식 정보를 어떻게 기록할까?</h2>
+<p class="subtitle">AI가 이미지를 보고 번역할 때 서식도 함께 기록하는 형식</p>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>인라인 메타데이터 (추천)</h3>
+      <p>각 텍스트 블록에 서식 정보를 바로 붙이는 방식</p>
+      <pre style="background:#1e1e2e; color:#cdd6f4; padding:14px; border-radius:8px; font-size:12px; margin-top:8px; overflow-x:auto; line-height:1.6;">
+## page 5
+original: この本では、たったひと言の「ふわふわ」で...
+translated: 이 책에서는, 단 한마디 "후아후아"로...
+style: size=14, color=black
+
+original: 「ふわふわ」と言った人には、信じられないような奇跡が起きる。
+translated: "후아후아"라고 말한 사람에게는, 믿을 수 없는 기적이 일어납니다.
+style: size=14, color=black
+
+original: ✿
+translated: ✿
+style: size=20, color=green, type=symbol</pre>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>별도 style 섹션</h3>
+      <p>페이지 끝에 서식 정보를 모아서 기록</p>
+      <pre style="background:#1e1e2e; color:#cdd6f4; padding:14px; border-radius:8px; font-size:12px; margin-top:8px; overflow-x:auto; line-height:1.6;">
+## page 5
+original: この本では...
+translated: 이 책에서는...
+
+original: 「ふわふわ」と言った人には...
+translated: "후아후아"라고 말한 사람에게는...
+
+original: ✿
+translated: ✿
+
+styles:
+- block 1: size=14, color=black
+- block 2: size=14, color=black
+- block 3: size=20, color=green, type=symbol</pre>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>JSON 메타데이터</h3>
+      <p>서식을 구조화된 JSON으로 기록 (파이프라인 파싱 쉬움)</p>
+      <pre style="background:#1e1e2e; color:#cdd6f4; padding:14px; border-radius:8px; font-size:12px; margin-top:8px; overflow-x:auto; line-height:1.6;">
+## page 5
+original: この本では...
+translated: 이 책에서는...
+style: {"size": 14, "color": "#000"}
+
+original: 「ふわふわ」と言った人には...
+translated: "후아후아"라고 말한 사람에게는...
+style: {"size": 14, "color": "#000"}
+
+original: ✿
+translated: ✿
+style: {"size": 20, "color": "#228B22", "type": "symbol"}</pre>
+    </div>
+  </div>
+</div>
+
+<div style="margin-top:24px; padding:16px; background:#2a2a3a; border-radius:8px;">
+  <p style="color:#cdd6f4; font-size:13px; margin:0 0 8px 0;"><strong>공통 서식 속성:</strong></p>
+  <ul style="color:#bac2de; font-size:12px; margin:0; padding-left:20px; line-height:1.8;">
+    <li><code>size</code> — 텍스트 크기 (상대값: small/medium/large 또는 pt 숫자)</li>
+    <li><code>color</code> — 텍스트 색상 (black, green, red, gray 등)</li>
+    <li><code>type</code> — 특수 유형 (symbol, title, caption, footnote 등)</li>
+    <li><code>align</code> — 정렬 (center, right 등, 기본은 left)</li>
+    <li><code>bold</code> — 굵게 여부</li>
+  </ul>
+</div>

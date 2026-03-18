@@ -240,7 +240,22 @@ def _compute_page_style(blocks_info):
                 "position": b["position"],
             })
 
-    return {"dominant": dominant, "special_blocks": special[:10]}  # cap at 10
+    # all_blocks: 전체 텍스트 블록 (Zero Omission QA #13에서 사용)
+    all_blocks = [
+        {
+            "text": b["text"],
+            "position": b["position"],
+            "size_class": b["size_class"],
+        }
+        for b in blocks_info
+        if len(b["text"].strip()) >= 2  # 1글자 노이즈 제외
+    ]
+
+    return {
+        "dominant": dominant,
+        "special_blocks": special[:10],  # cap at 10
+        "all_blocks": all_blocks,
+    }
 
 
 def extract_page_styles(
@@ -306,6 +321,111 @@ def extract_page_styles(
     print(f"   ✅ Style extraction complete ({total_blocks} blocks, {total_special} special)")
 
     return translations
+
+
+# ============================================================
+# 0b. Symbol Validation Helpers
+# ============================================================
+
+def load_symbol_map() -> dict:
+    """Load symbol mapping config from config/symbol_map.json."""
+    symbol_path = PROJECT_ROOT / "config" / "symbol_map.json"
+    if symbol_path.exists():
+        with open(symbol_path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return {}
+
+
+def _check_symbol_consistency(original: str, translated: str, symbol_map: dict) -> list[dict]:
+    """Check symbol consistency between original and translated text.
+
+    Returns list of issues: [{"type": str, "detail": str}, ...]
+    Checks:
+      1. Bracket pair count mismatch (「」 in original vs translated)
+      2. Forbidden substitution detection (e.g. "" used instead of 「」)
+      3. Leaked page number detection (standalone number at end of translation)
+    """
+    issues = []
+
+    # 1. Bracket pair count mismatch
+    preserve = symbol_map.get("preserve", {})
+    bracket_pairs = [("「", "」"), ("『", "』")]
+    for open_b, close_b in bracket_pairs:
+        if open_b not in preserve:
+            continue
+        orig_count = original.count(open_b)
+        trans_count = translated.count(open_b)
+        if orig_count > 0 and trans_count == 0:
+            issues.append({
+                "type": "bracket_mismatch",
+                "detail": f"{open_b}{close_b} original={orig_count}, translated=0",
+            })
+
+    # 2. Forbidden substitution detection
+    # Check both the full pair string AND individual characters
+    forbidden = symbol_map.get("forbidden_substitutions", {})
+    for correct, bad_list in forbidden.items():
+        for bad in bad_list:
+            # Check full pair (e.g. "" adjacent)
+            if bad in translated:
+                issues.append({
+                    "type": "forbidden_substitution",
+                    "detail": f"'{bad}' used instead of '{correct}'",
+                })
+            else:
+                # Check individual characters (e.g. \u201c...\u201d with text between)
+                for ch in bad:
+                    if ch in translated:
+                        issues.append({
+                            "type": "forbidden_substitution",
+                            "detail": f"'{bad}' used instead of '{correct}'",
+                        })
+                        break
+
+    # 3. Leaked page number detection
+    page_pattern = symbol_map.get("page_number_pattern", r"^\d{1,3}$")
+    lines = translated.strip().split("\n")
+    if lines:
+        last_line = lines[-1].strip()
+        if re.match(page_pattern, last_line):
+            issues.append({
+                "type": "leaked_pagenum",
+                "detail": f"standalone number '{last_line}' at end of translation",
+            })
+
+    return issues
+
+
+def _suggest_symbol_fixes(translated: str, issues: list[dict]) -> str:
+    """Auto-fix symbol issues in translated text.
+
+    Returns corrected text.
+    """
+    fixed = translated
+
+    for issue in issues:
+        if issue["type"] == "forbidden_substitution":
+            # Extract the bad string from detail
+            detail = issue["detail"]
+            # Format: "'bad' used instead of 'correct'"
+            bad_match = re.match(r"'(.+?)' used instead of '(.+?)'", detail)
+            if bad_match:
+                bad_str = bad_match.group(1)
+                correct_str = bad_match.group(2)
+                # Replace pairs: bad open+close → correct open+close
+                if len(bad_str) == 2 and len(correct_str) == 2:
+                    fixed = fixed.replace(bad_str[0], correct_str[0])
+                    fixed = fixed.replace(bad_str[1], correct_str[1])
+
+        elif issue["type"] == "leaked_pagenum":
+            # Remove the last line if it's a standalone page number
+            lines = fixed.strip().split("\n")
+            if lines:
+                last_line = lines[-1].strip()
+                if re.match(r"^\d{1,3}$", last_line):
+                    fixed = "\n".join(lines[:-1]).rstrip()
+
+    return fixed
 
 
 # ============================================================
@@ -497,12 +617,23 @@ def validate_translations(pages: list[dict], expected_range: tuple[int, int] = N
             orig = entry.get("original", "")
             trans = entry.get("translated", "")
 
-            for jp_term, kr_term in glossary.items():
+            # 긴 용어 우선 정렬 (龍神様 > 神 순서로 매칭)
+            sorted_terms = sorted(glossary.items(), key=lambda x: len(x[0]), reverse=True)
+            matched_ranges = set()  # 이미 매칭된 원문 위치 추적
+            for jp_term, kr_term in sorted_terms:
+                if jp_term.startswith("__"):  # 메타 키 스킵
+                    continue
                 # 원문에 일본어 용어가 있는데 번역에 대응 한국어가 없으면
-                if jp_term in orig and kr_term not in trans:
-                    glossary_issues.append(
-                        f"p.{pn}: '{jp_term}'→'{kr_term}' 미반영"
-                    )
+                if jp_term in orig:
+                    # 이미 더 긴 용어로 매칭된 범위에 포함되면 스킵
+                    idx = orig.find(jp_term)
+                    if any(idx >= start and idx + len(jp_term) <= end for start, end in matched_ranges):
+                        continue
+                    matched_ranges.add((idx, idx + len(jp_term)))
+                    if kr_term not in trans:
+                        glossary_issues.append(
+                            f"p.{pn}: '{jp_term}'→'{kr_term}' 미반영"
+                        )
 
         for gi in glossary_issues[:10]:  # 최대 10개만 표시
             warnings.append(f"용어집: {gi}")
@@ -621,6 +752,12 @@ def validate_translations(pages: list[dict], expected_range: tuple[int, int] = N
 
             # 소형 텍스트 검증
             for st in page_meta.get("small_texts", []):
+                # 노이즈 필터: 일본어 비율 30% 미만 또는 일본어 5자 미만이면 스킵
+                jp_chars = len(re.findall(r'[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF]', st))
+                if len(st) > 3 and jp_chars / len(st) < 0.3:
+                    continue
+                if jp_chars < 5:
+                    continue
                 small_text_total += 1
                 if st in orig_clean:
                     continue
@@ -637,6 +774,12 @@ def validate_translations(pages: list[dict], expected_range: tuple[int, int] = N
 
             # 가로 텍스트 검증
             for ht in page_meta.get("horizontal_texts", []):
+                # 노이즈 필터: 일본어 비율 30% 미만 또는 일본어 5자 미만이면 스킵
+                jp_chars_h = len(re.findall(r'[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF]', ht))
+                if len(ht) > 3 and jp_chars_h / len(ht) < 0.3:
+                    continue
+                if jp_chars_h < 5:
+                    continue
                 horiz_text_total += 1
                 if ht in orig_clean:
                     continue
@@ -659,6 +802,184 @@ def validate_translations(pages: list[dict], expected_range: tuple[int, int] = N
         if horiz_text_total > 0 else "해당 없음"
     )
 
+    # ── 8. 기호 일관성 검증 ──
+    symbol_map = load_symbol_map()
+    symbol_issues_total = 0
+    symbol_fixes = {}
+
+    if symbol_map:
+        for entry in pages:
+            pn = entry["page"]
+            orig = entry.get("original", "")
+            trans = entry.get("translated", "")
+            issues = _check_symbol_consistency(orig, trans, symbol_map)
+            if issues:
+                symbol_issues_total += len(issues)
+                for iss in issues:
+                    warnings.append(f"p.{pn}: 기호 검증 — {iss['type']}: {iss['detail']}")
+                # Generate auto-fix suggestion
+                fixed = _suggest_symbol_fixes(trans, issues)
+                if fixed != trans:
+                    symbol_fixes[pn] = fixed
+
+    qa_scores["기호_일관성"] = (
+        f"{symbol_issues_total}건 경고"
+        if symbol_issues_total > 0 else "✅ 전체 통과"
+    )
+
+    # ── 9. 번역투 패턴 감지 ──
+    translationese_count = 0
+    # ~의 3회 이상 연쇄
+    pattern_no_chain = re.compile(r'(\S+의\s+){3,}')
+    # 수동태·사역형 패턴
+    pattern_passive = re.compile(r'(?:되어지[다고며는면]|시키[다고며는면]|느껴지게\s+된[다고며는면]|여겨지[다고며는면])')
+
+    for entry in pages:
+        pn = entry["page"]
+        trans = entry.get("translated", "")
+        if not trans.strip():
+            continue
+
+        # ~의 연쇄 감지
+        no_matches = pattern_no_chain.findall(trans)
+        if no_matches:
+            translationese_count += len(no_matches)
+            warnings.append(f"p.{pn}: 번역투 — '~의' 3회 이상 연쇄 감지")
+
+        # 수동태·사역형 감지
+        passive_matches = pattern_passive.findall(trans)
+        if passive_matches:
+            translationese_count += len(passive_matches)
+            for pm in passive_matches[:3]:  # 최대 3건만 표시
+                warnings.append(f"p.{pn}: 번역투 — 수동태/사역형 감지: '{pm}'")
+
+    qa_scores["번역투_패턴"] = (
+        f"{translationese_count}건 감지"
+        if translationese_count > 0 else "✅ 전체 통과"
+    )
+
+    # ── 10. 단락 구조 일치 검증 ──
+    paragraph_mismatches = 0
+    for entry in pages:
+        pn = entry["page"]
+        orig = entry.get("original", "")
+        trans = entry.get("translated", "")
+        if len(orig) < 50 or len(trans) < 30:
+            continue
+
+        # 원문 단락 수: 。　(마침표+전각스페이스) 또는 。\n 기준
+        orig_paragraphs = len(re.findall(r'。[\u3000\s]', orig))
+        # 번역문 단락 수: \n\n (빈 줄) 기준
+        trans_paragraphs = trans.count('\n\n')
+
+        if orig_paragraphs > 0 and trans_paragraphs > 0:
+            ratio = trans_paragraphs / orig_paragraphs
+            if ratio < 0.5 or ratio > 2.0:
+                paragraph_mismatches += 1
+                warnings.append(
+                    f"p.{pn}: 단락 구조 — 원문 {orig_paragraphs}개 vs 번역 {trans_paragraphs}개 "
+                    f"(비율: {ratio:.1f}x)"
+                )
+
+    qa_scores["단락_구조_일치"] = (
+        f"{paragraph_mismatches}건 불일치"
+        if paragraph_mismatches > 0 else "✅ 전체 통과"
+    )
+
+    # ── 11. 종결어미 일관성 통계 ──
+    formal_count = 0  # ~습니다, ~합니다
+    polite_count = 0  # ~해요, ~하세요, ~거든요, ~잖아요
+    for entry in pages:
+        trans = entry.get("translated", "")
+        if not trans.strip():
+            continue
+        formal_count += len(re.findall(r'(?:습니다|합니다|였습니다|이었습니다|하십니다|해주셨습니다)[.?!]?\s*$', trans, re.MULTILINE))
+        polite_count += len(re.findall(r'(?:해요|하세요|거든요|잖아요|어떨까요|해\s*보세요|랍니다)[.?!]?\s*$', trans, re.MULTILINE))
+
+    total_endings = formal_count + polite_count
+    if total_endings > 0:
+        qa_scores["종결어미_통계"] = (
+            f"하십시오체 {formal_count}회({formal_count*100//total_endings}%) / "
+            f"해요체 {polite_count}회({polite_count*100//total_endings}%)"
+        )
+    else:
+        qa_scores["종결어미_통계"] = "감지된 종결어미 없음"
+
+    # ── 12. 감탄사/줄임표 밀도 ──
+    orig_exclamation = 0
+    trans_exclamation = 0
+    orig_ellipsis = 0
+    trans_ellipsis = 0
+    for entry in pages:
+        orig = entry.get("original", "")
+        trans = entry.get("translated", "")
+        orig_exclamation += orig.count("！") + orig.count("!")
+        trans_exclamation += trans.count("！") + trans.count("!")
+        orig_ellipsis += orig.count("……") + orig.count("…")
+        trans_ellipsis += trans.count("……") + trans.count("…")
+
+    excl_reduction = 0
+    if orig_exclamation > 0:
+        excl_reduction = round((1 - trans_exclamation / orig_exclamation) * 100)
+    ellip_reduction = 0
+    if orig_ellipsis > 0:
+        ellip_reduction = round((1 - trans_ellipsis / orig_ellipsis) * 100)
+
+    density_warnings = []
+    if orig_exclamation > 3 and excl_reduction < 30:
+        density_warnings.append(f"감탄사(!): 원문 {orig_exclamation}→번역 {trans_exclamation} (감소율 {excl_reduction}%)")
+    if orig_ellipsis > 3 and ellip_reduction < 30:
+        density_warnings.append(f"줄임표(…): 원문 {orig_ellipsis}→번역 {trans_ellipsis} (감소율 {ellip_reduction}%)")
+
+    for dw in density_warnings:
+        warnings.append(f"감탄사/줄임표: {dw}")
+
+    qa_scores["감탄사_줄임표_밀도"] = (
+        f"!: {excl_reduction}% 감소, …: {ellip_reduction}% 감소"
+        if orig_exclamation > 0 or orig_ellipsis > 0
+        else "해당 없음"
+    )
+
+    # ── 13. PDF 텍스트 블록 대조 (Zero Omission) ──
+    block_missing_total = 0
+    block_checked_total = 0
+    for entry in pages:
+        blocks = entry.get("page_style", {}).get("all_blocks", [])
+        if not blocks:
+            continue
+        orig_clean = re.sub(r'\s+', '', entry.get("original", ""))
+
+        for block in blocks:
+            block_text = block["text"].strip()
+            # 페이지 번호 제외 (1~3자리 숫자)
+            if re.match(r'^\d{1,3}$', block_text):
+                continue
+            # 노이즈 필터: 일본어(히라가나+가타카나+한자) 비율이 30% 미만이면 스킵
+            jp_chars = len(re.findall(r'[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF]', block_text))
+            if len(block_text) > 3 and jp_chars / len(block_text) < 0.3:
+                continue
+            # 의미있는 일본어 문자가 5자 미만이면 스킵 (짧은 파편)
+            if jp_chars < 5:
+                continue
+            block_checked_total += 1
+            # original에 포함 여부 확인 (공백 무시)
+            block_clean = re.sub(r'\s+', '', block_text)
+            if block_clean in orig_clean:
+                continue
+            # 부분 매칭: 블록의 주요 부분(앞 10자)이 original에 있으면 통과
+            if len(block_clean) > 5 and block_clean[:10] in orig_clean:
+                continue
+            block_missing_total += 1
+            warnings.append(
+                f"p.{entry['page']}: PDF 블록 누락 — "
+                f"'{block_text[:40]}' ({block['position']}/{block['size_class']})"
+            )
+
+    qa_scores["PDF_블록_대조"] = (
+        f"{block_missing_total}건 누락 (총 {block_checked_total}건 중)"
+        if block_checked_total > 0 else "해당 없음 (스타일 추출 미실행)"
+    )
+
     # ── QA 요약 ──
     return {
         "ok": len(errors) == 0,
@@ -666,7 +987,9 @@ def validate_translations(pages: list[dict], expected_range: tuple[int, int] = N
         "warnings": warnings,
         "page_count": len(pages),
         "qa_summary": qa_scores,
+        "symbol_fixes": symbol_fixes,
     }
+
 
 
 # ============================================================
@@ -818,7 +1141,15 @@ def cmd_build(args):
         print("❌ --input (MD파일) 또는 --json (기존 JSON) 중 하나를 지정하세요")
         sys.exit(1)
 
-    # 2. ANTI-JAPANESE 검증
+    # 2.0. Style extraction (검증보다 먼저 실행 — QA #13에서 all_blocks 참조)
+    if args.pdf and page_range:
+        try:
+            pages = extract_page_styles(args.pdf, page_range, pages)
+            # JSON 저장은 기호 수정 후 1회만 수행 (이중 저장 방지)
+        except Exception as e:
+            print(f"\n⚠️ Style extraction failed ({e}), proceeding without styles")
+
+    # 2.1. ANTI-JAPANESE 검증
     print(f"\n🔍 ANTI-JAPANESE 검증 중...")
     result = validate_translations(pages, page_range, pdf_path=args.pdf, text_meta_path=getattr(args, 'text_meta', None))
 
@@ -833,6 +1164,18 @@ def cmd_build(args):
         print(f"\n💡 해당 페이지의 번역을 수정한 후 다시 실행하세요.")
         sys.exit(1)
 
+    # Auto-apply symbol fixes
+    symbol_fixes = result.get("symbol_fixes", {})
+    if symbol_fixes:
+        print(f"\n🔧 기호 자동 수정 적용 중... ({len(symbol_fixes)}페이지)")
+        for entry in pages:
+            if entry["page"] in symbol_fixes:
+                entry["translated"] = symbol_fixes[entry["page"]]
+                print(f"   p.{entry['page']}: 기호 수정 적용")
+        # Re-save JSON with fixes
+        with open(output_path, "w", encoding="utf-8") as f:
+            json.dump(pages, f, ensure_ascii=False, indent=2)
+
     print(f"   ✅ 검증 통과 ({result['page_count']}페이지, 일본어 잔존 0)")
 
     # QA 요약 출력
@@ -841,15 +1184,7 @@ def cmd_build(args):
         for key, val in result["qa_summary"].items():
             print(f"   {key}: {val}")
 
-    # 2.5. Style extraction
-    if args.pdf and page_range:
-        try:
-            pages = extract_page_styles(args.pdf, page_range, pages)
-            # Re-save JSON with styles included
-            with open(output_path, "w", encoding="utf-8") as f:
-                json.dump(pages, f, ensure_ascii=False, indent=2)
-        except Exception as e:
-            print(f"\n⚠️ Style extraction failed ({e}), proceeding without styles")
+    # NOTE: Style extraction moved BEFORE validation (see step 2.0 above)
 
     # 3. 대조 PDF 생성
     pdf_output = None
