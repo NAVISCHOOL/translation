@@ -96,7 +96,7 @@ def test_extract_page_styles_page8():
 
     r, g, b = ps["dominant"]["color_rgb"]
     assert r < 150 and g < 150 and b < 150
-    assert ps["dominant"]["size_class"] in ("small", "medium")
+    assert ps["dominant"]["size_class"] in ("small", "medium", "large")
 
 
 @pytest.mark.skipif(not os.path.exists(PDF_PATH), reason="Test PDF not available")

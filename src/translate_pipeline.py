@@ -99,6 +99,218 @@ def detect_bold(flags: int) -> bool:
     return bool(flags & 16)
 
 
+FUZZY_MATCH_THRESHOLD = 0.5
+SIZE_CLASS_TO_PT = {"small": 8, "medium": 10, "large": 13, "xlarge": 16}
+
+
+def _analyze_page_blocks(page, page_img):
+    """Extract style info from all text blocks on a page.
+
+    Returns list of dicts with: text, color_rgb, size_class, position, bold.
+    """
+    page_h = page.rect.height
+    page_w = page.rect.width
+    dpi_scale = page_img.width / page_w  # pixel coords = pdf coords * scale
+
+    blocks_info = []
+    text_dict = page.get_text("dict")
+
+    for block in text_dict.get("blocks", []):
+        if block.get("type") != 0:  # text blocks only
+            continue
+
+        bbox = block["bbox"]  # (x0, y0, x1, y1) in PDF points
+        block_text = ""
+        line_count = 0
+        span_flags = 0
+        span_color = None  # PyMuPDF span color (int, 0=black)
+        span_size = None  # PyMuPDF span font size (pt)
+
+        for line in block.get("lines", []):
+            line_count += 1
+            for span in line.get("spans", []):
+                block_text += span.get("text", "")
+                span_flags = span.get("flags", 0)
+                if span_color is None and "color" in span:
+                    span_color = span["color"]
+                if span_size is None and "size" in span:
+                    span_size = span["size"]
+
+        block_text = block_text.strip()
+        if not block_text:
+            continue
+
+        # Center coordinates
+        cy = (bbox[1] + bbox[3]) / 2
+        cx = (bbox[0] + bbox[2]) / 2
+
+        # Font size: prefer span size, fallback to bbox estimation
+        if span_size and span_size > 0:
+            estimated_pt = span_size
+        else:
+            block_height = bbox[3] - bbox[1]
+            estimated_pt = (block_height / max(line_count, 1)) * 0.75
+
+        # Color: prefer span color (from text layer), fallback to pixel sampling
+        if span_color is not None:
+            # PyMuPDF color is an int: 0x000000 = black, 0xFF0000 = blue (BGR)
+            color_int = int(span_color)
+            color_rgb = [
+                (color_int >> 16) & 0xFF,  # R
+                (color_int >> 8) & 0xFF,   # G
+                color_int & 0xFF,          # B
+            ]
+        else:
+            pixel_bbox = (
+                bbox[0] * dpi_scale,
+                bbox[1] * dpi_scale,
+                bbox[2] * dpi_scale,
+                bbox[3] * dpi_scale,
+            )
+            color_rgb = list(sample_block_color(page_img, pixel_bbox))
+
+        blocks_info.append({
+            "text": block_text,
+            "color_rgb": color_rgb,
+            "size_class": classify_block_size(estimated_pt),
+            "position": classify_block_position(cy, cx, page_h, page_w),
+            "bold": detect_bold(span_flags),
+            "estimated_pt": estimated_pt,
+        })
+
+    return blocks_info
+
+
+def _compute_page_style(blocks_info):
+    """Compute dominant style and identify special blocks.
+
+    Returns: {"dominant": {...}, "special_blocks": [...]}
+    """
+    from collections import Counter
+
+    body_blocks = [b for b in blocks_info if b["position"] == "body"]
+
+    if not body_blocks:
+        body_blocks = blocks_info  # fallback: use all blocks
+
+    if not body_blocks:
+        return {
+            "dominant": {"color_rgb": [40, 40, 40], "size_class": "medium", "bold": False},
+            "special_blocks": [],
+        }
+
+    # Dominant color: median RGB across body blocks (robust to OCR noise)
+    dominant_color = [
+        int(median([b["color_rgb"][0] for b in body_blocks])),
+        int(median([b["color_rgb"][1] for b in body_blocks])),
+        int(median([b["color_rgb"][2] for b in body_blocks])),
+    ]
+
+    # Dominant size: median
+    sizes = [b["estimated_pt"] for b in body_blocks]
+    dominant_size = classify_block_size(median(sizes))
+
+    # Dominant bold: majority
+    dominant_bold = sum(1 for b in body_blocks if b["bold"]) > len(body_blocks) / 2
+
+    dominant = {
+        "color_rgb": dominant_color,
+        "size_class": dominant_size,
+        "bold": dominant_bold,
+    }
+
+    # Special blocks: different from dominant
+    special = []
+    for b in blocks_info:
+        is_special = False
+        # Color distance threshold (Euclidean) — tolerant of OCR noise
+        color_dist = sum((a - d) ** 2 for a, d in zip(b["color_rgb"], dominant_color)) ** 0.5
+        if color_dist > 60:
+            is_special = True
+        if b["size_class"] != dominant_size and b["size_class"] in ("large", "xlarge"):
+            is_special = True
+        if b["bold"] and not dominant_bold:
+            is_special = True
+        if b["position"] in ("header", "footer"):
+            is_special = True
+
+        if is_special:
+            special.append({
+                "text_hint": b["text"][:30],
+                "color_rgb": b["color_rgb"],
+                "size_class": b["size_class"],
+                "bold": b["bold"],
+                "position": b["position"],
+            })
+
+    return {"dominant": dominant, "special_blocks": special[:10]}  # cap at 10
+
+
+def extract_page_styles(
+    pdf_path: str,
+    page_range: tuple[int, int],
+    translations: list[dict],
+) -> list[dict]:
+    """Extract style metadata from original PDF and enrich translations.
+
+    Returns translations with 'page_style' field added to each entry.
+    If extraction fails for a page, that entry has no page_style (fallback).
+    """
+    import fitz
+    from PIL import Image
+    import io
+
+    doc = fitz.open(pdf_path)
+    trans_by_page = {t["page"]: t for t in translations}
+    total_blocks = 0
+    total_special = 0
+
+    print(f"\n🎨 Extracting styles... ({page_range[1] - page_range[0] + 1} pages)")
+
+    for page_num in range(page_range[0], page_range[1] + 1):
+        idx = page_num - 1
+        if idx < 0 or idx >= len(doc):
+            continue
+
+        entry = trans_by_page.get(page_num)
+        if not entry:
+            continue
+
+        try:
+            page = doc[idx]
+
+            # Check if page has text layer
+            if not page.get_text("text").strip():
+                print(f"   p.{page_num}: no text layer, skipping")
+                continue
+
+            # Render page as image for color sampling
+            mat = fitz.Matrix(150 / 72, 150 / 72)  # 150 DPI
+            pix = page.get_pixmap(matrix=mat)
+            img_data = pix.tobytes("png")
+            page_img = Image.open(io.BytesIO(img_data))
+
+            # Analyze blocks
+            blocks_info = _analyze_page_blocks(page, page_img)
+            page_style = _compute_page_style(blocks_info)
+
+            n_special = len(page_style["special_blocks"])
+            total_blocks += len(blocks_info)
+            total_special += n_special
+
+            print(f"   p.{page_num}: {len(blocks_info)} blocks, {n_special} special")
+
+            entry["page_style"] = page_style
+
+        except Exception as e:
+            print(f"   p.{page_num}: style extraction failed ({e}), using defaults")
+
+    doc.close()
+    print(f"   ✅ Style extraction complete ({total_blocks} blocks, {total_special} special)")
+
+    return translations
+
+
 # ============================================================
 # 1. MD 파서 — 에이전트가 작성한 마크다운을 구조화 데이터로 변환
 # ============================================================
