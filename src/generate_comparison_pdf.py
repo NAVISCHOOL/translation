@@ -41,13 +41,18 @@ FONT_CANDIDATES = {
 }
 
 
-def find_font(style: str = "regular") -> str:
-    for candidate in FONT_CANDIDATES.get(style, FONT_CANDIDATES["regular"]):
+def find_font(style: str = "regular", lang_profile: dict = None) -> str:
+    candidates = []
+    if lang_profile and "font_candidates" in lang_profile:
+        candidates = lang_profile["font_candidates"].get(style, [])
+    if not candidates:
+        candidates = FONT_CANDIDATES.get(style, FONT_CANDIDATES["regular"])
+    for candidate in candidates:
         for search_dir in FONT_SEARCH_PATHS:
             path = os.path.join(search_dir, candidate)
             if os.path.exists(path):
                 return path
-    raise FileNotFoundError("한국어 폰트를 찾을 수 없습니다.")
+    raise FileNotFoundError(f"폰트를 찾을 수 없습니다 (style={style}, 후보: {candidates})")
 
 
 # ============================================================
@@ -81,16 +86,20 @@ def extract_page_images(pdf_path: str, pages: list[int], dpi: int = 150) -> dict
 class ComparisonPDF(FPDF):
     """원본/번역 대조 PDF"""
 
-    def __init__(self):
+    def __init__(self, lang_profile: dict = None):
         super().__init__(orientation="L", format="A4")  # 가로 방향
-        self.title_text = "원문/번역 대조"
+        self._lang_profile = lang_profile
+        labels = (lang_profile or {}).get("pdf_labels", {})
+        self._label_original = labels.get("original", "원문")
+        self._label_translated = labels.get("translated", "번역")
+        self.title_text = f"{self._label_original}/{self._label_translated} 대조"
         self._setup_fonts()
 
     def _setup_fonts(self):
-        regular_path = find_font("regular")
+        regular_path = find_font("regular", self._lang_profile)
         self.add_font("Korean", "", regular_path)
         try:
-            bold_path = find_font("bold")
+            bold_path = find_font("bold", self._lang_profile)
             self.add_font("Korean", "B", bold_path)
             self.has_bold = True
         except FileNotFoundError:
@@ -125,7 +134,7 @@ class ComparisonPDF(FPDF):
         style = "B" if self.has_bold else ""
         self.set_font("Korean", style, 9)
         self.set_text_color(100, 100, 100)
-        self.cell(half_width, 6, f"[원문] p.{page_num}", align="C")
+        self.cell(half_width, 6, f"[{self._label_original}] p.{page_num}", align="C")
         self.ln(8)
 
         # 이미지 배치
@@ -146,7 +155,7 @@ class ComparisonPDF(FPDF):
         self.set_xy(right_x, content_top)
         self.set_font("Korean", style, 9)
         self.set_text_color(100, 100, 100)
-        self.cell(half_width, 6, f"[번역] p.{page_num}", align="C")
+        self.cell(half_width, 6, f"[{self._label_translated}] p.{page_num}", align="C")
 
         # 번역 텍스트
         self.set_xy(right_x, content_top + 10)
@@ -220,7 +229,8 @@ def generate_comparison_pdf(
     original_pdf: str,
     translations: list[dict],
     output_path: str,
-    page_range: tuple[int, int] = None
+    page_range: tuple[int, int] = None,
+    lang_profile: dict = None,
 ):
     """원본/번역 대조 PDF를 생성합니다."""
 
@@ -242,7 +252,7 @@ def generate_comparison_pdf(
     pages_with_images = sorted(images.keys())
 
     # PDF 생성
-    pdf = ComparisonPDF()
+    pdf = ComparisonPDF(lang_profile=lang_profile)
     pdf.set_auto_page_break(auto=False)
 
     for page_num in pages_with_images:
@@ -273,6 +283,7 @@ if __name__ == "__main__":
     parser.add_argument("--translation", "-T", required=True, help="번역 결과 JSON")
     parser.add_argument("--output", "-o", default="./translated/대조본.pdf", help="출력 PDF")
     parser.add_argument("--pages", "-p", help="페이지 범위 (예: 10-11)")
+    parser.add_argument("--lang", default=None, help="언어 프로파일 (예: ja-en, ja-de)")
     parser.add_argument("--dpi", type=int, default=150, help="이미지 해상도 (기본: 150)")
 
     args = parser.parse_args()
@@ -285,4 +296,12 @@ if __name__ == "__main__":
         parts = args.pages.split("-")
         page_range = (int(parts[0]), int(parts[1]) if len(parts) > 1 else int(parts[0]))
 
-    generate_comparison_pdf(args.original, translations, args.output, page_range)
+    # 언어 프로파일 로드
+    lang_profile = None
+    if args.lang:
+        import sys
+        sys.path.insert(0, str(Path(__file__).parent))
+        from translate_pipeline import load_lang_profile
+        lang_profile = load_lang_profile(args.lang)
+
+    generate_comparison_pdf(args.original, translations, args.output, page_range, lang_profile)

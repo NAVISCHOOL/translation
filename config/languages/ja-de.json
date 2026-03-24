@@ -1,0 +1,90 @@
+{
+  "source_lang": "ja",
+  "target_lang": "de",
+  "target_name": "Deutsch",
+  "glossary": {
+    "ふわふわ": "Fuwa-fuwa",
+    "龍神様": "Drachengott",
+    "斎藤一人": "Saito Hitori",
+    "一人さん": "Hitori-san",
+    "柴村恵美子": "Shibamura Emiko",
+    "上気元": "Hochstimmung",
+    "天国言葉": "himmlische Worte",
+    "地獄言葉": "höllische Worte",
+    "器": "Gefäß",
+    "奇跡": "Wunder",
+    "魂": "Seele",
+    "修行": "spirituelle Übung",
+    "三方よし": "Sanpo-yoshi (gut für Verkäufer, Käufer und Gesellschaft)",
+    "四方よし": "Shiho-yoshi (gut für Verkäufer, Käufer, Gesellschaft und Zukunft)",
+    "けやき出版": "Keyaki Verlag",
+    "ナビスクール": "Navi-Schule",
+    "はじめに": "Vorwort",
+    "おわりに": "Nachwort",
+    "ひまわり畑": "Sonnenblumenfeld",
+    "本書": "dieses Buch",
+    "ツイてる": "Glück haben",
+    "感謝": "Dankbarkeit",
+    "因果": "Ursache und Wirkung",
+    "波動": "Schwingung",
+    "引き寄せ": "Anziehung",
+    "光の玉": "Lichtkugel",
+    "まるかん": "Marukan",
+    "大社長": "Großpräsident",
+    "神": "Gott",
+    "言霊": "Kotodama (die Macht der Worte)",
+    "第1章": "Kapitel 1",
+    "第2章": "Kapitel 2",
+    "第3章": "Kapitel 3",
+    "第4章": "Kapitel 4",
+    "第5章": "Kapitel 5",
+    "目次": "Inhaltsverzeichnis",
+    "あとがき": "Nachwort",
+    "序章": "Prolog",
+    "__천국의_언어_8개_확언__": "----",
+    "愛してます": "Ich liebe dich",
+    "ついてる": "Ich habe Glück",
+    "うれしい": "Ich bin froh",
+    "楽しい": "Ich bin fröhlich",
+    "感謝してます": "Ich bin dankbar",
+    "幸せ": "Glück",
+    "ありがとう": "Danke",
+    "許します": "Ich vergebe"
+  },
+  "symbol_map": {
+    "preserve": {
+      "…": "…"
+    },
+    "convert": {
+      "「": "\"",
+      "」": "\"",
+      "『": "'",
+      "』": "'",
+      "、": ",",
+      "。": ".",
+      "！": "!",
+      "？": "?",
+      "（": "(",
+      "）": ")",
+      "・": "·",
+      "〜": "~"
+    },
+    "forbidden_substitutions": {},
+    "page_number_pattern": "^\\d{1,3}$"
+  },
+  "validation": {
+    "source_script_pattern": "[\\u3040-\\u309F\\u30A0-\\u30FF\\u31F0-\\u31FF\\uFF66-\\uFF9F]+",
+    "translationese_checks": false,
+    "ending_stats": false,
+    "exclamation_reduction_target": 50,
+    "paragraph_check": true
+  },
+  "font_candidates": {
+    "regular": ["Helvetica.ttc", "Arial.ttf", "DejaVuSans.ttf"],
+    "bold": ["Helvetica-Bold.ttc", "Arial Bold.ttf", "DejaVuSans-Bold.ttf"]
+  },
+  "pdf_labels": {
+    "original": "Original",
+    "translated": "Übersetzung"
+  }
+}

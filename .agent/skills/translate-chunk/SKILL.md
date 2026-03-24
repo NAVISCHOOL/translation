@@ -12,6 +12,8 @@ description: "Translate a chunk of PDF pages using Antigravity mode automaticall
 - **범위가 없는 경우** (예: "번역해줘", "다음 분량 이어서 해줘"): 먼저 `translated/antigravity/` 폴더를 스캔하여 다음 번역 대상 청크를 자동 탐지한 뒤, **사용자에게 확인 질문을 합니다**.
   - 예: "후아후아 2권 1~10페이지가 다음 번역 대상입니다. 결과물: `translated/antigravity/후아후아_v2/` — 시작할까요?"
   - 사용자가 승인하면 아래 프로세스를 자동 실행합니다.
+- **대상 언어 지정**: 사용자가 "영어로 번역", "독일어로" 등을 언급하면 해당 언어 프로파일(`ja-en`, `ja-de`)을 사용합니다. 언급이 없으면 기본값 `ja-ko`(한국어)를 사용합니다.
+  - 사용 가능한 프로파일: `config/languages/` 디렉토리의 `ja-ko.json`, `ja-en.json`, `ja-de.json`
 - 만약 PDF 파일 이름이 대화내역 상에 명확하지 않은 경우, "어떤 PDF의 페이지를 번역할까요?" 라고 구체적으로 물어 확인합니다.
 
 ## 📋 프로세스 (Agentic Loop)
@@ -42,13 +44,15 @@ python src/prepare_pages.py -i data/pdf/{PDF_FILE} --pages {START}-{END}
    - ✅ 장식 문구·캐치 카피(표지나 간지에 있는 선전 문구)
    - ✅ 주석·각주·주기(【注記】 등)
    - ❌ 페이지 번호만 제외 (책 번호는 번역문에서 제외)
-2. "'~의'가 3회 이상 연속 나타나는 곳은 없는가?" (번역투 제거)
-3. "수동태·사역형(`~되어지다`, `~시키다`)이 남아있지 않은가?"
+2. **[한국어 번역 시만]** "'~의'가 3회 이상 연속 나타나는 곳은 없는가?" (번역투 제거)
+3. **[한국어 번역 시만]** "수동태·사역형(`~되어지다`, `~시키다`)이 남아있지 않은가?"
 4. "일본어 복문을 2~3개 단문으로 과감히 쪼갰는가?" (극한의 단문)
 5. "감탄사(！)와 말줄임표(……)를 80% 이상 덜어냈는가?"
-6. "화자별 종결어미가 아래 매트릭스에 맞는가?"
+6. **[한국어 번역 시만]** "화자별 종결어미가 아래 매트릭스에 맞는가?"
 
-**[화자별 종결어미 매트릭스]:**
+**[화자별 종결어미 매트릭스 — 한국어(`ja-ko`) 번역 전용]:**
+
+> ⚠️ 영어/독일어 번역 시에는 이 매트릭스를 적용하지 않고, 대상 언어의 자연스러운 문체를 사용합니다.
 
 | 화자 | 상황 | 종결어미 |
 |------|------|---------|
@@ -98,14 +102,30 @@ translated: 첫 번째 문단 번역.
 
 ### 3단계: 파이프라인 빌드 (Execution)
 ```bash
+# 한국어 (기본값, --lang 생략 가능)
 python src/translate_pipeline.py build \
   --input "translated/antigravity/translation_draft_{PDF명}_p{START}-{END}.md" \
   --pdf "data/pdf/{PDF_FILE}" \
   --pages {START}-{END} \
   --output "translated/antigravity/pages_{START}-{END}.json" \
   --text-meta /tmp/antigravity_pages/page_texts.json
+
+# 영어
+python src/translate_pipeline.py build \
+  --input "translated/antigravity/translation_draft_{PDF명}_p{START}-{END}.md" \
+  --pdf "data/pdf/{PDF_FILE}" \
+  --pages {START}-{END} \
+  --output "translated/antigravity/pages_{START}-{END}.json" \
+  --text-meta /tmp/antigravity_pages/page_texts.json \
+  --lang ja-en
+
+# 독일어
+python src/translate_pipeline.py build \
+  --input ... --pdf ... --pages ... --output ... --text-meta ... \
+  --lang ja-de
 ```
-- 빌드 결과에 일본어 잔존 오류(`japanese_remnants`)나 페이지 유실 오류가 있는지 확인합니다.
+- `--lang` 옵션은 `config/languages/{lang}.json` 프로파일을 로드합니다.
+- 빌드 결과에 원문 스크립트 잔존 오류나 페이지 유실 오류가 있는지 확인합니다.
 - 오류가 있다면 2단계로 돌아가 번역을 수정하고 다시 빌드합니다 (최대 3회 재시도).
 
 ### 4단계: 완료 보고 (Verification)
@@ -113,10 +133,10 @@ python src/translate_pipeline.py build \
 - **Relay 제안**: 반드시 "다음 청크(Y+1 ~ Y+10페이지) 분량을 번역할까요?" 라고 이어서 질문합니다.
 
 ## ⚠️ 강제 규칙 (Strict Constraints)
-1. **모든 내부 분석(Thought), 대화, 마크다운 산출물 작성 시 반드시 100% 한국어만 사용해야 합니다.**
+1. **모든 내부 분석(Thought), 대화, 마크다운 산출물 작성 시 반드시 100% 한국어만 사용해야 합니다.** (영어/독일어 번역 시에도 AI 코멘트는 한국어)
 2. 이 워크플로우를 도는 중에 사용자에게 쓸데없는 중간 보고를 하지 마세요. 4단계(최종)에서만 리포팅합니다.
-3. 번역 규칙 (`config/glossary.json` 참고, 번역투 지양, 극한의 단문, 그리고 **Zero Omission**)을 목숨처럼 지킵니다.
-4. **기호 규칙 엄수** — `「」` `『』` `…`은 그대로 보존. `""` `""` `''`로 변환 금지. 책 페이지번호는 번역문에서 제외. (`config/symbol_map.json` 참조)
+3. 번역 규칙 (`config/languages/{lang}.json`의 `glossary` 참고, 번역투 지양, 극한의 단문, 그리고 **Zero Omission**)을 목숨처럼 지킵니다.
+4. **기호 규칙 엄수** — `config/languages/{lang}.json`의 `symbol_map` 참조. 기본적으로 `「」` `『』` `…`은 그대로 보존. `""` `""` `''`로 변환 금지. 책 페이지번호는 번역문에서 제외.
 5. **문단 구분 규칙** — 원문의 `　`(전각 스페이스)가 단락 구분 기호이다. 번역문에서는 이에 대응하여 **빈 줄(`\n\n`)로 문단을 구분**해야 한다.
    - `。　` (마침표 + 전각공백) → 번역에서 `\n\n` (빈 줄 = 새 단락)
    - `。` (마침표만, 전각공백 없음) → 번역에서 `\n` (줄바꿈, 같은 단락 내)
@@ -128,7 +148,8 @@ python src/translate_pipeline.py build \
    - `page_style.special_blocks`의 `size_class`(xlarge=16pt, large=13pt, medium=10pt, small=8pt)가 자동 매칭됨
 7. **10페이지 청크 단위**로 번역합니다. 50페이지 초과 시 대화 세션을 분할합니다.
 8. **페이지 매핑 3규칙**: ① PDF 페이지 번호 사용, ② 이미지에 보이는 텍스트만 기록, ③ `page_texts.json` 참조하여 경계 확인
-9. **번역투 절대 금지**: `~의` 남용, 무생물 주어 수동태, 불필요한 사역동사를 한국어 능동형으로 100% 치환.
+9. **[한국어 전용] 번역투 절대 금지**: `~의` 남용, 무생물 주어 수동태, 불필요한 사역동사를 한국어 능동형으로 100% 치환.
 10. **감탄사/줄임표 절제**: 원문의 잦은 감탄사와 말줄임표(……)를 80% 이상 덜어내어 문장을 단정하게 유지.
 11. **메타 발화 금지**: "번역을 완료했습니다", "문맥에 맞게 재배열했습니다" 등 AI 부연 안내문은 출력물에 절대 포함하지 않습니다. 오직 번역 결과물만 산출합니다.
+12. **다국어 프로파일 준수**: `--lang` 옵션에 따라 해당 언어 프로파일의 용어집·기호 매핑·검증 규칙이 자동 적용됩니다. 한국어 전용 QA(번역투/종결어미)는 영어·독일어 번역 시 자동 비활성화됩니다.
 
