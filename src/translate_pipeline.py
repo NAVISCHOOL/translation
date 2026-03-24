@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-NAVI-Translate: 번역 파이프라인 자동화
-MD→JSON 변환 + ANTI-JAPANESE 검증 + 대조 PDF 생성 + 세션 로그
+NAVI-Translate: 번역 파이프라인 자동화 (다국어 지원)
+MD→JSON 변환 + 잔존 검증 + 대조 PDF 생성 + 세션 로그
 
 사용법:
   # 올인원 빌드 (MD→JSON→검증→대조PDF→로그)
@@ -10,6 +10,12 @@ MD→JSON 변환 + ANTI-JAPANESE 검증 + 대조 PDF 생성 + 세션 로그
     --pdf data/pdf/후아후아_20251210-part-1-ocr.pdf \
     --pages 1-10 \
     --output translated/antigravity/pages_1-10.json
+
+  # 독일어 빌드
+  python src/translate_pipeline.py build \
+    --input /tmp/de_draft.md \
+    --pdf data/pdf/mein_buch.pdf \
+    --pages 1-10 --lang de
 
   # 기존 JSON 검증만
   python src/translate_pipeline.py validate \
@@ -26,6 +32,8 @@ from datetime import datetime
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).parent.parent
+sys.path.insert(0, str(Path(__file__).parent))
+from language_profile import load_profile, LanguageProfile
 
 
 # ============================================================
@@ -92,46 +100,51 @@ def parse_translation_md(md_path: str) -> list[dict]:
 
 
 # ============================================================
-# 2. ANTI-JAPANESE 검증 — NAVI-Research ANTI-HALLUCINATION 패턴
+# 2. 잔존 검증 — 언어 프로파일 기반 다국어 검증
 # ============================================================
 
-# 히라가나 + 카타카나 범위 (한자는 한국어에서도 사용하므로 제외)
+# 하위호환: 프로파일 없이 호출 시 기본 일본어 패턴 사용
 JAPANESE_PATTERN = re.compile(r'[\u3040-\u309F\u30A0-\u30FF\u31F0-\u31FF\uFF66-\uFF9F]+')
 
-# 글로서리에 등록된 용어는 예외 처리 (일본어 원문 키)
-def load_glossary_exceptions() -> set[str]:
-    """글로서리에 등록된 일본어 원어를 예외 목록으로 로드합니다."""
-    glossary_path = PROJECT_ROOT / "config" / "glossary.json"
-    if glossary_path.exists():
-        with open(glossary_path, "r", encoding="utf-8") as f:
-            glossary = json.load(f)
-        return set(glossary.values())  # 한국어 번역어는 허용
-    return set()
 
-
-def validate_translations(pages: list[dict], expected_range: tuple[int, int] = None, pdf_path: str = None) -> dict:
+def validate_translations(pages: list[dict], expected_range: tuple[int, int] = None, pdf_path: str = None, profile: LanguageProfile = None) -> dict:
     """
     번역 결과를 다중 검증합니다.
-    (NAVI-Research 7중 QA 패턴에서 영감)
+    (NAVI-Research 7중 QA 패턴에서 영감, 다국어 프로파일 지원)
 
     검증 항목:
-    1. 일본어 잔존 감지 (히라가나/카타카나)
+    1. 원문 잔존 감지 (언어 프로파일의 패턴 사용)
     2. 원문 완성도 (축약/요약 감지)
     3. 페이지간 연결성 (문장 끊김 감지)
-    4. 용어집 일관성 (glossary.json 반영 확인)
+    4. 용어집 일관성 (프로파일 용어집 반영 확인)
     5. 페이지 누락 체크
     6. 페이지 정합성 (1:1 매칭) — PDF 텍스트 레이어 대조
 
     Returns:
         {"ok": bool, "errors": [...], "warnings": [...], "qa_summary": {...}}
     """
+    # 프로파일이 없으면 기본 일본어 프로파일 사용 (하위호환)
+    if profile is None:
+        try:
+            profile = load_profile("ja")
+        except FileNotFoundError:
+            profile = None
+
+    # 검증 패턴 결정
+    if profile and profile.get_validation_pattern():
+        residual_pattern = profile.get_validation_pattern()
+        lang_name = profile.name
+    else:
+        residual_pattern = JAPANESE_PATTERN
+        lang_name = "일본어"
     errors = []
     warnings = []
     qa_scores = {}
 
-    # ── 1. 일본어 잔존 + 빈 번역 ──
-    jp_remnant_count = 0
+    # ── 1. 원문 잔존 + 빈 번역 ──
+    remnant_count = 0
     empty_count = 0
+    allowed = set(profile.allowed_residuals) if profile else set()
     for entry in pages:
         pn = entry["page"]
         text = entry.get("translated", "")
@@ -141,13 +154,15 @@ def validate_translations(pages: list[dict], expected_range: tuple[int, int] = N
             empty_count += 1
             continue
 
-        matches = JAPANESE_PATTERN.findall(text)
-        if matches:
-            for m in matches:
-                errors.append(f"p.{pn}: 일본어 잔존 감지: '{m}' → 한국어로 교체 필요")
-            jp_remnant_count += len(matches)
+        if residual_pattern:
+            matches = residual_pattern.findall(text)
+            if matches:
+                for m in matches:
+                    if m.strip() not in allowed:
+                        errors.append(f"p.{pn}: {lang_name} 잔존 감지: '{m}' → 한국어로 교체 필요")
+                        remnant_count += 1
 
-    qa_scores["일본어_잔존"] = 0 if jp_remnant_count == 0 else jp_remnant_count
+    qa_scores[f"{lang_name}_잔존"] = 0 if remnant_count == 0 else remnant_count
 
     # ── 2. 원문 완성도 검증 (축약 감지) ──
     MIN_CONTENT_LENGTH = 50
@@ -200,23 +215,36 @@ def validate_translations(pages: list[dict], expected_range: tuple[int, int] = N
         warnings.append(bc)
     qa_scores["페이지_연결성"] = f"{len(broken_connections)}건 끊김"
 
-    # ── 4. 용어집 일관성 검증 ──
-    glossary_path = PROJECT_ROOT / "config" / "glossary.json"
+    # ── 4. 용어집 일관성 검증 (프로파일 기반) ──
     glossary_issues = []
-    if glossary_path.exists():
-        with open(glossary_path, "r", encoding="utf-8") as f:
-            glossary = json.load(f)
+    glossary = {}
 
+    # 프로파일 용어집 사용, 없으면 레거시 glossary.json 폴백
+    if profile and profile.glossary:
+        glossary = profile.glossary
+    else:
+        glossary_path = PROJECT_ROOT / "config" / "glossary.json"
+        if glossary_path.exists():
+            with open(glossary_path, "r", encoding="utf-8") as f:
+                glossary = json.load(f)
+
+    if glossary:
         for entry in pages:
             pn = entry["page"]
             orig = entry.get("original", "")
             trans = entry.get("translated", "")
 
-            for jp_term, kr_term in glossary.items():
-                # 원문에 일본어 용어가 있는데 번역에 대응 한국어가 없으면
-                if jp_term in orig and kr_term not in trans:
+            for src_term, target_val in glossary.items():
+                # 확장 형식 지원 ({translation, note} 또는 단순 문자열)
+                if isinstance(target_val, dict):
+                    kr_term = target_val.get("translation", "")
+                else:
+                    kr_term = target_val
+
+                # 원문에 용어가 있는데 번역에 대응어가 없으면
+                if src_term in orig and kr_term and kr_term not in trans:
                     glossary_issues.append(
-                        f"p.{pn}: '{jp_term}'→'{kr_term}' 미반영"
+                        f"p.{pn}: '{src_term}'→'{kr_term}' 미반영"
                     )
 
         for gi in glossary_issues[:10]:  # 최대 10개만 표시
@@ -262,21 +290,23 @@ def validate_translations(pages: list[dict], expected_range: tuple[int, int] = N
                     pdf_len = len(pdf_text_clean)
                     orig_len = len(orig_clean)
 
-                    # 글자수 비율 (주요 기준)
+                    # 글자수 비율 (주요 기준) — 언어별 기준값 사용
                     len_ratio = orig_len / max(pdf_len, 1)
+                    ratio_max = profile.length_ratio_max if profile else 2.0
+                    ratio_min = profile.length_ratio_min if profile else 0.3
 
-                    if len_ratio > 2.0:
+                    if len_ratio > ratio_max:
                         alignment_issues.append(
                             f"p.{pn}: ❌ 글자수 비율 {len_ratio:.1f}x — "
                             f"다음 페이지 내용 혼입 확실 "
                             f"(PDF:{pdf_len}자, 드래프트:{orig_len}자)"
                         )
-                    elif len_ratio > 1.5:
+                    elif len_ratio > ratio_max * 0.75:
                         alignment_issues.append(
                             f"p.{pn}: ⚠️ 글자수 비율 {len_ratio:.1f}x — "
                             f"다음 페이지 내용 혼입 의심"
                         )
-                    elif len_ratio < 0.3 and pdf_len > 30:
+                    elif len_ratio < ratio_min and pdf_len > 30:
                         alignment_issues.append(
                             f"p.{pn}: ⚠️ 원문 누락 의심 — "
                             f"PDF {pdf_len}자 대비 드래프트 {orig_len}자만 기록"
@@ -459,9 +489,16 @@ def cmd_build(args):
         print("❌ --input (MD파일) 또는 --json (기존 JSON) 중 하나를 지정하세요")
         sys.exit(1)
 
-    # 2. ANTI-JAPANESE 검증
-    print(f"\n🔍 ANTI-JAPANESE 검증 중...")
-    result = validate_translations(pages, page_range, pdf_path=args.pdf)
+    # 2. 잔존 검증 (언어 프로파일 기반)
+    lang_code = getattr(args, 'lang', 'ja') or 'ja'
+    try:
+        profile = load_profile(lang_code)
+    except FileNotFoundError:
+        print(f"⚠️ 언어 프로파일 '{lang_code}'을 찾을 수 없습니다. 기본(ja)으로 진행합니다.")
+        profile = load_profile("ja")
+
+    print(f"\n🔍 {profile.name} 잔존 검증 중...")
+    result = validate_translations(pages, page_range, pdf_path=args.pdf, profile=profile)
 
     if result["warnings"]:
         for w in result["warnings"]:
@@ -474,7 +511,7 @@ def cmd_build(args):
         print(f"\n💡 해당 페이지의 번역을 수정한 후 다시 실행하세요.")
         sys.exit(1)
 
-    print(f"   ✅ 검증 통과 ({result['page_count']}페이지, 일본어 잔존 0)")
+    print(f"   ✅ 검증 통과 ({result['page_count']}페이지, {profile.name} 잔존 0)")
 
     # QA 요약 출력
     if result.get("qa_summary"):
@@ -508,6 +545,7 @@ def cmd_build(args):
         "pdf": pdf_name,
         "pages": args.pages or "all",
         "mode": "antigravity",
+        "lang": lang_code,
         "page_count": len(pages),
         "total_time_sec": round(elapsed, 1),
         "validation": {
@@ -593,12 +631,14 @@ def main():
     p_build.add_argument("--pdf", "-p", help="원본 PDF 파일 경로")
     p_build.add_argument("--pages", help="페이지 범위 (예: 1-10)")
     p_build.add_argument("--output", "-o", help="출력 JSON 경로")
+    p_build.add_argument("--lang", "-l", default="ja", help="언어 코드 (기본: ja, 예: de, en)")
 
     # validate
     p_val = sub.add_parser("validate", help="JSON 검증")
     p_val.add_argument("--json", "-j", required=True, help="JSON 파일 경로")
     p_val.add_argument("--pages", help="예상 페이지 범위 (예: 1-10)")
     p_val.add_argument("--pdf", "-p", help="원본 PDF (정합성 검증용)")
+    p_val.add_argument("--lang", "-l", default="ja", help="언어 코드 (기본: ja)")
 
     args = parser.parse_args()
 

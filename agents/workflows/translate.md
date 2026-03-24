@@ -1,5 +1,5 @@
 ---
-description: 사용자가 "번역해줘"라고 요청하면 PDF와 페이지 범위를 물어보고 안티그래비티 번역을 진행하는 워크플로우
+description: 사용자가 "번역해줘"라고 요청하면 PDF와 페이지 범위를 물어보고 안티그래비티 번역을 진행하는 워크플로우 (다국어 지원)
 ---
 
 # 번역 워크플로우
@@ -8,14 +8,16 @@ description: 사용자가 "번역해줘"라고 요청하면 PDF와 페이지 범
 
 > 어떤걸 번역 해드릴까요? 그리고 페이지 범위를 알려주세요!
 >
-> | 번호 | PDF | 페이지 |
-> |:---:|------|:---:|
-> | 00 | 후아후아_20251210-part-1-ocr.pdf | 63p |
+> | 번호 | PDF | 페이지 | 언어 |
+> |:---:|------|:---:|:---:|
+> | 00 | 후아후아_20251210-part-1-ocr.pdf | 63p | 🇯🇵 |
 >
 > (예: 00pdf 1-63 전체, 00pdf 10 단일)
 
 ⚠️ `data/pdf/` 폴더의 PDF 목록을 검색해서 번호를 자동 매핑합니다.
+⚠️ 언어는 `config/languages/` 폴더의 프로파일에서 자동 감지합니다. 사용 가능: `ja`(일본어), `de`(독일어)
 사용자가 **"00Pdf, 1-10페이지"** 같은 형식으로 답변하면 즉시 번역을 시작합니다.
+
 
 ---
 
@@ -86,23 +88,24 @@ original: (일본어 원문)
 translated: (한국어 번역)
 ```
 
-저장 경로: **반드시** `translated/antigravity/` 아래에 저장 (`/tmp/` 사용 금지)
-
-예시: `translated/antigravity/translation_draft_fuwafuwa_p1-63.md`
+저장 경로: **반드시** `translated/{lang}/antigravity/` 아래에 저장 (`/tmp/` 사용 금지)
+- 일본어: `translated/ja/antigravity/translation_draft_fuwafuwa_p1-63.md`
+- 독일어: `translated/de/antigravity/translation_draft_bestellungen_p1-10.md`
 
 ### Step 4. 파이프라인 빌드 (검증 + JSON + 대조 PDF + 로그)
 
 ```bash
 source .venv/bin/activate && python src/translate_pipeline.py build \
-  --input translated/antigravity/translation_draft_{PDF명}_{RANGE}.md \
-  --pdf data/pdf/{PDF_FILE} \
+  --input translated/{lang}/antigravity/translation_draft_{PDF명}_{RANGE}.md \
+  --pdf data/{PDF_FILE} \
   --pages {PAGE_RANGE} \
-  --output translated/antigravity/pages_{RANGE}.json
+  --lang {LANG_CODE} \
+  --output translated/{lang}/antigravity/pages_{RANGE}.json
 ```
 
 이 한 커맨드가 자동으로:
 1. ✅ MD → 안전한 JSON 변환 (이스케이프 오류 0)
-2. ✅ ANTI-JAPANESE 검증 (일본어 잔존 감지)
+2. ✅ 잔존 검증 (언어 프로파일 기반 — 일본어/독일어/기타)
 3. ✅ **페이지 정합성 검증** (1:1 매칭 — 글자수 비율 비교)
 4. ✅ 대조 PDF 생성
 5. ✅ translate-log.json 세션 기록
@@ -110,9 +113,9 @@ source .venv/bin/activate && python src/translate_pipeline.py build \
 
 ### Step 5. 검증 실패 시 수정
 
-파이프라인이 ANTI-JAPANESE 오류를 보고하면:
-1. 에러 메시지에서 해당 페이지와 잔존 일본어 확인
-2. `translated/antigravity/translation_draft_*.md`에서 해당 페이지만 수정
+파이프라인이 잔존 오류를 보고하면:
+1. 에러 메시지에서 해당 페이지와 잔존 원문 확인
+2. `translated/{lang}/antigravity/translation_draft_*.md`에서 해당 페이지만 수정
 3. Step 4 다시 실행
 
 ---
@@ -120,10 +123,17 @@ source .venv/bin/activate && python src/translate_pipeline.py build \
 ## 결과물 구조
 ```
 translated/
-├── index.md                              ← 번역 이력 테이블 (자동 업데이트)
-├── translate-log.json                    ← 세션 로그 (자동 생성)
-└── antigravity/                          ← 모든 결과물 집중
-    ├── translation_draft_*_p1-63.md      ← 번역 드래프트 (원문+번역 쌍)
-    ├── pages_1-63.json                   ← 번역 데이터 JSON
-    └── 대조본_p1-63.pdf                  ← 원문/번역 대조 PDF
+├── index.md                                   ← 번역 이력 테이블 (자동 업데이트)
+├── translate-log.json                         ← 세션 로그 (자동 생성)
+├── ja/                                        ← 🇯🇵 일본어 결과물
+│   └── antigravity/
+│       ├── translation_draft_*_p1-63.md       ← 번역 드래프트
+│       ├── pages_1-63.json                    ← 번역 데이터 JSON
+│       └── 대조본_p1-63.pdf                   ← 원문/번역 대조 PDF
+└── de/                                        ← 🇩🇪 독일어 결과물
+    └── antigravity/
+        ├── translation_draft_*_p1-10.md
+        ├── pages_de_1-10.json
+        └── 대조본_p1-10.pdf
 ```
+

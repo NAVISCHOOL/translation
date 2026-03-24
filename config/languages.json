@@ -1,0 +1,20 @@
+{
+  "ja": {
+    "name": "일본어",
+    "detection_pattern": "[\\u3040-\\u309F\\u30A0-\\u30FF\\u31F0-\\u31FF\\uFF66-\\uFF9F]+",
+    "detection_severity": "error",
+    "glossary_file": "glossary.json",
+    "sentence_endings": ["。", "！", "？", ")", "）", "」", "』", "…"],
+    "len_ratio": {"warn": 1.5, "error": 2.0, "missing": 0.3},
+    "style_guide": "사이토 히토리 문체: 따뜻하고 대화체, 해요체 혼용. 극한의 단문."
+  },
+  "de": {
+    "name": "독일어",
+    "detection_pattern": "[äöüÄÖÜß]{2,}|(?:[A-Za-zäöüÄÖÜß]+ ){4,}(?:ist|sind|hat|wird|kann|muss|soll)",
+    "detection_severity": "warning",
+    "glossary_file": "glossary_de.json",
+    "sentence_endings": [".", "!", "?", "…"],
+    "len_ratio": {"warn": 2.5, "error": 3.5, "missing": 0.2},
+    "style_guide": "자연스러운 한국어. 번역투 제거. 단문 위주."
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "language": {
+    "code": "de",
+    "name": "독일어",
+    "name_en": "German",
+    "source_name": "Deutsch",
+    "target": "ko"
+  },
+  "glossary": {
+    "Vorwort": "머리말",
+    "Nachwort": "맺음말",
+    "Kapitel": "장(章)",
+    "Inhaltsverzeichnis": "목차",
+    "Einleitung": "서론",
+    "Zusammenfassung": "요약",
+    "Anhang": "부록",
+    "Gemütlichkeit": {
+      "translation": "아늑한 분위기",
+      "note": "독일 특유의 따뜻하고 편안한 사교적 분위기를 의미",
+      "context": "가정, 카페, 모임 등에서 사용"
+    },
+    "Feierabend": {
+      "translation": "퇴근 후 여유 시간",
+      "note": "단순한 '퇴근'이 아닌, 퇴근 후 자유롭게 즐기는 시간이라는 문화적 의미",
+      "context": "일상 대화, 라이프스타일 관련"
+    },
+    "Wanderlust": {
+      "translation": "여행에 대한 열망",
+      "note": "한국에서도 알려진 표현. 방랑벽이라고도 함"
+    },
+    "Zeitgeist": {
+      "translation": "시대정신",
+      "note": "한국에서도 사용되는 용어"
+    },
+    "Kindergarten": {
+      "translation": "유치원",
+      "note": "독일어에서 유래한 영어/한국어 공용 단어"
+    }
+  },
+  "style": {
+    "default": "natural",
+    "options": {
+      "natural": "자연스러운 한국어, 번역투 제거, 단문 위주. 독일어 특유의 긴 문장을 간결한 한국어로 재구성",
+      "literary": "문학적 표현, 원문의 어조(Ton)와 리듬 보존. 작가의 고유한 문체를 살리는 번역",
+      "academic": "학술적 어투, 전문 용어 정확 사용, 합쇼체. 논문/학술서 번역에 적합"
+    },
+    "register_detection": {
+      "Sie_form": "합쇼체 또는 해요체로 번역 (공손한 대화)",
+      "du_form": "해체 또는 반말로 번역 (친근한 대화)",
+      "mixed": "문맥에 따라 자연스럽게 전환"
+    }
+  },
+  "translation_guidelines": [
+    "100% 한국어만 출력 (독일어 원문 잔류 금지, 허용 예외 제외)",
+    "복합어(Komposita)는 구성 요소를 분해하여 의미를 파악한 후 자연스러운 한국어로 번역하세요 (예: Krankenversicherung = Kranken+Versicherung → 건강보험)",
+    "분리동사(Trennbare Verben)를 주의하세요. anfangen은 문장에서 'fange...an'처럼 분리됩니다",
+    "용어집의 단어는 원형(주격, Nominativ)으로 등록되어 있습니다. 격변화형(den, dem, des 등)도 동일하게 번역하세요",
+    "원문의 Sie/du 구분을 한국어 존칭 체계에 자연스럽게 반영하세요",
+    "독일어 특유의 긴 종속절 구조를 한국어의 짧은 문장으로 재구성하세요",
+    "번역투 제거: '~에 의한', '~에 있어서' 같은 어색한 표현 대신 자연스러운 한국어 사용"
+  ],
+  "cultural_notes": {
+    "well_known": [
+      "Oktoberfest", "BMW", "Volkswagen", "Mercedes-Benz",
+      "Autobahn", "Kindergarten", "Zeitgeist", "Wanderlust"
+    ],
+    "needs_explanation": {
+      "Schützenfest": "독일 전통 사격 축제",
+      "Karneval": "독일식 카니발 (사순절 전 축제, 쾰른 등지에서 성대하게 열림)",
+      "Stammtisch": "단골 모임 (카페나 술집에서 정기적으로 만나는 비공식 모임)",
+      "Kaffeeklatsch": "커피를 마시며 나누는 수다 시간",
+      "Heimat": "고향에 대한 정서적 유대감 (단순한 '고향'보다 깊은 의미)"
+    },
+    "guideline": "한국에 잘 알려진 용어는 원문 유지 가능. 그 외에는 본문 안에서 자연스럽게 풀어서 설명하세요"
+  },
+  "validation": {
+    "check_residual": true,
+    "source_script_pattern": "[äöüÄÖÜß]|\\b(und|oder|der|die|das|ist|ein|eine|nicht|mit|auf|für|von|zu|den|dem|des|als|auch|nach|wie|über|wenn|aber|noch|nur|schon|sehr|immer|dieser|jeder|kein|sein|haben|werden|können|müssen|sollen|wollen|dürfen)\\b",
+    "source_script_name": "독일어 특유 문자(움라우트/에스체트) 및 일반 어휘",
+    "allowed_residuals": [
+      "Oktoberfest", "BMW", "Volkswagen", "Mercedes-Benz",
+      "Autobahn", "Kindergarten", "Zeitgeist", "Wanderlust"
+    ],
+    "length_ratio": {
+      "min": 0.4,
+      "max": 2.5,
+      "note": "독일어→한국어는 복합어 등으로 길이 차이가 클 수 있음"
+    }
+  }
+}

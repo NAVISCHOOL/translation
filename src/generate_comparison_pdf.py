@@ -25,6 +25,10 @@ from fpdf import FPDF
 # ============================================================
 
 FONT_SEARCH_PATHS = [
+    # Windows
+    os.path.join(os.environ.get("WINDIR", "C:\\Windows"), "Fonts"),
+    os.path.expanduser("~/AppData/Local/Microsoft/Windows/Fonts"),
+    # macOS
     os.path.expanduser("~/Library/Fonts"),
     "/Library/Fonts",
     "/System/Library/Fonts",
@@ -32,8 +36,8 @@ FONT_SEARCH_PATHS = [
 ]
 
 FONT_CANDIDATES = {
-    "regular": ["NanumSquare_acR.ttf", "NanumSquareR.ttf", "NanumGothic.ttf"],
-    "bold": ["NanumSquareEB.ttf", "NanumSquare_acB.ttf", "NanumGothicBold.ttf"],
+    "regular": ["malgun.ttf", "NanumSquare_acR.ttf", "NanumSquareR.ttf", "NanumGothic.ttf"],
+    "bold": ["malgunbd.ttf", "NanumSquareEB.ttf", "NanumSquare_acB.ttf", "NanumGothicBold.ttf"],
 }
 
 
