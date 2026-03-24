@@ -1,0 +1,93 @@
+## page 121
+original: Der universelle Bestellservice liebt eifrige Kunden und schickt ihnen zur Belohnung noch viele »Werbegeschenke« (schöne Zusatzüberraschungslieferungen) hinterher, denn: Die Natur ist an glücklichen Menschen interessiert, weil diese die Natur achten und sie nicht zerstören. Das ist ähnlich wie beim »Vielflieger-Rabatt« (miles and more). Je nachdem, was für »Konditionen« DU mit dem universellen Lieferservice ausgemacht hast, gibt es bei etwa jeder zehnten Bestellung noch eine Extralieferung dazu! (Die »Konditionen« unterliegen allein deinem freien Willen und dem, woran du glauben willst.)
+☆ ☆ ☆
+121
+translated: 우주적 주문 서비스는 열심인 고객을 좋아하고, 보상으로 많은 '판촉 선물'(멋진 추가 깜짝 배달)을 보내준다. 자연은 행복한 사람에게 관심 있기 때문이다. 행복한 사람은 자연을 존중하고 파괴하지 않으니까. '마일리지 할인'과 비슷하다. 당신이 우주적 배달 서비스와 어떤 '조건'을 맺었느냐에 따라, 대략 열 번째 주문마다 추가 배달이 온다! ('조건'은 오직 당신의 자유의지와, 무엇을 믿고 싶은지에 달려 있다.)
+☆ ☆ ☆
+
+## page 122
+original: Klare Absichten fördern klare (Liefer-)Ergebnisse zutage. Wenn du über deine »großen Absichten« noch nachdenkst, kannst du die Zeit nutzen, die »kleinen« klar zu formulieren: Ich möchte jeden Tag mindestens ein freundliches Gespräch führen, mich einmal gefreut, einmal gelacht haben etc. pp. Übung macht den Meister, und irgendwann werden auch deine »großen Absichten« immer klarer.
+☆ ☆ ☆
+Kein Baby kommt genervt, cool drauf oder mit Minderwertigkeitskomplexen auf die Welt. Dein natürlicher Zustand ist Freude, Liebe und Fülle an allem. Alles andere ist künstlich und ein Irrtum.
+☆ ☆ ☆
+122
+translated: 명확한 의도는 명확한 (배달) 결과를 낳는다. '큰 의도'를 아직 생각 중이라면, 그 시간에 '작은' 것을 분명히 표현하라: 매일 최소 한 번 친절한 대화를 하고, 한 번 기뻐하고, 한 번 웃고 싶다 등등. 연습이 장인을 만들고, 언젠가 '큰 의도'도 점점 명확해진다.
+☆ ☆ ☆
+아기는 짜증나거나 쿨하거나 열등감을 갖고 세상에 태어나지 않는다. 당신의 자연스러운 상태는 기쁨, 사랑, 모든 것의 풍요다. 나머지는 다 인위적이고 착각이다.
+☆ ☆ ☆
+
+## page 123
+original: Was wäre, wenn doch alles nur Zufall wäre? Gegenfrage: Was würde das ändern? Wenn der Glaube an die Bestellungen beim Universum bewirkt, dass jemand so viel neuen Lebensmut schöpft, dass er oder sie so gut drauf ist, dass sich immer mehr positive Dinge ganz von selbst ergeben, dann ist es doch wunderbar! Was aber ist, wenn es Bestellungen beim Universum wirklich gibt? Du gehst ein großes Risiko ein, wenn du es nie ausprobierst, denn womöglich hättest du dir schon lange viel Zeit und Mühe in vielen Bereichen deines Lebens einfach sparen können, wenn du öfter mit der inneren Stimme und dem Universum kommuniziert hättest.
+☆ ☆ ☆
+123
+translated: 모든 게 그냥 우연이라면? 반문: 그것이 무엇을 바꾸는가? 우주에 주문하기에 대한 믿음이 누군가에게 새로운 삶의 용기를 불어넣어, 기분이 너무 좋아져서 점점 더 많은 긍정적 일이 저절로 일어나게 한다면, 그것은 정말 멋진 것이다! 하지만 우주에 대한 주문이 정말로 존재한다면? 시도해보지 않으면 큰 위험을 감수하는 것이다. 아마 내면의 목소리와 우주와 더 자주 소통했더라면, 이미 오래전에 삶의 많은 영역에서 시간과 노력을 절약할 수 있었을 것이다.
+☆ ☆ ☆
+
+## page 124
+original: Auch völlig Unerleuchtete können beim Universum bestellen (Beweis: siehe die Autorin!). Wir müssen keine Erleuchtung erlangt haben, um unser Leben zu verbessern, wir müssen uns lediglich wirklich und ehrlich auf allen Ebenen (körperlich, geistig, seelisch) auf den Weg machen, dann kommt das Leben uns mit Freude entgegen.
+☆ ☆ ☆
+Wo immer sich jemand freut und gerührt ist, sollten wir hingehen und an der (oft als sentimental abgetanen) Freude möglichst intensiv teilhaben. Wenn wir uns auf den Weg machen, diese tiefe Freude über jedes Gänseblümchen empfinden zu können, dann werden wir erstaunt feststellen, wie Dinge, die wir uns wünschen, uns immer öfter und immer schneller geradezu vor die Füße fallen.
+☆ ☆ ☆
+124
+translated: 전혀 깨달음을 얻지 못한 사람도 우주에 주문할 수 있다(증거: 저자를 보세요!). 삶을 개선하기 위해 깨달음을 얻을 필요 없다. 단지 진정으로 솔직하게 모든 차원에서(육체적, 정신적, 영적) 길을 나서면, 삶이 기쁨으로 맞아준다.
+☆ ☆ ☆
+누군가가 기뻐하고 감동받는 곳이 있으면, 거기에 가서 (종종 감상적이라고 치부되는) 기쁨에 최대한 깊이 동참해야 한다. 모든 데이지 꽃에 이 깊은 기쁨을 느끼는 길에 나서면, 원하는 것이 점점 더 자주, 점점 더 빨리 발 앞에 떨어지는 것을 놀랍게 발견할 것이다.
+☆ ☆ ☆
+
+## page 125
+original: Gedanken von Freude und Liebe zu den Dingen führen zur schnelleren Lieferung all meiner Wünsche und bewussten Bestellungen. Gedanken von Zweifel und Ärger (egal über wen oder was) führen dazu, dass sich in meinem Leben noch mehr Gründe für Zweifel und Ärger zeigen. Jeder Gedanke, jedes Gefühl vervielfältigt sich selbst.
+☆ ☆ ☆
+125
+translated: 사물에 대한 기쁨과 사랑의 생각은 모든 소원과 의식적 주문의 더 빠른 배달로 이끈다. 의심과 짜증의 생각은(누구에 대해서든 무엇에 대해서든) 삶에 의심과 짜증의 이유가 더 많이 나타나게 한다. 모든 생각, 모든 감정은 스스로를 복제한다.
+☆ ☆ ☆
+
+## page 126
+original: Du glaubst nicht, dass deine Gedanken Verwirklichungskraft haben? Du möchtest es aber glauben, da du siehst, dass dies eine durchaus vernünftige Annahme ist? Dann sei nett zu dir selbst und füttere deinen Verstand jeden Tag mit Informationen (z. B. aus Büchern, Vorträgen, Gesprächen), die ihm zeigen, dass der Mensch mit seiner Erwartungshaltung tatsächlich etwas bewirkt und dass es eine Dummheit wäre, etwas anderes als das Beste vom Leben zu erwarten! Liste all deine positiven Erlebnisse und all die kleinen Zufälle auf, die dir weiteren Grund zu der Annahme geben, dass du Einfluss auf deine Realität hast.
+☆ ☆ ☆
+126
+translated: 생각에 실현력이 있다는 걸 안 믿는가? 하지만 이것이 충분히 합리적 가정이라는 걸 보고 믿고 싶은가? 그러면 자기에게 친절하고, 매일 이성에 정보를 먹여라(예: 책, 강연, 대화에서). 인간이 기대를 통해 실제로 무언가를 만들고, 삶에서 최선 이외의 것을 기대하는 건 어리석다는 걸 보여주는 정보를. 모든 긍정적 경험과 작은 우연을 목록으로 만들어라. 현실에 영향을 미친다는 가정에 근거를 더 주는 것들을.
+☆ ☆ ☆
+
+## page 127
+original: Alles was du ablehnst und verurteilst, ist dir im Weg für deine »Express-Lieferungen«. Liebe zu allem hingegen beschleunigt sie. Vielleicht hilft es dir zu wissen, dass du nicht alles ablehnen und verurteilen musst, was du selbst NICHT leben möchtest. Im Gegenteil, je weniger du es ablehnst, desto weniger wird es dir begegnen, wenn es nicht zu dir passt.
+☆ ☆ ☆
+Wenn ich nach Rom will, muss ich zuerst wissen, wo ich derzeit bin, um zu wissen, wie ich weiterkomme. Brauche ich als Nächstes ein Schiff, weil ich am Kanal stehe, oder eine Bergbahn, weil ich am Fuße eines Berges stehe? Wenn ich reich, glücklich etc. werden will, ist es genauso nützlich zu wissen, wo ich bin, wer ich bin und was mein nächster Schritt sein könnte. Sobald ich in der richtigen Richtung unterwegs bin, kommen mir die »Straßenschilder« von allein entgegen.
+☆ ☆ ☆
+127
+translated: 거부하고 판단하는 모든 것은 '특급 배달'의 방해물이다. 반면 모든 것에 대한 사랑은 가속시킨다. 자기가 살고 싶지 않은 것을 모두 거부하고 판단할 필요 없다는 걸 알면 도움이 될 수 있다. 오히려 덜 거부할수록, 맞지 않는 것을 덜 만나게 된다.
+☆ ☆ ☆
+로마에 가고 싶으면, 먼저 지금 어디 있는지 알아야 한다. 어떻게 갈 수 있는지 알기 위해. 운하 옆에 서 있으니 배가 필요한지, 산 기슭에 있으니 산악열차가 필요한지? 부자가 되고, 행복해지고 싶으면, 자기가 어디 있고, 누구이고, 다음 단계가 뭔지 아는 것이 똑같이 유용하다. 올바른 방향으로 가기 시작하면, '도로 표지판'이 절로 다가온다.
+☆ ☆ ☆
+
+## page 128
+original: Es ist nicht tragisch, wenn man Dinge bestellt und bekommt, die man dann doch nicht braucht. Im Gegenteil: Dies beschleunigt die Selbsterkenntnis und Selbstfindung ungemein, weil man auf diese Weise nicht jahrelang denkt: »Hätte ich doch nur dies und das« (nämlich die Dinge, die man bereits bestellt, erhalten und dann als überflüssig erkannt hat). Außerdem ist selbst die unnötigste Bestellung doch für eines gut und nötig: Zur Stärkung des Vertrauens, dass der Lieferservice noch da ist.
+☆ ☆ ☆
+128
+translated: 주문해서 받았는데 결국 필요 없는 것이라도 비극이 아니다. 오히려: 이것은 자기 인식과 자기 발견을 엄청나게 빠르게 한다. 이런 식으로 수년간 "이것저것이 있었으면"(이미 주문해서 받고 불필요하다고 인식한 것들)이라고 생각하지 않아도 되니까. 게다가 가장 불필요한 주문조차 하나에는 좋고 필요하다: 배달 서비스가 아직 있다는 신뢰를 강화하는 데.
+☆ ☆ ☆
+
+## page 129
+original: Am Anfang unserer Selbsterkenntnisreisen vermuten wir oft ein schreckliches Monster in den Tiefen unserer Seele. Aber sobald wir anfangen, unsere Wahrheit in den kleinen Dingen des Alltags zu ergründen (Zum Beispiel: Mag ich heute lieber grünen oder lieber schwarzen Tee?), stellen wir fest, dass das schreckliche Monster nur ein schrecklich verängstigtes Schmusekätzchen war, das schon viel zu lange keiner mehr gestreichelt hat.
+☆ ☆ ☆
+Die Seele jedes Menschen ist heil wie bei einem frisch geborenen Baby. Der Himmel hinter den Wolken ist immer blau (die Wolken stehen für kleine Probleme bis hin zu großen Neurosen). Wenn du eine schlechte Meinung von dir und deinen Fähigkeiten hast, dann betrachtest du dich selbst zu oberflächlich. Du siehst vor lauter Wolken den blauen Himmel deiner Seele nicht mehr. Lass dir versichern, dass er trotzdem da ist.
+☆ ☆ ☆
+129
+translated: 자기 인식 여행의 초기에 우리는 종종 영혼 깊은 곳에 무서운 괴물이 있다고 짐작한다. 하지만 일상의 작은 일에서 자기 진실을 찾기 시작하면(예: 오늘 녹차가 좋을까 홍차가 좋을까?), 무서운 괴물은 그저 무섭게 겁먹은 새끼 고양이였음을 알게 된다. 너무 오래 아무도 쓰다듬어주지 않은.
+☆ ☆ ☆
+모든 사람의 영혼은 갓 태어난 아기처럼 온전하다. 구름 뒤의 하늘은 항상 파랗다(구름은 작은 문제부터 큰 신경증까지를 의미한다). 자기와 자기 능력에 대해 나쁜 의견을 갖고 있다면, 자기를 너무 피상적으로 보는 것이다. 구름이 너무 많아 영혼의 푸른 하늘이 안 보이는 것이다. 그래도 있다는 걸 보장한다.
+☆ ☆ ☆
+
+## page 130
+original: Wenn jemand etwas Dummes tut, dann fällt ihm nur im Moment nichts Besseres ein. Du solltest die Unfähigkeiten anderer nicht zu persönlich nehmen, sondern dich lieber um deine eigenen Fähigkeiten kümmern.
+☆ ☆ ☆
+Es gibt keinen Grund, dich mehr anzustrengen, als es dir Spaß macht.
+☆ ☆ ☆
+Anstrengung verlangsamt den Selbstfindungsprozess (zumindest meinen; es gibt viele therapeutische Richtungen, die das anders sehen, entscheide du für dich!), Spaß beschleunigt ihn!
+☆ ☆ ☆
+130
+translated: 누군가 어리석은 일을 하면, 그 순간 더 나은 게 떠오르지 않을 뿐이다. 다른 사람의 부족함을 개인적으로 받아들이지 말고, 자기 능력을 돌보는 게 낫다.
+☆ ☆ ☆
+즐거운 것 이상으로 노력할 이유가 없다.
+☆ ☆ ☆
+노력은 자기 발견 과정을 느리게 한다(최소한 나의 경우; 다르게 보는 치료 방향도 많다. 스스로 결정하라!). 재미가 가속시킨다!
+☆ ☆ ☆

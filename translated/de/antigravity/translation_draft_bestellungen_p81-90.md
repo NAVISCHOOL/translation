@@ -1,0 +1,109 @@
+## page 81
+original: Bestellservice auch. Das Universum ist kein Guru, den man anflehen und anjammern kann (was die Gurus im Übrigen auch nicht mögen), sondern eine Energiequelle. Stell dir vor, du hast eine Bestellkarte an irgendein Versandhaus geschickt und faxt am nächsten Tag, ob die Karte auch angekommen ist. Dann rufst du noch dreimal extra an. Ein irdisches Versandhaus streicht dich vielleicht noch eine Weile nicht aus der Kartei, weil sie schließlich dein Geld wollen. Universelle Gesetze funktionieren aber etwas anders: Die Bestellung manifestiert sich durch deinen Glauben, dein Vertrauen, deine »Nicht-zweifel« oder dein Loslassen und Wiedervergessen der Bestellung. Wieder vergessen oder loslassen ist das Sicherste bei »Anfängern«, wenn es dir aufgrund mangelnder Erfahrung noch an Vertrauen mangelt. Wieder vergessen hat den Vorteil, dass man dann auch nicht daran denkt, zu zweifeln oder sich Sorgen zu machen.
+Loslassen musst du selbst ausprobieren. Eine mögliche Variante ist, dass du dir – immer dann, wenn du dich dabei ertappst, dass du eine Bestellung wiederholst oder eine sehr starke Erwartungshaltung hast – selbst sagst: »Ich liebe es, so wie es ist, und ich brauche das Bestellte nicht, um glücklich zu sein. Es ist nicht wichtig, ob es kommt oder nicht. Ich schicke hiermit
+81
+translated: 나쁘게 대하지 않는 배달 서비스처럼요. 우주는 간청하고 징징댈 수 있는 구루가 아니에요(구루들도 그런 거 좋아하지 않아요). 에너지의 원천이에요. 어떤 통신판매 회사에 주문 카드를 보내고 다음 날 카드가 도착했는지 팩스를 보낸다고 상상해 보세요. 그다음 세 번 더 전화해요. 지상의 통신판매 회사는 당신 돈이 필요하니까 당분간 명단에서 지우지 않을 수도 있어요. 하지만 우주의 법칙은 좀 달라요: 주문은 당신의 믿음, 신뢰, '의심하지 않음' 또는 내려놓음과 잊어버리기를 통해 현실화돼요. 다시 잊어버리거나 내려놓는 게 '초보자'에게는 가장 안전해요. 경험 부족으로 아직 신뢰가 부족하다면요. 다시 잊어버리면 의심하거나 걱정할 생각도 안 하는 장점이 있어요.
+내려놓기는 직접 시도해보세요. 가능한 방법 하나는 – 주문을 반복하거나 아주 강한 기대를 하고 있는 걸 잡아챌 때마다 – 스스로에게 말하는 거예요: "나는 있는 그대로를 사랑하고, 행복하기 위해 주문한 게 필요 없어. 오든 안 오든 중요하지 않아. 이제
+
+## page 82
+original: meine Gedanken der Doppelbestellung nicht ab und gehe denen da oben nicht auf den Keks. Ich bin sowieso zufrieden.«
+Zu starke Erwartungshaltungen blockieren den Energiefluss. Dieses Versandhaus liefert nämlich nicht per UPS (irdischer Paketdienst), sondern per Eingebung. Die Eingebung ist meist nur ein winziger Impuls oder ein unbestimmtes Bauchgefühl, dies und jenes zu tun, einen anderen Weg nach Hause als gewöhnlich zu nehmen oder Ähnliches. Wenn du nun eine sehr starke Erwartungshaltung hast und schon angespannt, traurig oder zweifelnd auf die Auslieferung wartest, hörst du deine innere Stimme nicht mehr. Das ist das einzige Problem.
+Take it easy, have fun and everything will come!
+Und: Verurteile dich nicht selbst als »bestellunfähig«, wenn es nicht gleich klappt. ICH hatte einen entscheidenden Vorteil im Vergleich zu dir, als ich anfing: Ich habe die erste Bestellung gemacht, ohne im Allerentferntesten weiter darüber nachzudenken, was ich da tat, oder darüber, ob die Bestellung wirklich kommen könnte. Ich habe nur bestellt, um die Diskussion mit meiner Freundin zu beenden, und habe keine Emotionen in Zweifel, Sorgen oder eine starke Erwartungshaltung gesteckt. Ich hatte gar keine Erwartung, nur
+82
+translated: 이중 주문의 생각은 보내지 않을게. 위에 있는 분들 귀찮게 안 할게. 어차피 만족하니까."
+너무 강한 기대는 에너지 흐름을 막아요. 이 통신판매 회사는 UPS(지상 택배)가 아니라 영감으로 배달하거든요. 영감은 대개 아주 작은 충동이나 막연한 직감이에요. 이것저것 하라는, 평소와 다른 길로 집에 가라는 것 같은요. 아주 강한 기대를 갖고 긴장하거나 슬프거나 의심하며 배달을 기다리면, 더 이상 내면의 목소리가 안 들려요. 그게 유일한 문제예요.
+편하게 해, 즐겨, 그러면 다 올 거야!
+그리고: 바로 안 된다고 '주문 능력 없음'이라고 자기를 판단하지 마세요. 나는 시작할 때 당신에 비해 결정적 이점이 있었어요: 내가 뭘 하는지, 주문이 정말 올 수 있는지 전혀 생각도 안 하고 첫 주문을 했어요. 친구와 논쟁을 끝내려고 주문했을 뿐이고, 의심, 걱정, 강한 기대에 감정을 넣지 않았어요. 기대 자체가 없었어요. 그저
+
+## page 83
+original: eine tolle Überraschung, als es dann klappte. Mit diesem Erfolgserlebnis ging es natürlich leicht weiter.
+Das ist der Trick: Ein spektakulärer Erfolg, und die Sache läuft, weil du dran glaubst. Vielleicht kannst du Folgendes ausprobieren: Wenn du ein Auto hast, kannst du mit Parkplätzen üben. Wenn du irgendwohin musst, wo es normalerweise keine Parkplätze gibt, bestell dir einen, bevor du losfährst.
+Vielleicht passiert es, dass noch jemand anruft, dass du »Lust hast«, eine spezielle Route zu nehmen, oder du verpasst eine Ampelschaltung, weil du woanders hingeguckt hast. Jedenfalls kommst du dann irgendwann am Ziel an, und im selben Moment, in dem du dort auftauchst, parkt einer aus – 30 Meter von dem Haus entfernt, zu dem du musst.
+Und bis zu diesem Tag, bist du IMMER drei Runden mindestens gefahren und hast ewig weit weg geparkt. Erkenne an, dass dies zumindest ein erster Erfolg sein könnte!
+Anerkennung ist wichtig. Denn was glaubst du, was die vom Quelle-Versand sagen würden, wenn sie dir einen wunderschönen, von dir bestellten Pullover schicken, und du rufst an und sagst: »Sie, also ehrlich gesagt, ich bin mir gar nicht mehr sicher, ob ich diesen Pullover nicht schon immer
+83
+translated: 성공했을 때 멋진 깜짝 선물이었어요. 이 성공 경험으로 당연히 쉽게 계속됐어요.
+이게 비결이에요: 하나의 극적인 성공, 그러면 됐어요. 믿으니까요. 이런 걸 시도해 볼 수 있어요: 차가 있으면 주차장으로 연습해요. 보통 주차할 곳이 없는 곳에 가야 하면, 출발 전에 하나 주문하세요.
+아마 누군가가 전화해서, 특정 경로로 가고 '싶어지거나', 다른 곳을 보느라 신호등을 놓칠 수도 있어요. 어쨌든 목적지에 도착하는 순간, 바로 그 순간, 누군가가 빠져요 – 가야 할 집에서 30미터 떨어진 곳에서요.
+그리고 이날까지 당신은 항상 최소 세 바퀴를 돌고 엄청 먼 곳에 주차했어요. 이것이 적어도 첫 번째 성공일 수 있다고 인정하세요!
+인정이 중요해요. 통신판매 회사에서 당신이 주문한 아름다운 스웨터를 보냈는데 전화해서 이렇게 말한다고 생각해 보세요: "저기요, 솔직히 이 스웨터를 원래부터 갖고 있었는지
+
+## page 84
+original: hatte und ob nicht Ihre Lieferung noch aussteht. Irgendwie glaube ich eher, dass ich noch keinen Pullover von Ihnen bekommen habe.«
+Das werden sie ziemlich undankbar finden und dich keineswegs zum Lieblingskunden erklären. Wenn du dich dagegen irrtümlich einmal zu viel für eine Lieferung bedankst, obwohl es nur ein Zufall war (falls es so was überhaupt gibt), dann werden sie vermutlich so gerührt sein, dass sie dir den nächsten Superparkplatz auch ganz ohne Bestellung liefern.
+Außerdem tust du etwas für dich, wenn du (wenigstens die Möglichkeit) anerkennst, dass du eine Bestellung erfolgreich hinbekommen hast. Bei der nächsten hast du dann schon weniger Angst, dass es nicht klappen könnte.
+Während du auf die Auslieferung wartest, ENTSCHEIDE dich einfach dafür, dass es nicht wichtig ist und dass du auch so dein Leben lieben kannst. (Eine derartige Einstellung beschleunigt die Auslieferung ungemein – aber das habe ich jetzt nicht gesagt, weil du ja nicht drauf warten sollst …)
+84
+translated: 확신이 없고, 아직 배송이 안 된 게 아닌가 싶어요. 아무래도 아직 스웨터를 안 받은 것 같은데요."
+꽤 배은망덕하다고 느끼고 절대 단골 고객으로 만들지 않을 거예요. 반대로 실수로 한 번 더 배달에 감사하면, 우연이었더라도(그런 게 있다면), 아마 너무 감동해서 다음 최고 주차장을 주문도 없이 배달해줄 거예요.
+게다가 주문을 성공적으로 해냈다는 것을(최소한 가능성이라도) 인정하면 자기에게 좋은 일이에요. 다음번에는 안 될까 봐 두려워하는 게 이미 줄어들어요.
+배달을 기다리는 동안, 그냥 중요하지 않다고, 그렇지 않아도 인생을 사랑할 수 있다고 결정하세요. (이런 태도가 배달을 엄청나게 빠르게 해요 – 하지만 이건 내가 지금 말한 게 아니에요. 기다리면 안 되니까…)
+
+## page 85
+original: Krankheiten – ein besonderes Kapitel beim Bestellen:
+Wenn man Krankheiten »abbestellt«, muss man dies positiv formulieren (so wie alles andere übrigens auch). Du bestellst nicht das Kopfweh ab, sondern bestellst einen klaren, gesunden und freien Kopf (oder so ähnlich). Die Lieferung erfolgt meist entweder durch zufällige Bemerkungen von irgendjemandem, sodass du an eine spezielle, für dich richtige Heilmethode gerätst. Oder die Lieferung erfolgt durch ein prägnantes Erlebnis, das auf den ersten Blick auch mal unangenehm sein mag. Vielleicht erhältst du dadurch einen Hinweis auf den geistigen Hintergrund deiner Krankheit – was es wirklich ist, was dir Kopfschmerzen bereitet, und weshalb sich deine Gedanken und Emotionen als Kopfweh manifestieren. (In den Prophezeiungen von Celestine gut beschrieben, in der zehnten Prophezeiung – aber unbedingt von vorne anfangen mit der ersten, sonst kann man es nicht nachvollziehen!)
+Wenn du den Grund deiner Krankheit verstanden hast und dich dran erinnerst, was du im Leben eigentlich wirklich willst, und anfängst, dich um »dein Selbst« zu kümmern, indem du nach dem Leben suchst, in dem du den für dich besten Selbstausdruck findest, dann muss dich
+85
+translated: 질병 – 주문 시 특별한 장
+질병을 '취소 주문'할 때는 긍정적으로 표현해야 해요(다른 모든 것도 마찬가지예요). 두통을 취소 주문하는 게 아니라, 맑고 건강하고 자유로운 머리를 주문해요(대충 이런 식으로). 배달은 대개 누군가의 우연한 말을 통해 와요. 당신에게 맞는 특별한 치료법을 알게 되는 방식으로요. 또는 처음에는 불쾌할 수도 있는 인상적인 경험을 통해 배달돼요. 질병의 정신적 배경에 대한 힌트를 받을 수도 있어요 – 진짜 두통을 일으키는 게 뭐고, 왜 생각과 감정이 두통으로 나타나는지. (셀레스틴의 예언에 잘 설명되어 있어요. 열 번째 예언에서 – 하지만 반드시 첫 번째부터 시작하세요, 안 그러면 이해 못 해요!)
+질병의 원인을 이해하고, 인생에서 정말 원하는 게 뭔지 기억하고, 가장 잘 맞는 자기표현을 찾는 삶을 추구하며 '나의 본질'을 돌보기 시작하면,
+
+## page 86
+original: dein Körper nicht länger daran erinnern, dass du dich selbst vernachlässigst, und die Krankheit verschwindet.
+Pillen, Cremes und Salben sind immer nur Krücken und Symptombekämpfung. Es gibt allerdings Heilmethoden (wie die Bachblüten), die die psychischen Gründe schneller ans Tageslicht bringen. Vielleicht wirst du dorthin geführt.
+Jedenfalls möchte ich dich hiermit gewarnt haben: Krankheiten abzubestellen kann in Stress ausarten. Die Lieferung könnte eine Bewusstmachung der Ursachen sein. Aber du kannst dir dabei ja jederzeit wieder Hilfe bestellen. So schlimm kann es also nicht werden. Ich erwähne es nur, weil ich noch bei niemandem erlebt habe, dass die Krankheit »einfach so« unsichtbar geworden wäre, ohne dass derjenige etwas dafür tun musste. Er erhielt nur die passenden Hinweise, was zu tun ist.
+Zusammenfassung:
+1. Bestelle, wie und wo du lustig bist. Wenn du gerne ein kleines Ritual veranstalten möchtest, denk dir eins aus, an das DU glauben kannst oder das dir stark erscheint.
+86
+translated: 더 이상 몸이 자기 자신을 소홀히 하고 있다고 상기시킬 필요가 없어지고, 질병은 사라져요.
+알약, 크림, 연고는 항상 목발이고 증상 치료일 뿐이에요. 하지만 바흐 꽃 요법 같은 치료법은 심리적 원인을 더 빨리 드러내요. 아마 거기로 이끌릴 거예요.
+어쨌든 경고하고 싶어요: 질병 취소 주문은 스트레스가 될 수 있어요. 배달이 원인의 인식일 수 있으니까요. 하지만 언제든 다시 도움을 주문할 수 있어요. 그러니 그렇게 나쁠 수는 없어요. 이걸 말하는 이유는 아무 노력 없이 질병이 '그냥' 사라진 사람은 본 적이 없기 때문이에요. 뭘 해야 하는지 적절한 힌트를 받았을 뿐이에요.
+요약:
+1. 마음 내키는 대로, 어디서든 주문하세요. 작은 의식을 치르고 싶으면, 당신이 믿을 수 있거나 강하다고 느끼는 것을 하나 생각해내세요.
+
+## page 87
+original: Ein Beispiel: Schreib deine Bestellung auf, und lies sie dem Universum nachts am Fenster (Balkon, Garten etc.) vor. Vielleicht machst du das an einem Tag, an dem du besonders gut drauf bist und besonders viel Vertrauen in deine Fähigkeiten hast oder an dem du dich einfach wohlfühlst. Wenn du Vollmond gut findest, tu es bei Vollmond.
+2. Gib ein und dieselbe Bestellung nur einmal auf. (Man kann Bestellungen vor der Auslieferung auch zurücknehmen.) Wenn du mehrmals dasselbe bestellst oder in Gedanken mehrmals möglichst viel Energie schickst, unterstellst du dem Universum Pfusch bei der Arbeit. Dem Universum ist das egal. Es wird das höchstens bedauerlich für dich finden, weil du …
+3. die Lieferung meist per Eingebung erhältst. Durch ein Gefühl, etwas, das irgendjemand »zufällig« zu dir sagt, oder etwas Ähnliches. Dadurch wirst du auf verschiedenen Wegen zur richtigen Zeit an den richtigen Ort gelotst, wo du dann deine Bestellung erhältst. Wenn du eine zu starke Erwartungshaltung hast, blockierst du dich selbst, und das Universum rennt ständig mit seinem Paket hinter dir
+87
+translated: 예를 들어: 주문을 적어서, 밤에 창가(발코니, 정원 등)에서 우주에게 읽어주세요. 기분이 특별히 좋고, 자기 능력에 대한 신뢰가 넘치거나, 그냥 기분 좋은 날에 해보세요. 보름달을 좋아하면, 보름달에 하세요.
+2. 같은 주문은 한 번만 넣으세요. (배달 전에 주문을 취소할 수도 있어요.) 같은 걸 여러 번 주문하거나 생각으로 가능한 많은 에너지를 여러 번 보내면, 우주에게 일을 대충 한다고 따지는 거예요. 우주는 상관없어요. 기껏해야 당신이 안됐다고 생각할 뿐이에요. 왜냐하면 당신은…
+3. 배달을 대부분 영감으로 받으니까요. 느낌, 누군가가 '우연히' 말하는 것, 비슷한 것을 통해서요. 이를 통해 여러 경로로 적절한 시간에 적절한 장소로 안내돼요. 거기서 주문을 받아요. 너무 강한 기대를 가지면, 스스로를 막아요. 우주는 택배를 들고 계속 당신 뒤를
+
+## page 88
+original: her; nur du erscheinst nie an den Auslieferungsorten, weil du zu angespannt warst.
+4. Jede Bestellung positiv formulieren! Wörter wie »nicht« und »kein« sind ungünstig. Du rufst ja auch nicht bei Quelle an und sagst: »Ich möchte bitte KEIN grünes Tischtuch.« Bestell dir das, was du haben willst. Wenn du Krankheit abbestellen willst, musst du dir Gesundheit der betreffenden Körperregion bestellen.
+5. Erkenne an, wenn eine Bestellung geklappt hat. Dadurch verstärkst du dein Vertrauen in deine Bestellkünste. Wenn du nicht sicher bist, ob es kein Zufall war, erkenne an, dass es zumindest sein könnte, dass dies durch deine Bestellung passiert ist.
+Besonders Trickreiche bestellen dann mit dem Hintergedanken: »Es könnte ja sein, dass das Bestellte nur rein zufällig wieder genau dann kommt, wenn ich es bestellt habe …« So ein Zufall aber auch!
+Egal wie – Hauptsache, es klappt!
+Wie bereits gesagt:
+Take it easy, have fun and everything will come.
+6. Wenn du dein Leben insgesamt in einen positiven Fluss bringen willst, mach dir eine
+88
+translated: 쫓아다니는데, 너무 긴장해서 배달 장소에 나타나지 않을 뿐이에요.
+4. 모든 주문은 긍정적으로 표현하세요! "아닌", "없는"같은 단어는 좋지 않아요. 통신판매에 전화해서 "초록색 식탁보를 원하지 않습니다"라고 안 하잖아요. 원하는 걸 주문하세요. 질병을 취소하고 싶으면, 해당 신체 부위의 건강을 주문해야 해요.
+5. 주문이 성공하면 인정하세요. 이를 통해 주문 실력에 대한 신뢰가 강해져요. 우연이 아닌지 확실하지 않으면, 적어도 주문 덕분에 일어났을 수 있다고 인정하세요.
+특히 교활한 사람은 이런 뒷생각으로 주문해요: "주문한 것이 주문할 때마다 순전히 우연히 딱 맞게 오는 걸 수도 있잖아…" 이런 우연도 있네!
+어떻게든 – 중요한 건, 된다는 거!
+이미 말했듯:
+편하게 해, 즐겨, 그러면 다 올 거야.
+6. 인생 전체를 긍정적 흐름에 놓고 싶으면,
+
+## page 89
+original: Liste, wie du dich fühlen würdest, wenn alles in deinem Leben so wäre, wie du es gerne hättest.
+Dann überlege dir, in welchen Punkten du im Moment davon abweichst. Leg dir an verschiedene Orte kleine Erinnerungszettel hin, und immer, wenn du auf so einen Zettel stößt, überlege dir, ob das, was du gerade sprichst, denkst und fühlst, im Hinblick auf dein Optimalbild von dir selbst förderlich ist.
+Denk daran: Deine Worte, Gedanken und Gefühle formen deine Realität!
+Wenn man sich ein paarmal in ungünstigen Momenten beim Reden, Denken und Fühlen ertappt hat, hört man erstens auf, sich über seine gegenwärtige Realität zu wundern. Zweitens tritt an genau dieser Stelle das Aufwachen ein. Du beginnst, bewusst zu kreieren und zu bestellen. Ende der Tiefschlafphase! Der einzige Unterschied zwischen einem wachen und einem schlafenden Menschen ist der, dass der eine seine Realität bewusst gestaltet und der andere unbewusst. Aber du kannst sie nicht nicht gestalten.
+»Erkenne dich selbst«, hieß es im Orakel von Delphi. Wenn man weiterdenkt, wird daraus: »Entscheide, wer und wie du sein willst!« Denn in dem
+89
+translated: 삶의 모든 것이 원하는 대로일 때 어떤 기분일지 목록을 만드세요.
+그 다음 지금 어떤 점에서 벗어나 있는지 생각해 보세요. 여러 곳에 작은 메모를 놓고, 메모를 발견할 때마다, 지금 말하고 생각하고 느끼는 것이 자기 이상적 모습에 도움이 되는지 생각해 보세요.
+기억하세요: 당신의 말, 생각, 감정이 현실을 형성해요!
+좋지 않은 순간에 말하고 생각하고 느끼는 걸 몇 번 잡아채면, 첫째로 현재 현실에 놀라는 걸 멈춰요. 둘째로 바로 그 지점에서 깨어남이 일어나요. 의식적으로 창조하고 주문하기 시작해요. 깊은 수면 단계의 끝! 깨어 있는 사람과 잠든 사람의 유일한 차이는, 한 사람은 현실을 의식적으로 만들고 다른 사람은 무의식적으로 만든다는 거예요. 하지만 만들지 않을 수는 없어요.
+"너 자신을 알라"라고 델피 신탁에서 말했어요. 더 생각하면, 이렇게 돼요: "자신이 누구이고 어떻게 되고 싶은지 결정하라!" 왜냐하면
+
+## page 90
+original: Moment, in dem ich etwas erkenne, bin ich nicht mehr darauf festgelegt. Ich kann mich für etwas Neues entscheiden. Ich kann mich damit auch neu entscheiden, was für ein Mensch ich sein und wie ich leben möchte.
+90
+translated: 무언가를 인식하는 순간, 더 이상 거기에 고정되지 않으니까요. 새로운 것을 선택할 수 있어요. 어떤 사람이 되고 어떻게 살고 싶은지 새롭게 결정할 수 있어요.

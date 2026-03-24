@@ -1,0 +1,111 @@
+## page 131
+original: Meinst du, es wäre sinnvoll, das Gegenteil von dem anzunehmen und zu glauben, was du haben möchtest? Ist es nicht viel sinnvoller, immer das Beste zu erwarten?
+☆ ☆ ☆
+Selten ist eine Situation an sich das Problem. Das wirkliche Problem besteht meist darin, wie wir über die Situation denken.
+☆ ☆ ☆
+Wenn du die volle Verantwortung für deine Probleme bei dir selbst siehst, dann ist es ein Leichtes, diese Probleme zu beseitigen.
+☆ ☆ ☆
+131
+translated: 원하는 것의 반대를 가정하고 믿는 게 의미가 있다고 생각하는가? 항상 최선을 기대하는 게 훨씬 더 의미 있지 않은가?
+☆ ☆ ☆
+상황 자체가 문제인 경우는 드물다. 진짜 문제는 대부분 그 상황에 대해 어떻게 생각하느냐에 있다.
+☆ ☆ ☆
+문제에 대한 전적인 책임을 자기에게서 보면, 문제를 제거하는 건 쉬운 일이다.
+☆ ☆ ☆
+
+## page 132
+original: Probleme sind nicht dazu da, diskutiert, sondern dazu, gelöst zu werden.
+☆ ☆ ☆
+Wer sich ganz entspannt aus seiner Mitte heraus durchs Leben bewegt, hat Zeit genug für alle intuitiven Eingebungen.
+☆ ☆ ☆
+Wer weiß, dass sein eigentliches Lebensziel einfach nur darin besteht, glücklich zu sein, der kann der Weisheit den Vorzug geben und braucht nicht auf der Dummheit zu beharren.
+☆ ☆ ☆
+132
+translated: 문제는 토론하기 위해 있는 게 아니라, 해결하기 위해 있다.
+☆ ☆ ☆
+완전히 편안하게 자기 중심에서 삶을 살아가는 사람은, 모든 직관적 영감을 위한 충분한 시간이 있다.
+☆ ☆ ☆
+진정한 삶의 목표가 단순히 행복해지는 것임을 아는 사람은, 지혜를 우선시할 수 있고 어리석음을 고집할 필요가 없다.
+☆ ☆ ☆
+
+## page 133
+original: Wer es eilig hat, ist für kreative Eingebungen nicht offen. Eile und Hektik sparen daher nie wirklich Zeit.
+☆ ☆ ☆
+Schlechte Stimmung an einem Regentag? Vielleicht verordnet dir deine innere Stimme Pfefferminztee mit Himbeereis und Ketchup gegen inneres Chaos. Na und? Das ist ein super Ratschlag! Ich würde ihn sofort annehmen. Dabei kann schließlich nichts schiefgehen.
+☆ ☆ ☆
+Du kannst um die halbe Welt in Urlaub reisen, doch wenn du dich in deinem Inneren nicht richtig wohlfühlst, wirst du dich nirgendwo richtig erholen.
+☆ ☆ ☆
+133
+translated: 급한 사람은 창조적 영감에 열려 있지 않다. 서두름과 허둥대기는 결코 진짜 시간을 절약하지 못한다.
+☆ ☆ ☆
+비 오는 날 기분이 안 좋은가? 아마 내면의 목소리가 내적 혼란에 대해 라즈베리 아이스크림과 케첩을 곁들인 페퍼민트 차를 처방할 수도 있다. 그래서? 훌륭한 조언이다! 나라면 즉시 받아들이겠다. 결국 잘못될 게 없으니까.
+☆ ☆ ☆
+세계 반 바퀴를 여행할 수 있지만, 내면에서 정말 편안하지 않으면, 어디서도 진정으로 쉬지 못한다.
+☆ ☆ ☆
+
+## page 134
+original: Manche Menschen fragen sich angesichts der vielen Leiden auf der Erde immer wieder, was dieser Gott im Himmel da eigentlich tut, außer Siesta halten. Andere Menschen sind der Meinung, dass er jedem von uns die Kraft gegeben hat, diese Leiden allesamt zu vermeiden. Wir nutzen unseren freien Willen aber oft dazu, diese Kraft einfach nicht einzusetzen.
+☆ ☆ ☆
+134
+translated: 어떤 사람들은 지구의 많은 고통을 보며 하늘의 신이 낮잠 외에 대체 뭘 하는지 끊임없이 묻는다. 다른 사람들은 신이 우리 모두에게 이 고통을 모두 피할 수 있는 힘을 주었다고 생각한다. 우리는 자유의지를 종종 이 힘을 그냥 쓰지 않는 데 사용할 뿐이다.
+☆ ☆ ☆
+
+## page 135
+original: Der Hauptunterschied zwischen einem unbewussten und einem bewussten Menschen ist der, dass der unbewusste Mensch meistens automatisch reagiert und der bewusste Mensch die Freiheit hat, bewusst zu reagieren, wie er im jeweiligen Moment entscheidet. Das ist ein Unterschied wie der zwischen einem ferngesteuerten Spielzeug und demjenigen, der die Fernsteuerung bedient. Derjenige am Steuer hat den Eindruck, dass er alle Macht im Leben selbst hat, und der andere wird meinen, dass er den Umständen und dem Schicksal ausgeliefert ist. Der einzige Grund für Letzteres liegt in den automatischen Reaktionen, die aus zu wenig Gegenwartsbewusstsein resultieren.
+☆ ☆ ☆
+135
+translated: 무의식적 인간과 의식적 인간의 가장 큰 차이는, 무의식적 인간은 대부분 자동으로 반응하고, 의식적 인간은 각 순간에 어떻게 반응할지 의식적으로 결정할 자유가 있다는 것이다. 이것은 원격 조종 장난감과 리모컨을 조종하는 사람의 차이와 같다. 조종석의 사람은 삶에서 모든 권력을 자기가 가졌다는 인상을 받고, 다른 쪽은 환경과 운명에 내맡져져 있다고 생각할 것이다. 후자의 유일한 원인은 현재 의식이 너무 적은 데서 비롯되는 자동 반응에 있다.
+☆ ☆ ☆
+
+## page 136
+original: Die Energie folgt der Aufmerksamkeit. Beachte das Schöne, und es wird sich vermehren. Beachte all die Situationen, in denen dir etwas besonders gut und leicht gelungen ist. Sie werden sich vermehren. Anerkenne und beachte, wenn dir etwas zugeflogen ist: Wenn du Butter haben wolltest, und schon stellte sie einer vor dich hin. Wenn das Telefon klingelt, und du weißt schon, wer dran ist, noch bevor du abgehoben hast. Freue dich und erkenne es an, dann wird so etwas auf allen Ebenen immer öfter passieren.
+☆ ☆ ☆
+136
+translated: 에너지는 주의를 따른다. 아름다운 것에 주목하면, 늘어난다. 특별히 잘 되고 쉬웠던 모든 상황에 주목하라. 그것이 늘어난다. 무언가가 날아온 것을 인정하고 주목하라: 버터가 필요했는데, 벌써 누군가가 앞에 놓아주었을 때. 전화벨이 울리는데, 받기도 전에 누군지 이미 알 때. 기뻐하고 인정하라, 그러면 이런 일이 모든 차원에서 점점 더 자주 일어난다.
+☆ ☆ ☆
+
+## page 137
+original: Wenn der Mensch sich etwas wünschen kann, ohne sich darüber zu sorgen, so wird jeder Wunsch sofort erfüllt werden. Ablehnung unterdrückt jegliche Kreativität. Wenn du wirklich etwas für die ganze Welt tun willst, dann richte deine Wahrnehmung auf das Schöne. Dadurch wird sowohl deine Kreativität angeregt als auch deine Lust, mehr Schönes zu erleben. Du wirst Probleme viel leichter aus dem Weg räumen können, und du wirst es als eine Freude erleben, dies zu tun.
+Bodo Deletz
+☆ ☆ ☆
+137
+translated: 인간이 걱정 없이 소원할 수 있으면, 모든 소원은 즉시 이루어진다. 거부는 모든 창조성을 억압한다. 세상을 위해 정말 무언가 하고 싶으면, 인식을 아름다운 것에 맞춰라. 이를 통해 창조성과 더 아름다운 것을 경험하려는 욕구가 자극된다. 문제를 훨씬 쉽게 치울 수 있고, 그것을 기쁨으로 경험할 것이다.
+보도 델레츠
+☆ ☆ ☆
+
+## page 138
+original: Liebe braucht man nicht hervorzurufen. Sie ist einfach da und kann wahrgenommen werden. Dies gelingt jedoch nur, weil deine Wahrnehmung sich auch tatsächlich auf dieses Gefühl richtet. Durch deine Angst richtet sich deine Wahrnehmung automatisch auf alles, was schieflaufen könnte. Du empfindest immer die Gefühle, auf die sich deine Wahrnehmung richtet.
+Bodo Deletz
+☆ ☆ ☆
+Stell dir vor, du würdest dich bei einer Sache, die »eigentlich« schlecht ist, supergut fühlen. Woher wüsstest du dann noch, dass es eigentlich eine schlechte Sache ist?
+Bodo Deletz
+☆ ☆ ☆
+138
+translated: 사랑은 불러올 필요가 없다. 그냥 거기 있고 인지될 수 있다. 하지만 이것은 인식이 실제로 이 감정에 맞춰질 때만 가능하다. 두려움을 통해 인식은 자동으로 잘못될 수 있는 모든 것에 향한다. 인식이 향하는 감정을 항상 느낀다.
+보도 델레츠
+☆ ☆ ☆
+'사실은' 나쁜 일에서 엄청 좋은 기분이 든다고 상상해 봐라. 그러면 그것이 사실은 나쁜 일이라는 걸 어떻게 알겠는가?
+보도 델레츠
+☆ ☆ ☆
+
+## page 139
+original: Der Tod ist eine optische Täuschung.
+Albert Einstein
+☆ ☆ ☆
+Gott hat die Welt nicht geschaffen, er ist die Welt geworden!
+Neale Donald Walsch, Gespräche mit Gott
+☆ ☆ ☆
+Diese Liste ließe sich noch beliebig verlängern. Am besten, du genießt noch ein paar der nachfolgenden Bücher und streichst dir die Lebensweisheiten darin, die dir am besten gefallen, farbig an und liest sie immer wieder. Jeden Tag vor dem Einschlafen eine Lebensweisheit und deine Schwingung bleibt hoch. Und je höher deine Schwingung, desto besser deine Manifestationen und Bestellungen beim Universum. Viel Erfolg!
+139
+translated: 죽음은 착시이다.
+알베르트 아인슈타인
+☆ ☆ ☆
+신은 세상을 창조하지 않았다, 세상이 되었다!
+닐 도날드 월시, '신과 나눈 이야기'
+☆ ☆ ☆
+이 목록은 얼마든지 더 늘릴 수 있다. 다음에 나오는 책 몇 권을 더 즐기고, 가장 마음에 드는 삶의 지혜에 색깔 표시를 해서 계속 다시 읽는 게 좋다. 매일 잠들기 전 삶의 지혜 하나, 그러면 진동이 높게 유지된다. 진동이 높을수록, 우주에 대한 현실화와 주문이 더 좋아진다. 많은 성공을!
+
+## page 140
+original: (빈 페이지)
+140
+translated: (빈 페이지)
