@@ -117,17 +117,19 @@ original: (원문 — 해당 이미지에 보이는 텍스트만)
 translated: (한국어 번역)
 ```
 
-저장 경로: `translated/antigravity/translation_draft_[pdf-name]_p[start]-[end].md`
+저장 경로: `translated/{LANG}/[책이름]/translation_draft_[pdf-name]_p[start]-[end].md`
+
+예: `translated/de-ko/우주소원/translation_draft_우주소원_p1-10.md`
 
 ### Step 4. 파이프라인 빌드 (검증 + JSON + 대조 PDF + 로그)
 
 ```bash
 source .venv/bin/activate && python src/translate_pipeline.py build \
-  --input translated/antigravity/translation_draft_{PDF명}_{RANGE}.md \
+  --input translated/{LANG}/{책이름}/translation_draft_{PDF명}_{RANGE}.md \
   --pdf data/pdf/{PDF_FILE} \
   --pages {PAGE_RANGE} \
   --lang {LANG_PROFILE} \
-  --output translated/antigravity/{출력폴더}/pages_{RANGE}.json
+  --output translated/{LANG}/{책이름}/pages_{RANGE}.json
 ```
 
 ⚠️ **`--lang` 필수!** 언어 프로파일을 반드시 지정하세요 (예: `--lang de-ko`, `--lang ja-ko`).
@@ -145,7 +147,7 @@ source .venv/bin/activate && python src/translate_pipeline.py build \
 
 파이프라인이 원문 스크립트 잔존 오류를 보고하면:
 1. 에러 메시지에서 해당 페이지와 잔존 원문 확인
-2. `translated/antigravity/translation_draft_*.md`에서 해당 페이지만 수정
+2. 해당 `translation_draft_*.md`에서 해당 페이지만 수정
 3. Step 4 다시 실행
 4. **최대 3회 재시도** — 3회 실패 시 사용자에게 수동 확인 요청
 
@@ -154,15 +156,19 @@ source .venv/bin/activate && python src/translate_pipeline.py build \
 ## 결과물 구조
 ```
 translated/
-├── index.md                              ← 번역 이력 테이블 (자동 업데이트)
-├── translate-log.json                    ← 세션 로그 (자동 생성)
-└── antigravity/                          ← 모든 결과물 집중
-    ├── 후아후아_v2/                       ← ja-ko 번역
-    │   ├── translation_draft_*.md
-    │   ├── pages_*.json
-    │   └── 대조본_*.pdf
-    └── 우주소원_ko/                       ← de-ko 번역
-        ├── translation_draft_*.md
-        ├── pages_*.json
-        └── 대조본_*.pdf
+├── index.md                    ← 번역 이력 테이블 (공통)
+├── translate-log.json          ← 세션 로그 (공통)
+├── ja-ko/                      ← 일본어→한국어
+│   ├── 후아후아_v1/             ← 레거시 (수정 금지)
+│   ├── 후아후아_v2~v5/          ← 각 권 번역
+│   │   ├── translation_draft_*.md
+│   │   ├── pages_*.json
+│   │   └── 대조본_*.pdf
+│   └── claude-code_후아후아_v2/
+├── de-ko/                      ← 독일어→한국어
+│   └── 우주소원/
+│       ├── translation_draft_*.md
+│       ├── pages_*.json
+│       └── 대조본_*.pdf
+└── en-ko/                      ← 영어→한국어 (향후)
 ```
