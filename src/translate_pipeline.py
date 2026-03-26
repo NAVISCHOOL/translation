@@ -741,11 +741,29 @@ def validate_translations(pages: list[dict], expected_range: tuple[int, int] = N
                             f"p.{pn}: ⚠️ 글자수 비율 {len_ratio:.1f}x — "
                             f"다음 페이지 내용 혼입 의심"
                         )
-                    elif len_ratio < 0.3 and pdf_len > 30:
+                    elif len_ratio < 0.5 and pdf_len > 50:
+                        alignment_issues.append(
+                            f"p.{pn}: ❌ 번역 불완전 — "
+                            f"PDF {pdf_len}자 대비 드래프트 {orig_len}자({len_ratio:.0%})만 기록"
+                        )
+                    elif len_ratio < 0.7 and pdf_len > 50:
                         alignment_issues.append(
                             f"p.{pn}: ⚠️ 원문 누락 의심 — "
-                            f"PDF {pdf_len}자 대비 드래프트 {orig_len}자만 기록"
+                            f"PDF {pdf_len}자 대비 드래프트 {orig_len}자({len_ratio:.0%})"
                         )
+
+                    # 번역 분량 vs PDF 원문 직접 비교
+                    trans_clean = re.sub(r'\s+', '', entry.get("translated", ""))
+                    trans_len = len(trans_clean)
+                    if pdf_len > 50 and trans_len > 0:
+                        trans_ratio = trans_len / max(pdf_len, 1)
+                        # 한국어 번역은 원문 대비 보통 0.3~0.6 비율이 정상
+                        # 0.15 미만이면 명백히 불완전
+                        if trans_ratio < 0.15:
+                            alignment_issues.append(
+                                f"p.{pn}: ❌ 번역 분량 부족 — "
+                                f"PDF {pdf_len}자 대비 번역 {trans_len}자({trans_ratio:.0%})"
+                            )
 
             doc.close()
         except ImportError:

@@ -1023,6 +1023,118 @@
       "output": "translated/antigravity/우주소원_ko/pages_131-150.json",
       "output_name": "대조본_p131-150.pdf",
       "output_rel": "대조본_p131-150.pdf"
+    },
+    {
+      "id": "pages_51-60",
+      "timestamp": "2026-03-26T18:46:24.878414",
+      "pdf": "우주소원 서비스 - 독일어 원서.pdf",
+      "pages": "51-60",
+      "mode": "antigravity",
+      "page_count": 10,
+      "total_time_sec": 1.1,
+      "validation": {
+        "japanese_remnants": 0,
+        "missing_pages": 0
+      },
+      "output": "translated/antigravity/pages_51-60.json",
+      "output_name": "대조본_p51-60.pdf",
+      "output_rel": "대조본_p51-60.pdf"
+    },
+    {
+      "id": "pages_61-70",
+      "timestamp": "2026-03-26T18:55:37.733950",
+      "pdf": "우주소원 서비스 - 독일어 원서.pdf",
+      "pages": "61-70",
+      "mode": "antigravity",
+      "page_count": 10,
+      "total_time_sec": 1.2,
+      "validation": {
+        "japanese_remnants": 0,
+        "missing_pages": 0
+      },
+      "output": "translated/antigravity/pages_61-70.json",
+      "output_name": "대조본_p61-70.pdf",
+      "output_rel": "대조본_p61-70.pdf"
+    },
+    {
+      "id": "pages_71-80",
+      "timestamp": "2026-03-26T18:59:37.187796",
+      "pdf": "우주소원 서비스 - 독일어 원서.pdf",
+      "pages": "71-80",
+      "mode": "antigravity",
+      "page_count": 10,
+      "total_time_sec": 1.0,
+      "validation": {
+        "japanese_remnants": 0,
+        "missing_pages": 0
+      },
+      "output": "translated/antigravity/pages_71-80.json",
+      "output_name": "대조본_p71-80.pdf",
+      "output_rel": "대조본_p71-80.pdf"
+    },
+    {
+      "id": "pages_81-100",
+      "timestamp": "2026-03-26T19:05:44.426750",
+      "pdf": "우주소원 서비스 - 독일어 원서.pdf",
+      "pages": "81-100",
+      "mode": "antigravity",
+      "page_count": 20,
+      "total_time_sec": 1.6,
+      "validation": {
+        "japanese_remnants": 0,
+        "missing_pages": 0
+      },
+      "output": "translated/antigravity/pages_81-100.json",
+      "output_name": "대조본_p81-100.pdf",
+      "output_rel": "대조본_p81-100.pdf"
+    },
+    {
+      "id": "pages_101-110",
+      "timestamp": "2026-03-26T19:08:16.881377",
+      "pdf": "우주소원 서비스 - 독일어 원서.pdf",
+      "pages": "101-110",
+      "mode": "antigravity",
+      "page_count": 10,
+      "total_time_sec": 0.9,
+      "validation": {
+        "japanese_remnants": 0,
+        "missing_pages": 0
+      },
+      "output": "translated/antigravity/pages_101-110.json",
+      "output_name": "대조본_p101-110.pdf",
+      "output_rel": "대조본_p101-110.pdf"
+    },
+    {
+      "id": "pages_111-130",
+      "timestamp": "2026-03-26T19:12:36.183979",
+      "pdf": "우주소원 서비스 - 독일어 원서.pdf",
+      "pages": "111-130",
+      "mode": "antigravity",
+      "page_count": 20,
+      "total_time_sec": 1.4,
+      "validation": {
+        "japanese_remnants": 0,
+        "missing_pages": 0
+      },
+      "output": "translated/antigravity/pages_111-130.json",
+      "output_name": "대조본_p111-130.pdf",
+      "output_rel": "대조본_p111-130.pdf"
+    },
+    {
+      "id": "pages_131-150",
+      "timestamp": "2026-03-26T19:17:42.592821",
+      "pdf": "우주소원 서비스 - 독일어 원서.pdf",
+      "pages": "131-150",
+      "mode": "antigravity",
+      "page_count": 20,
+      "total_time_sec": 1.4,
+      "validation": {
+        "japanese_remnants": 0,
+        "missing_pages": 0
+      },
+      "output": "translated/antigravity/pages_131-150.json",
+      "output_name": "대조본_p131-150.pdf",
+      "output_rel": "대조본_p131-150.pdf"
     }
   ]
 }
