@@ -184,10 +184,15 @@ class ComparisonPDF(FPDF):
         self.set_font("Korean", "B" if (is_bold and self.has_bold) else "", default_size)
         self.set_text_color(*default_color)
 
+        # 줄간격: 원문 이미지와 시각적 균형을 위해 넉넉하게 설정
+        line_h = 10  # 줄간격 (독일어/일본어 원문과 시각적 균형)
+        para_gap = 10  # 빈 줄(문단 간격)
+        para_tail = 5  # 문단 끝 여백
+
         for para in translated_text.split('\n'):
             para = para.strip()
             if not para:
-                self.ln(3)
+                self.ln(para_gap)
                 continue
 
             # Check if paragraph matches a special block
@@ -209,20 +214,20 @@ class ComparisonPDF(FPDF):
                 self.set_font("Korean", "B" if (ms_bold and self.has_bold) else "", ms_size)
                 self.set_text_color(*ms_color)
                 self.set_xy(right_x, self.get_y())
-                self.multi_cell(half_width, 6, para, align="L")
+                self.multi_cell(half_width, line_h, para, align="L")
                 # Reset to dominant
                 self.set_font("Korean", "B" if (is_bold and self.has_bold) else "", default_size)
                 self.set_text_color(*default_color)
             elif para.startswith('"') or para.startswith('\u201c') or para.startswith('\u300c'):
                 self.set_text_color(80, 60, 120)
                 self.set_xy(right_x, self.get_y())
-                self.multi_cell(half_width, 6, f"  {para}", align="L")
+                self.multi_cell(half_width, line_h, f"  {para}", align="L")
                 self.set_text_color(*default_color)
             else:
                 self.set_xy(right_x, self.get_y())
-                self.multi_cell(half_width, 6, para, align="L")
+                self.multi_cell(half_width, line_h, para, align="L")
 
-            self.ln(1)
+            self.ln(para_tail)
 
 
 def generate_comparison_pdf(
