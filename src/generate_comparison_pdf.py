@@ -121,6 +121,44 @@ class ComparisonPDF(FPDF):
         self.set_text_color(150, 150, 150)
         self.cell(0, 8, f"- {self.page_no()} -", align="C")
 
+    def _calc_font_size(self, text: str, half_width: float, available_height: float,
+                         base_size: int = 10) -> tuple:
+        """텍스트 길이에 따라 적절한 폰트 크기와 줄간격을 계산합니다.
+        반환: (font_size, line_h, para_gap, para_tail)
+        """
+        # 단계별 축소: (폰트크기, 줄간격, 문단간격, 문단꼬리)
+        size_levels = [
+            (base_size, 8, 6, 3),      # 기본
+            (9, 7, 5, 2),              # 약간 축소
+            (8, 6.5, 4, 2),            # 중간 축소
+            (7, 5.5, 3, 1.5),          # 강한 축소
+            (6.5, 5, 2.5, 1),          # 최대 축소
+        ]
+        
+        for font_size, line_h, para_gap, para_tail in size_levels:
+            # 예상 높이 계산
+            self.set_font("Korean", "", font_size)
+            estimated_height = 0
+            for para in text.split('\n'):
+                para = para.strip()
+                if not para:
+                    estimated_height += para_gap
+                    continue
+                # 줄 수 추정: 텍스트 폭 기준
+                char_width = self.get_string_width("가")  # 한국어 기준 문자 폭
+                if char_width > 0:
+                    chars_per_line = max(1, int(half_width / char_width))
+                    num_lines = max(1, (len(para) + chars_per_line - 1) // chars_per_line)
+                else:
+                    num_lines = 1
+                estimated_height += num_lines * line_h + para_tail
+            
+            if estimated_height <= available_height:
+                return (font_size, line_h, para_gap, para_tail)
+        
+        # 최소 크기로도 안 맞으면 최소값 반환
+        return size_levels[-1]
+
     def add_comparison_page(self, page_num: int, image_path: str,
                             translated_text: str, page_style: dict = None):
         """왼쪽: 원본 이미지, 오른쪽: 한국어 번역"""
@@ -161,8 +199,9 @@ class ComparisonPDF(FPDF):
         self.set_text_color(100, 100, 100)
         self.cell(half_width, 6, f"[{self._label_translated}] p.{page_num}", align="C")
 
-        # 번역 텍스트
-        self.set_xy(right_x, content_top + 10)
+        # 번역 텍스트 시작 위치
+        text_start_y = content_top + 10
+        self.set_xy(right_x, text_start_y)
 
         # Style defaults
         default_color = (40, 40, 40)
@@ -185,19 +224,30 @@ class ComparisonPDF(FPDF):
                 if hint:
                     special_styles[hint] = sb
 
-        self.set_font("Korean", "B" if (is_bold and self.has_bold) else "", default_size)
+        # 텍스트 영역 높이 계산 (페이지 하단 여백 15mm 확보)
+        available_height = self.h - text_start_y - 15
+        
+        # 텍스트 길이에 따라 폰트 크기 자동 조절
+        font_size, line_h, para_gap, para_tail = self._calc_font_size(
+            translated_text, half_width, available_height, default_size
+        )
+
+        self.set_font("Korean", "B" if (is_bold and self.has_bold) else "", font_size)
         self.set_text_color(*default_color)
 
-        # 줄간격: 원문 이미지와 시각적 균형을 위해 넉넉하게 설정
-        line_h = 10  # 줄간격 (독일어/일본어 원문과 시각적 균형)
-        para_gap = 10  # 빈 줄(문단 간격)
-        para_tail = 5  # 문단 끝 여백
+        # 페이지 하단 한계선
+        bottom_limit = self.h - 15
 
         for para in translated_text.split('\n'):
             para = para.strip()
             if not para:
-                self.ln(para_gap)
+                if self.get_y() + para_gap < bottom_limit:
+                    self.ln(para_gap)
                 continue
+
+            # 하단 한계 도달 시 중단 방지 — 남은 공간 체크
+            if self.get_y() >= bottom_limit:
+                break
 
             # Check if paragraph matches a special block
             matched_style = None
@@ -211,16 +261,17 @@ class ComparisonPDF(FPDF):
 
             if matched_style:
                 ms_color = tuple(matched_style.get("color_rgb", default_color))
-                ms_size = SIZE_CLASS_TO_PT.get(
-                    matched_style.get("size_class", "medium"), default_size
-                )
+                ms_size_class = matched_style.get("size_class", "medium")
+                ms_base = SIZE_CLASS_TO_PT.get(ms_size_class, default_size)
+                # 동적 크기 조절 비율 적용
+                ms_size = min(ms_base, font_size + 2)
                 ms_bold = matched_style.get("bold", False)
                 self.set_font("Korean", "B" if (ms_bold and self.has_bold) else "", ms_size)
                 self.set_text_color(*ms_color)
                 self.set_xy(right_x, self.get_y())
                 self.multi_cell(half_width, line_h, para, align="L")
                 # Reset to dominant
-                self.set_font("Korean", "B" if (is_bold and self.has_bold) else "", default_size)
+                self.set_font("Korean", "B" if (is_bold and self.has_bold) else "", font_size)
                 self.set_text_color(*default_color)
             elif para.startswith('"') or para.startswith('\u201c') or para.startswith('\u300c'):
                 self.set_text_color(80, 60, 120)
@@ -231,7 +282,8 @@ class ComparisonPDF(FPDF):
                 self.set_xy(right_x, self.get_y())
                 self.multi_cell(half_width, line_h, para, align="L")
 
-            self.ln(para_tail)
+            if self.get_y() + para_tail < bottom_limit:
+                self.ln(para_tail)
 
 
 def generate_comparison_pdf(
