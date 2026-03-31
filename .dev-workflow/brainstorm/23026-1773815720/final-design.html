@@ -1,0 +1,137 @@
+<h2>최종 설계안: 대조 PDF 서식 재현 + 검증</h2>
+<p class="subtitle">확정된 결정사항 정리</p>
+
+<div class="section">
+  <h3>1. 번역 MD 형식 변경</h3>
+  <div class="mockup">
+    <div class="mockup-body" style="background:#1e1e2e; padding:16px;">
+<pre style="color:#cdd6f4; font-size:12px; margin:0; line-height:1.8;">## page 8
+original: はじめに
+translated: 머리말
+<span style="color:#a6e3a1;">style: size=small, color=black, position=header</span>
+
+original: はじめに
+translated: 머리말
+<span style="color:#a6e3a1;">style: size=large, color=green, bold, spacing=after:xlarge</span>
+
+original: 柴村恵美子
+translated: 시바무라 에미코
+<span style="color:#a6e3a1;">style: size=large, color=black, bold</span>
+
+original: みなさん、感謝してます！
+translated: 여러분, 감사합니다!
+<span style="color:#a6e3a1;">style: size=medium, color=black</span></pre>
+    </div>
+  </div>
+  <div style="padding:10px 14px; background:#313244; border-radius:0 0 8px 8px; font-size:12px;">
+    <p style="color:#cdd6f4; margin:0;">AI가 이미지를 <strong>눈으로 보고</strong> 각 텍스트 블록의 색상, 크기, 굵기, 여백을 기록</p>
+    <p style="color:#6c7086; margin:4px 0 0 0;">PyMuPDF 텍스트 추출 사용하지 않음 (OCR 레이어 부정확)</p>
+  </div>
+</div>
+
+<div class="section">
+  <h3>2. style 속성 목록</h3>
+  <div class="mockup">
+    <div class="mockup-body" style="background:#fff; padding:14px;">
+      <table style="width:100%; font-size:12px; border-collapse:collapse;">
+        <tr style="border-bottom:2px solid #ddd; font-weight:bold;">
+          <td style="padding:8px;">속성</td><td style="padding:8px;">값</td><td style="padding:8px;">PDF 렌더링</td>
+        </tr>
+        <tr style="border-bottom:1px solid #eee;">
+          <td style="padding:8px;">size</td><td style="padding:8px; color:#666;">small / medium / large / xlarge</td><td style="padding:8px; color:#888;">8pt / 10pt / 14pt / 20pt</td>
+        </tr>
+        <tr style="border-bottom:1px solid #eee;">
+          <td style="padding:8px;">color</td><td style="padding:8px; color:#666;">black / green / gray / white / ...</td><td style="padding:8px; color:#888;">#222 / #2e7d32 / #888 / #fff</td>
+        </tr>
+        <tr style="border-bottom:1px solid #eee;">
+          <td style="padding:8px;">bold</td><td style="padding:8px; color:#666;">(플래그)</td><td style="padding:8px; color:#888;">굵은 폰트</td>
+        </tr>
+        <tr style="border-bottom:1px solid #eee;">
+          <td style="padding:8px;">position</td><td style="padding:8px; color:#666;">header / footer / center</td><td style="padding:8px; color:#888;">특수 배치</td>
+        </tr>
+        <tr>
+          <td style="padding:8px;">spacing</td><td style="padding:8px; color:#666;">after:small / medium / large / xlarge</td><td style="padding:8px; color:#888;">3 / 8 / 16 / 40pt 여백</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>3. 파이프라인 흐름 (변경 후)</h3>
+  <div class="mockup">
+    <div class="mockup-body" style="background:#1e1e2e; padding:20px; color:#cdd6f4; font-size:13px; line-height:2.2;">
+      <p><span style="color:#6c7086;">기존</span> MD 파싱 → JSON 저장</p>
+      <p><span style="color:#6c7086;">기존</span> ANTI-JAPANESE 검증 (일본어 잔존, 페이지 누락 등)</p>
+      <p><span style="color:#6c7086;">기존</span> 대조 PDF 생성</p>
+      <p><span style="color:#a6e3a1;">신규</span> <strong>MD 파싱 시 style 줄도 함께 파싱 → JSON에 style 필드 포함</strong></p>
+      <p><span style="color:#a6e3a1;">신규</span> <strong>대조 PDF 생성 시 style에 따라 폰트 크기/색상/굵기/여백 적용</strong></p>
+      <p><span style="color:#a6e3a1;">신규</span> <strong>서식 검증: 생성된 대조 PDF ↔ 원본 이미지 비교, 불일치 리포트</strong></p>
+      <p><span style="color:#6c7086;">기존</span> 세션 로그 업데이트</p>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>4. 서식 검증 시스템 (ANTI-STYLE)</h3>
+  <div class="mockup">
+    <div class="mockup-body" style="background:#1e1e2e; padding:16px; color:#cdd6f4; font-size:12px; line-height:1.8;">
+      <p style="color:#f9e2af; font-weight:bold;">검증 방식:</p>
+      <p>1. 대조 PDF 생성 완료 후</p>
+      <p>2. 각 페이지의 원본 이미지 + 기록된 style 정보를 AI에게 전달</p>
+      <p>3. AI가 원본 이미지를 다시 보고, 기록된 style과 비교</p>
+      <p>4. 불일치 항목 리포트 출력</p>
+      <p>&nbsp;</p>
+      <p style="color:#f9e2af; font-weight:bold;">출력 예시:</p>
+<pre style="color:#a6e3a1; margin-top:4px;">
+✅ STYLE 검증 결과 (p.8)
+  블록 1 "머리말" (header): OK
+  블록 2 "머리말" (title): OK
+  블록 3 "시바무라 에미코": <span style="color:#f38ba8;">⚠ color=green → 원본은 black</span>
+  블록 4 "여러분, 감사합니다!": OK
+  → 1건 불일치, style 수정 후 재생성 필요</pre>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>5. 수정 파일 목록</h3>
+  <div class="mockup">
+    <div class="mockup-body" style="background:#fff; padding:16px; font-size:13px; line-height:2.0;">
+      <p><strong>src/translate_pipeline.py</strong> — MD 파서 style 파싱, JSON에 style 포함, 서식 검증 단계 추가</p>
+      <p><strong>src/generate_comparison_pdf.py</strong> — style 정보에 따라 렌더링 (크기/색상/굵기/여백)</p>
+      <p><strong>agents/workflows/translate.md</strong> — 번역 시 style 기록 규칙 추가</p>
+      <p><strong>.agent/skills/translate-chunk/SKILL.md</strong> — 스킬에 style 기록 지침 추가</p>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>6. 적용 범위</h3>
+  <div class="mockup">
+    <div class="mockup-body" style="background:#fff; padding:16px; font-size:13px;">
+      <p style="margin:0 0 6px 0;">✅ 앞으로 새로 번역하는 페이지부터 적용</p>
+      <p style="margin:0 0 6px 0;">✅ 한국어 가로쓰기 유지</p>
+      <p style="margin:0;">⏸ 기존 63페이지(p1-63)는 그대로 유지</p>
+    </div>
+  </div>
+</div>
+
+<h3 style="margin-top:24px;">이 설계안으로 확정할까요?</h3>
+
+<div class="options">
+  <div class="option" data-choice="approve" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>좋아, 이대로 확정</h3>
+      <p>스펙 문서 작성 → 구현 계획으로 진행</p>
+    </div>
+  </div>
+  <div class="option" data-choice="revise" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>수정할 부분 있어</h3>
+      <p>변경하거나 추가하고 싶은 부분 있음</p>
+    </div>
+  </div>
+</div>

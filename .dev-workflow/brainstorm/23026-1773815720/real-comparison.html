@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>실제 원본 vs 번역 비교</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#181825; color:#cdd6f4; font-family:-apple-system, sans-serif; padding:24px; }
+  h1 { font-size:22px; margin-bottom:6px; color:#cdd6f4; }
+  .subtitle { color:#6c7086; font-size:14px; margin-bottom:24px; }
+  h2 { font-size:17px; margin:32px 0 16px; color:#f9e2af; }
+  .compare { display:flex; gap:16px; margin-bottom:32px; }
+  .panel { flex:1; background:#1e1e2e; border-radius:10px; overflow:hidden; border:1px solid #313244; }
+  .panel-header { padding:10px 16px; background:#313244; font-size:13px; color:#a6adc8; font-weight:600; }
+  .panel-body { padding:16px; }
+  .panel-body img { width:100%; border-radius:4px; }
+  .pdf-text { background:#fff; border-radius:6px; padding:20px; font-family:'Nanum Gothic', sans-serif; }
+  .before .pdf-text p { font-size:13px; color:#282828; line-height:1.6; margin:0 0 4px 0; }
+  .after .pdf-text .header-text { font-size:10px; color:#666; margin:0 0 10px 0; padding-bottom:6px; border-bottom:1px solid #ddd; }
+  .after .pdf-text .title-green { font-size:20px; color:#2e7d32; font-weight:bold; margin:0 0 18px 0; }
+  .after .pdf-text .body-text { font-size:13px; color:#222; line-height:1.9; margin:0 0 7px 0; }
+  .after .pdf-text .body-text.gap { margin-bottom:16px; }
+  .after .pdf-text .author-green { font-size:17px; color:#2e7d32; margin:20px 0 0 0; text-align:right; }
+  .after .pdf-text .page-num { font-size:10px; color:#888; margin:16px 0 0 0; }
+  .tag { display:inline-block; font-size:10px; padding:2px 6px; border-radius:3px; margin-left:6px; }
+  .tag-new { background:#a6e3a1; color:#1e1e2e; }
+  .tag-old { background:#f38ba8; color:#1e1e2e; }
+  .arrow { display:flex; align-items:center; justify-content:center; font-size:28px; color:#6c7086; padding:0 4px; }
+</style>
+</head>
+<body>
+
+<h1>실제 원본 vs 번역 비교: p.8 (머리말)</h1>
+<p class="subtitle">왼쪽: 원본 PDF 이미지 / 가운데: 현재 대조 PDF / 오른쪽: 서식 적용 후</p>
+
+<div class="compare">
+  <div class="panel">
+    <div class="panel-header">원본 PDF 이미지</div>
+    <div class="panel-body">
+      <img src="page_8.png" alt="원본 p.8">
+    </div>
+  </div>
+
+  <div class="panel before">
+    <div class="panel-header">현재 대조 PDF <span class="tag tag-old">Before</span></div>
+    <div class="panel-body">
+      <div class="pdf-text">
+        <p style="text-align:center; color:#999; font-size:11px; margin-bottom:10px;">[번역] p.8</p>
+        <p>머리말</p>
+        <p>&nbsp;</p>
+        <p>여러분, 감사합니다!</p>
+        <p>일본 제일의 행복한 대부호 · 사이토 히토리 선생님의 첫 번째 제자, 시바무라 에미코입니다.</p>
+        <p>&nbsp;</p>
+        <p>지금, 고민하고 있는 것이 있나요?</p>
+        <p>지금, 슬픔을 안고 있나요?</p>
+        <p>지금, 무언가 참고 있나요?</p>
+        <p>지금, 자신이나 주변에 불만이 있나요?</p>
+        <p>지금, 마음이 무겁나요?</p>
+        <p>&nbsp;</p>
+        <p>조금이라도 해당되는 분은, 이 말을 입으로 소리 내어 보세요.</p>
+        <p>&nbsp;</p>
+        <p>시바무라 에미코</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel after">
+    <div class="panel-header">서식 적용 후 <span class="tag tag-new">After</span></div>
+    <div class="panel-body">
+      <div class="pdf-text">
+        <p class="header-text">머리말</p>
+        <p style="text-align:center; color:#999; font-size:11px; margin-bottom:14px;">[번역] p.8</p>
+        <p class="title-green">머리말</p>
+        <p class="body-text">여러분, 감사합니다!</p>
+        <p class="body-text gap">일본 제일의 행복한 대부호 · 사이토 히토리 선생님의 첫 번째 제자, 시바무라 에미코입니다.</p>
+        <p class="body-text">지금, 고민하고 있는 것이 있나요?</p>
+        <p class="body-text">지금, 슬픔을 안고 있나요?</p>
+        <p class="body-text">지금, 무언가 참고 있나요?</p>
+        <p class="body-text">지금, 자신이나 주변에 불만이 있나요?</p>
+        <p class="body-text gap">지금, 마음이 무겁나요?</p>
+        <p class="body-text">조금이라도 해당되는 분은, 이 말을 입으로 소리 내어 보세요.</p>
+        <p class="author-green">시바무라 에미코</p>
+        <p class="page-num">5</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h2>p.17 (목차 — 제5장)</h2>
+<p class="subtitle" style="margin-bottom:16px;">제목은 초록+굵게, 본문 항목은 검정, 페이지 번호는 작게</p>
+
+<div class="compare">
+  <div class="panel">
+    <div class="panel-header">원본 PDF 이미지</div>
+    <div class="panel-body">
+      <img src="page_17.png" alt="원본 p.17">
+    </div>
+  </div>
+
+  <div class="panel before">
+    <div class="panel-header">현재 대조 PDF <span class="tag tag-old">Before</span></div>
+    <div class="panel-body">
+      <div class="pdf-text">
+        <p style="text-align:center; color:#999; font-size:11px; margin-bottom:10px;">[번역] p.17</p>
+        <p>용신님은 "후아후아"를 아주 좋아합니다　사이토 히토리　17</p>
+        <p>"후아후아"라고 말하는 것만으로 마음이 가벼워진다　18</p>
+        <p>용신님이 "더 좋은 세계"로 여러분을 데려다 줄 거야　20</p>
+        <p>"후아후아"와 용신님의 깊은 관계란?　23</p>
+        <p>하늘의 말씀 "후아후아"로 하늘의 길을 걸어라　25</p>
+        <p>제1장　밝고 즐거운 "후아후아"의 영혼의 소리　시바무라 에미코　29</p>
+        <p>깃털보다도 공기보다도 가벼운 것이 "후아후아"　30</p>
+        <p>행복이 배로 불어나듯 부풀어 오릅니다　33</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel after">
+    <div class="panel-header">서식 적용 후 <span class="tag tag-new">After</span></div>
+    <div class="panel-body">
+      <div class="pdf-text">
+        <p style="text-align:center; color:#999; font-size:11px; margin-bottom:14px;">[번역] p.17</p>
+        <p style="font-size:13px; color:#222; margin:0 0 5px 0;">용신님은 "후아후아"를 아주 좋아합니다 <span style="color:#888; font-size:11px;">사이토 히토리</span> <span style="color:#888; font-size:11px;">17</span></p>
+        <p style="font-size:13px; color:#222; margin:0 0 5px 0;">"후아후아"라고 말하는 것만으로 마음이 가벼워진다 <span style="color:#888; font-size:11px;">18</span></p>
+        <p style="font-size:13px; color:#222; margin:0 0 5px 0;">용신님이 "더 좋은 세계"로 여러분을 데려다 줄 거야 <span style="color:#888; font-size:11px;">20</span></p>
+        <p style="font-size:13px; color:#222; margin:0 0 5px 0;">"후아후아"와 용신님의 깊은 관계란? <span style="color:#888; font-size:11px;">23</span></p>
+        <p style="font-size:13px; color:#222; margin:0 0 12px 0;">하늘의 말씀 "후아후아"로 하늘의 길을 걸어라 <span style="color:#888; font-size:11px;">25</span></p>
+        <p style="font-size:15px; color:#2e7d32; font-weight:bold; margin:0 0 8px 0;">제1장　밝고 즐거운 "후아후아"의 영혼의 소리 <span style="font-weight:normal; font-size:12px;">시바무라 에미코</span> <span style="color:#888; font-size:11px; font-weight:normal;">29</span></p>
+        <p style="font-size:13px; color:#222; margin:0 0 5px 0;">깃털보다도 공기보다도 가벼운 것이 "후아후아" <span style="color:#888; font-size:11px;">30</span></p>
+        <p style="font-size:13px; color:#222; margin:0 0 5px 0;">행복이 배로 불어나듯 부풀어 오릅니다 <span style="color:#888; font-size:11px;">33</span></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

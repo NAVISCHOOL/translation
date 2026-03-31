@@ -1,0 +1,47 @@
+{
+  "source_lang": "de",
+  "target_lang": "ko",
+  "source_name": "Deutsch",
+  "target_name": "한국어",
+  "glossary": {
+    "__desc__": "독일어→한국어 용어 매핑 (우주소원 서비스)",
+    "Universum": "우주",
+    "Bestellung": "주문",
+    "Bestellservice": "주문 서비스",
+    "Bestelltechnik": "주문 기법",
+    "Wunscherfüllung": "소원 성취",
+    "Wünsche": "소원",
+    "Energie": "에너지",
+    "positiv": "긍정적",
+    "Gedanken": "생각",
+    "Seele": "영혼",
+    "Friede": "평화",
+    "Lebenstipps": "인생 비결",
+    "Allheilmittel": "만병통치약",
+    "innere Stimme": "내면의 목소리",
+    "Jenseits": "저세계",
+    "Resümee": "정리",
+    "Bärbel Mohr": "베르벨 모어"
+  },
+  "symbol_map": {
+    "preserve": ["»", "«", "…", "–"],
+    "convert": {
+      "»": "「",
+      "«": "」"
+    },
+    "forbidden_in_translation": ["''", "\u201c\u201d", "\u2018\u2019"]
+  },
+  "validation": {
+    "source_script_pattern": "[\\u00C0-\\u00FF\\u0100-\\u017Fäöüß]+",
+    "translationese_checks": true,
+    "ending_stats": true
+  },
+  "font_candidates": {
+    "regular": ["NanumSquare_acR.ttf", "NanumSquareR.ttf", "NanumGothic.ttf", "NotoSansKR-Regular.ttf"],
+    "bold": ["NanumSquareEB.ttf", "NanumSquare_acB.ttf", "NanumGothicBold.ttf", "NotoSansKR-Bold.ttf"]
+  },
+  "pdf_labels": {
+    "original": "원문(DE)",
+    "translated": "번역(KO)"
+  }
+}

@@ -14,6 +14,7 @@
 # 설정:
 INTERVAL=30          # 변경 감지 간격 (초)
 COOLDOWN=60          # 변경 후 대기 시간 (초) — 이 시간 동안 추가 변경이 없으면 커밋
+MAX_COOLDOWN_RESETS=5 # 쿨다운 리셋 최대 횟수 — 무한 대기 방지
 BRANCH="main"        # push할 브랜치
 PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 PID_FILE="$PROJECT_DIR/.git/auto-commit.pid"
@@ -61,12 +62,19 @@ do_auto_commit() {
 
     log "⏳ Changes detected, waiting ${COOLDOWN}s for more changes..."
     local waited=0
+    local resets=0
+    # ⚠️ race condition: 파일 변경이 git 명령과 동시에 발생할 수 있음
     while [[ $waited -lt $COOLDOWN ]]; do
         sleep 10
         waited=$((waited + 10))
         if has_changes && [[ $(git diff --stat 2>/dev/null | wc -l) -gt 0 || $(git ls-files --others --exclude-standard | wc -l) -gt 0 ]]; then
+            resets=$((resets + 1))
+            if [[ $resets -ge $MAX_COOLDOWN_RESETS ]]; then
+                log "   ...max cooldown resets reached ($MAX_COOLDOWN_RESETS), proceeding with commit"
+                break
+            fi
             local new_count=$(git status --short | wc -l | tr -d ' ')
-            log "   ...still changing (${new_count} files), resetting cooldown"
+            log "   ...still changing (${new_count} files), resetting cooldown (${resets}/${MAX_COOLDOWN_RESETS})"
             waited=0
         fi
     done
@@ -75,14 +83,14 @@ do_auto_commit() {
     local gitignore="$PROJECT_DIR/.gitignore"
     for dir in $(find "$PROJECT_DIR" -mindepth 2 -name ".git" -type d 2>/dev/null); do
         local parent=$(dirname "$dir")
-        local rel=$(python3 -c "import os; print(os.path.relpath('$parent', '$PROJECT_DIR'))")
+        local rel=$(realpath --relative-to="$PROJECT_DIR" "$parent" 2>/dev/null || python3 -c "import os,sys; print(os.path.relpath(sys.argv[1], sys.argv[2]))" "$parent" "$PROJECT_DIR")
         if ! grep -qx "${rel}/" "$gitignore" 2>/dev/null; then
             echo "${rel}/" >> "$gitignore"
             log "🚫 Auto-ignored embedded repo: ${rel}/"
         fi
     done
 
-    git add -A
+    git add translated/ config/ agents/ src/ scripts/ README.md GEMINI.md .agent/ .gitignore 2>/dev/null
 
     if git diff --cached --quiet; then
         return 0

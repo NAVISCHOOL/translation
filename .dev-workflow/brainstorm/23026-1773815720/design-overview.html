@@ -1,0 +1,149 @@
+<h2>설계안: 대조 PDF 서식 재현</h2>
+<p class="subtitle">AI 시각 분석 → 인라인 스타일 기록 → 대조 PDF 반영</p>
+
+<div class="section">
+  <h3>전체 흐름</h3>
+  <div class="mockup">
+    <div class="mockup-body" style="background:#1e1e2e; padding:20px; color:#cdd6f4; font-size:13px; line-height:2.0;">
+      <p style="margin:0;"><span style="color:#f9e2af;">Step 1.</span> prepare_pages.py → PNG 이미지 추출 <span style="color:#6c7086;">(변경 없음)</span></p>
+      <p style="margin:0;"><span style="color:#f9e2af;">Step 2.</span> AI가 이미지 보고 번역 + <span style="color:#a6e3a1; font-weight:bold;">style: 줄 추가</span></p>
+      <p style="margin:0;"><span style="color:#f9e2af;">Step 3.</span> MD 저장 <span style="color:#6c7086;">(기존 형식 + style 줄)</span></p>
+      <p style="margin:0;"><span style="color:#f9e2af;">Step 4.</span> translate_pipeline.py → MD 파싱 시 <span style="color:#a6e3a1; font-weight:bold;">style 파싱 추가</span></p>
+      <p style="margin:0;"><span style="color:#f9e2af;">Step 5.</span> generate_comparison_pdf.py → <span style="color:#a6e3a1; font-weight:bold;">서식 적용 렌더링</span></p>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>변경 1: 번역 MD 형식</h3>
+  <div class="split">
+    <div class="mockup">
+      <div class="mockup-header">기존</div>
+      <div class="mockup-body" style="background:#1e1e2e; padding:16px;">
+<pre style="color:#cdd6f4; font-size:12px; margin:0; line-height:1.7;">## page 8
+original: はじめに
+translated: 머리말
+
+original: みなさん、感謝してます！
+translated: 여러분, 감사합니다!</pre>
+      </div>
+    </div>
+    <div class="mockup">
+      <div class="mockup-header">변경 후</div>
+      <div class="mockup-body" style="background:#1e1e2e; padding:16px;">
+<pre style="color:#cdd6f4; font-size:12px; margin:0; line-height:1.7;">## page 8
+original: はじめに
+translated: 머리말
+<span style="color:#a6e3a1;">style: size=small, color=black, position=header</span>
+
+original: はじめに
+translated: 머리말
+<span style="color:#a6e3a1;">style: size=large, color=green, bold</span>
+
+original: みなさん、感謝してます！
+translated: 여러분, 감사합니다!
+<span style="color:#a6e3a1;">style: size=medium, color=black</span>
+
+original: 柴村恵美子
+translated: 시바무라 에미코
+<span style="color:#a6e3a1;">style: size=large, color=green</span></pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>변경 2: 대조 PDF 렌더링 (p.8 예시)</h3>
+  <div class="split">
+    <div class="mockup">
+      <div class="mockup-header">기존 렌더링</div>
+      <div class="mockup-body" style="background:#fff; padding:20px; font-family:sans-serif;">
+        <div style="text-align:center; color:#999; font-size:11px; margin-bottom:10px;">[번역] p.8</div>
+        <p style="font-size:13px; color:#282828; margin:0 0 4px 0;">머리말</p>
+        <p style="font-size:13px; color:#282828; margin:0 0 4px 0;">&nbsp;</p>
+        <p style="font-size:13px; color:#282828; margin:0 0 4px 0;">여러분, 감사합니다!</p>
+        <p style="font-size:13px; color:#282828; margin:0 0 4px 0;">일본 제일의 행복한 대부호 · 사이토 히토리 선생님의 첫 번째 제자, 시바무라 에미코입니다.</p>
+        <p style="font-size:13px; color:#282828; margin:0 0 4px 0;">지금, 고민하고 있는 것이 있나요?</p>
+        <p style="font-size:13px; color:#282828; margin:0 0 4px 0;">시바무라 에미코</p>
+      </div>
+    </div>
+    <div class="mockup">
+      <div class="mockup-header">서식 적용 렌더링</div>
+      <div class="mockup-body" style="background:#fff; padding:20px; font-family:sans-serif;">
+        <p style="font-size:11px; color:#555; margin:0 0 12px 0;">머리말</p>
+        <hr style="border:none; border-top:1px solid #ccc; margin:0 0 12px 0;">
+        <div style="text-align:center; color:#999; font-size:11px; margin-bottom:10px;">[번역] p.8</div>
+        <p style="font-size:20px; color:#2e7d32; margin:0 0 16px 0; font-weight:bold;">머리말</p>
+        <p style="font-size:14px; color:#222; margin:0 0 8px 0; line-height:1.8;">여러분, 감사합니다!</p>
+        <p style="font-size:14px; color:#222; margin:0 0 8px 0; line-height:1.8;">일본 제일의 행복한 대부호 · 사이토 히토리 선생님의 첫 번째 제자, 시바무라 에미코입니다.</p>
+        <p style="font-size:14px; color:#222; margin:0 0 8px 0; line-height:1.8;">지금, 고민하고 있는 것이 있나요?</p>
+        <p style="font-size:18px; color:#2e7d32; margin:16px 0 0 0;">시바무라 에미코</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>style 속성 정의</h3>
+  <div class="mockup">
+    <div class="mockup-body" style="background:#fff; padding:16px;">
+      <table style="width:100%; font-size:12px; border-collapse:collapse;">
+        <tr style="border-bottom:1px solid #eee;">
+          <td style="padding:8px; font-weight:bold; width:120px;">size</td>
+          <td style="padding:8px; color:#666;">small / medium / large / xlarge</td>
+          <td style="padding:8px; color:#888;">→ 8pt / 10pt / 14pt / 20pt</td>
+        </tr>
+        <tr style="border-bottom:1px solid #eee;">
+          <td style="padding:8px; font-weight:bold;">color</td>
+          <td style="padding:8px; color:#666;">black / green / gray / white</td>
+          <td style="padding:8px; color:#888;">→ #222 / #2e7d32 / #888 / #fff</td>
+        </tr>
+        <tr style="border-bottom:1px solid #eee;">
+          <td style="padding:8px; font-weight:bold;">bold</td>
+          <td style="padding:8px; color:#666;">(플래그)</td>
+          <td style="padding:8px; color:#888;">→ 굵은 폰트 사용</td>
+        </tr>
+        <tr style="border-bottom:1px solid #eee;">
+          <td style="padding:8px; font-weight:bold;">position</td>
+          <td style="padding:8px; color:#666;">header / footer / center</td>
+          <td style="padding:8px; color:#888;">→ 배치 위치</td>
+        </tr>
+        <tr>
+          <td style="padding:8px; font-weight:bold;">spacing</td>
+          <td style="padding:8px; color:#666;">after:small / after:medium / after:large</td>
+          <td style="padding:8px; color:#888;">→ 아래 여백</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>수정이 필요한 파일</h3>
+  <div class="mockup">
+    <div class="mockup-body" style="background:#fff; padding:16px; font-size:13px;">
+      <p style="margin:0 0 10px 0;"><strong>1. <code>agents/workflows/translate.md</code></strong> — 번역 시 style 줄 기록 규칙 추가</p>
+      <p style="margin:0 0 10px 0;"><strong>2. <code>.agent/skills/translate-chunk/SKILL.md</code></strong> — 번역 스킬에 style 기록 지침 추가</p>
+      <p style="margin:0 0 10px 0;"><strong>3. <code>src/translate_pipeline.py</code></strong> — MD 파서에서 style 줄 파싱, JSON에 style 필드 포함</p>
+      <p style="margin:0 0 10px 0;"><strong>4. <code>src/generate_comparison_pdf.py</code></strong> — style 정보에 따라 폰트 크기/색상/굵기/여백 적용</p>
+    </div>
+  </div>
+</div>
+
+<h3 style="margin-top:24px;">이 설계안이 맞나요?</h3>
+<div class="options">
+  <div class="option" data-choice="approve" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>좋아, 이대로 진행</h3>
+      <p>설계안 승인 → 스펙 문서 작성 → 구현 계획으로</p>
+    </div>
+  </div>
+  <div class="option" data-choice="revise" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>수정할 부분 있어</h3>
+      <p>특정 부분을 변경하거나 추가하고 싶음</p>
+    </div>
+  </div>
+</div>

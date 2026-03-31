@@ -1,0 +1,62 @@
+<h2>서식 검증 시스템 설계</h2>
+<p class="subtitle">AI가 기록한 서식이 원본과 맞는지 재검증하는 루프</p>
+
+<div class="section">
+  <h3>문제: AI가 서식을 잘못 기록할 수 있다</h3>
+  <div class="mockup">
+    <div class="mockup-body" style="background:#fff; padding:16px; font-size:13px; line-height:1.8;">
+      <p style="margin:0 0 8px 0;"><strong>실제 사례:</strong> "柴村恵美子"를 초록이라고 판단 → 실제는 진한 검정</p>
+      <p style="margin:0 0 8px 0;"><strong>원인:</strong> 주변 텍스트(はじめに)가 초록이라 같은 색으로 추측</p>
+      <p style="margin:0;"><strong>해결:</strong> 대조 PDF 생성 후, 원본 이미지와 나란히 비교하여 재검증</p>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>검증 루프 흐름</h3>
+  <div class="mockup">
+    <div class="mockup-body" style="background:#1e1e2e; padding:20px; color:#cdd6f4; font-size:13px; line-height:2.2;">
+      <p><span style="color:#f9e2af;">1.</span> AI가 번역 + style 기록 → MD 저장</p>
+      <p><span style="color:#f9e2af;">2.</span> translate_pipeline.py → 대조 PDF 생성 (서식 적용)</p>
+      <p><span style="color:#a6e3a1;">3.</span> <strong>서식 검증 단계 (새로 추가)</strong></p>
+      <p style="padding-left:24px;">→ 대조 PDF의 번역 쪽을 이미지로 렌더링</p>
+      <p style="padding-left:24px;">→ 원본 PDF 이미지와 나란히 비교</p>
+      <p style="padding-left:24px;">→ AI가 다시 보고 서식 불일치 검출</p>
+      <p style="padding-left:36px; color:#f38ba8;">예: "시바무라 에미코 — 원본: 검정, 대조PDF: 초록 → 불일치"</p>
+      <p><span style="color:#a6e3a1;">4.</span> 불일치 발견 시 → style 수정 → 대조 PDF 재생성</p>
+      <p><span style="color:#f9e2af;">5.</span> 검증 통과 → 완료</p>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>구현 방식</h3>
+  <div class="options">
+    <div class="option" data-choice="a" onclick="toggleSelect(this)">
+      <div class="letter">A</div>
+      <div class="content">
+        <h3>파이프라인 내장 자동 검증 (추천)</h3>
+        <p>translate_pipeline.py의 build 단계에 <strong>style 검증</strong>을 추가. 대조 PDF 생성 후 자동으로 원본과 비교하여 불일치 리포트 출력. 기존 ANTI-JAPANESE 검증처럼 파이프라인에 통합.</p>
+        <pre style="background:#1e1e2e; color:#cdd6f4; padding:10px; border-radius:6px; font-size:11px; margin-top:8px;">
+검증 결과:
+  p.8 블록 3 "시바무라 에미코"
+    color: green → 원본과 불일치 (예상: black)
+    ⚠️ style 수정 필요</pre>
+      </div>
+    </div>
+    <div class="option" data-choice="b" onclick="toggleSelect(this)">
+      <div class="letter">B</div>
+      <div class="content">
+        <h3>별도 검증 커맨드</h3>
+        <p><code>python src/translate_pipeline.py verify-style</code> 커맨드를 추가. 이미 생성된 대조 PDF와 원본을 비교하는 독립 실행. 필요할 때만 수동 실행.</p>
+      </div>
+    </div>
+    <div class="option" data-choice="c" onclick="toggleSelect(this)">
+      <div class="letter">C</div>
+      <div class="content">
+        <h3>번역 스킬 내 셀프체크</h3>
+        <p>AI가 style 기록 직후, 파이프라인 실행 전에 한 번 더 이미지를 보고 자기 검증. "내가 기록한 style이 맞나?" 확인 후 진행. 코드 변경 최소화.</p>
+      </div>
+    </div>
+  </div>
+</div>

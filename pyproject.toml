@@ -11,10 +11,7 @@ dependencies = [
 ]
 
 [project.scripts]
-navi-translate = "translate_pipeline:main"
-
-[tool.pytest.ini_options]
-testpaths = ["tests"]
+navi-translate = "src.translate_pipeline:main"
 
 [build-system]
 requires = ["hatchling"]
@@ -22,6 +19,9 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src"]
+
+[project.optional-dependencies]
+gemini = ["google-genai", "python-dotenv", "requests"]
 
 [dependency-groups]
 dev = [
