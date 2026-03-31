@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python *)",
+      "Bash(pip *)",
+      "Bash(git *)",
+      "Bash(ls *)",
+      "Bash(dir *)",
+      "Bash(cat *)",
+      "Bash(type *)",
+      "Bash(find *)",
+      "Bash(tree *)",
+      "Bash(mkdir *)",
+      "Bash(cp *)",
+      "Bash(mv *)",
+      "Bash(.venv/Scripts/activate *)",
+      "Bash(.venv\\Scripts\\activate *)",
+      "Read(*)",
+      "Write(translated/*)",
+      "Write(tmp_pages/*)",
+      "Write(config/*)"
+    ],
+    "deny": []
+  }
+}
