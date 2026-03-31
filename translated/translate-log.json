@@ -575,6 +575,23 @@
       "output": "translated/de/antigravity/pages_de_61-70.json",
       "output_name": "대조본_p61-70.pdf",
       "output_rel": "대조본_p61-70.pdf"
+    },
+    {
+      "id": "pages_71-80",
+      "timestamp": "2026-03-31T11:15:15.557554",
+      "pdf": "우주소원 서비스 - 독일어 원서.pdf",
+      "pages": "71-80",
+      "mode": "antigravity",
+      "lang": "de",
+      "page_count": 10,
+      "total_time_sec": 1.2,
+      "validation": {
+        "japanese_remnants": 0,
+        "missing_pages": 0
+      },
+      "output": "translated/de/antigravity/pages_de_71-80.json",
+      "output_name": "대조본_p71-80.pdf",
+      "output_rel": "대조본_p71-80.pdf"
     }
   ]
 }
